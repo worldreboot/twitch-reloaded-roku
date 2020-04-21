@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="KeyboardGroup" extends="Group" initialFocus="keyboard">
+
+    <script type="text/brightscript" uri="pkg:/components/KeyboardGroup.brs" />
+
+    <children>
+
+        <MiniKeyboard 
+            id="keyboard"
+            visible="true"
+            translation="[0,0]" />
+        <Button
+            id="okButton"
+            visible="true" 
+            text="OK"
+            translation="[500,0]" />
+
+    </children>
+
+</component>
