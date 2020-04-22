@@ -8,13 +8,11 @@
 
         <MiniKeyboard 
             id="keyboard"
-            visible="true"
             translation="[0,0]" />
         <Button
             id="okButton"
-            visible="true" 
             text="OK"
-            translation="[500,0]" />
+            translation="[0,500]" />
 
     </children>
 
