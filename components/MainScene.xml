@@ -2,10 +2,6 @@
 
 <component name="MainScene" extends="Scene">
 
-    <interface>
-        <field id="videoContent" type="string" onChange="onStreamChange" />
-    </interface>
-
     <script type="text/brightscript" uri="pkg:/components/MainScene.brs" />
 
     <children>

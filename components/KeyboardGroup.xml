@@ -2,6 +2,10 @@
 
 <component name="KeyboardGroup" extends="Group" initialFocus="keyboard">
 
+    <interface>
+        <field id="streamUrl" type="uri" />
+    </interface>
+
     <script type="text/brightscript" uri="pkg:/components/KeyboardGroup.brs" />
 
     <children>
