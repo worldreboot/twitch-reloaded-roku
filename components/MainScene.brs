@@ -23,6 +23,7 @@ function init()
 end function
 
 function onStreamChange()
+    ? "Main >> change > url > "; m.keyboardGroup.streamUrl
     m.stream["url"] = m.keyboardGroup.streamUrl
     m.keyboardGroup.visible = false
     m.videoPlayer.setFocus(true)
