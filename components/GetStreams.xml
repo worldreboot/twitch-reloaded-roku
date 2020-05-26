@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="GetStreams" extends="Task">
+
+    <interface>
+        <field id="offset" type="string" value="0" />
+        <field id="gameRequested" type="string" />
+        <field id="searchResults" type="array" />
+    </interface>
+    
+    <script type="text/brightscript" uri="pkg:/components/GetStreams.brs" />
+
+</component>

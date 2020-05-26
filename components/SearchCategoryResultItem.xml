@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="SearchCategoryResultItem" extends="Group">
+
+    <interface>
+        <field id="itemContent" type="node" onChange="showContent" />
+    </interface>
+
+    <script type="text/brightscript" uri="pkg:/components/SearchCategoryResultItem.brs" />
+
+    <children>
+
+        <Poster 
+            id="itemIcon"
+            width="52"
+            height="72" />
+        
+        <SimpleLabel
+            id="itemTitle"
+            translation="[60,10]"
+            fontUri="pkg:/fonts/Roobert-Regular.ttf" />    
+
+    </children>
+
+</component>

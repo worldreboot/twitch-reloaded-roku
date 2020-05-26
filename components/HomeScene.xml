@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="HomeScene" extends="Group">
+
+    <interface>
+        <field id="streamUrl" type="uri" />
+        <field id="categorySelected" type="string" alwaysNotify="true" />
+    </interface>
+
+    <script type="text/brightscript" uri="pkg:/components/HomeScene.brs" />
+
+    <children>
+        <Group id="browseButtons">
+            <SimpleLabel
+                id="categoryButton"
+                translation="[400,50]"
+                text="Categories"
+                color="0xEFEFF1FF"
+                fontSize="32"
+                fontUri="pkg:/fonts/Roobert-SemiBold.ttf" >
+                <Rectangle
+                    id="categoryLine"
+                    visible="false"
+                    color="0xA970FFFF"
+                    width="175"
+                    height="5"
+                    translation="[0,40]" />
+            </SimpleLabel> 
+            <SimpleLabel
+                id="liveButton"
+                translation="[700,50]"
+                text="Live Channels"
+                color="0xA970FFFF"
+                fontSize="32"
+                fontUri="pkg:/fonts/Roobert-SemiBold.ttf" >
+                <Rectangle
+                    id="liveLine"
+                    visible="true"
+                    color="0xA970FFFF"
+                    width="150"
+                    height="5"
+                    translation="[0,40]" />
+            </SimpleLabel> 
+        </Group>
+        <SimpleLabel
+            id="searchHeader"
+            translation="[50,50]"
+            text="Browse"
+            fontSize="48"
+            fontUri="pkg:/fonts/Roobert-Bold.ttf" />  
+        <RowList 
+            id="browseList"
+            itemComponentName="BrowseChannelItem"
+            translation = "[100,165]"
+            numRows = "2"
+            rowItemSize = "[[320,180]]"
+            rowItemSpacing = "[[30,0]]"
+            itemSize = "[1030,275]"
+            rowFocusAnimationStyle = "floatingFocus" />
+        <RowList 
+            id="browseCategoryList"
+            itemComponentName="BrowseCategoryItem"
+            translation = "[100,165]"
+            numRows = "2"
+            rowItemSize = "[[136,190]]"
+            rowItemSpacing = "[[20,0]]"
+            itemSize = "[1080,265]"
+            rowFocusAnimationStyle = "floatingFocus" />
+
+    </children>
+
+</component>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="GetCategories" extends="Task">
+
+    <interface>
+        <field id="searchText" type="string" />
+        <field id="offset" type="string" value="0"/>
+        <field id="searchResults" type="array" />
+    </interface>
+    
+    <script type="text/brightscript" uri="pkg:/components/GetCategories.brs" />
+
+</component>

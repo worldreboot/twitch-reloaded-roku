@@ -6,9 +6,17 @@
 
     <children>
 
+        <HomeScene 
+            id="homeScene"
+            visible="true" />
+        
+        <CategoryScene
+            id="categoryScene"
+            visible="false" />
+
         <KeyboardGroup
             id="keyboardGroup"
-            visible="true" />
+            visible="false" />
 
         <Video 
             id="videoPlayer"
