@@ -66,6 +66,7 @@ sub onHomeLoad()
     m.browseList.visible = true
     m.getStreams.gameRequested = ""
     m.getStreams.offset = "0"
+    m.offset = 0
     m.getStreams.control = "RUN"
 end sub
 
@@ -168,6 +169,7 @@ sub onCategorySelect()
     m.browseCategoryList.visible = true
     m.getCategories.searchText = ""
     m.getCategories.offset = "0"
+    m.offsetCategory = 0
     m.getCategories.control = "RUN"
 end sub
 

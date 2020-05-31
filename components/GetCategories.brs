@@ -18,6 +18,8 @@ function getSearchResults() as Object
 
     search_results_url = "https://api.twitch.tv/kraken/games/top?limit=" + limit.ToStr() + "&offset=" + m.top.offset +  "&client_id=jzkbprff40iqj646a697cyrvl0zt2m6"
 
+    ? "GetCategories >> search > ";search_results_url
+
     url = CreateObject("roUrlTransfer")
     url.EnableEncodings(true)
     url.RetainBodyOnError(true)

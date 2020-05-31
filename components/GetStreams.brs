@@ -11,14 +11,14 @@ function onSearchTextChange()
 end function
 
 function getSearchResults() as Object
-    search_results_url = "https://api.twitch.tv/kraken/streams?client_id=jzkbprff40iqj646a697cyrvl0zt2m6&limit=24&offset=" + m.top.offset + "&game=" + m.top.gameRequested
+    search_results_url = "https://api.twitch.tv/kraken/streams?client_id=jzkbprff40iqj646a697cyrvl0zt2m6&limit=24&offset=" + m.top.offset + "&game="
 
     url = CreateObject("roUrlTransfer")
     url.EnableEncodings(true)
     url.RetainBodyOnError(true)
     url.SetCertificatesFile("common:/certs/ca-bundle.crt")
     url.InitClientCertificates()
-    url.SetUrl(search_results_url.EncodeUri())
+    url.SetUrl(search_results_url.EncodeUri() + m.top.gameRequested.EncodeUriComponent())
 
     response_string = url.GetToString()
     search = ParseJson(response_string)
