@@ -10,7 +10,7 @@ An Improvable™ Twitch app for Roku. Still a little buggy, so feel free to sugg
 6. Navigate to channel with black Roku Developers graphic channel in your Roku to use (should be last channel in your channel list)
 
 ## Supported Features
-* Browsing live channels and categories by viewer count
+* Browsing live channels and categories by viewer count (press down to load more)
 * Search (with buggy auto-complete) (Press * on remote to load Search menu)
 
 ## Notable Unsupported Features
