@@ -16,6 +16,7 @@ function getSearchResults() as Object
     url = CreateObject("roUrlTransfer")
     url.EnableEncodings(true)
     url.RetainBodyOnError(true)
+    url.AddHeader("Accept", "application/vnd.twitchtv.v5+json")
     url.SetCertificatesFile("common:/certs/ca-bundle.crt")
     url.InitClientCertificates()
     url.SetUrl(search_results_url.EncodeUri() + m.top.gameRequested.EncodeUriComponent())
