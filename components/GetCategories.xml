@@ -6,6 +6,7 @@
         <field id="searchText" type="string" />
         <field id="offset" type="string" value="0"/>
         <field id="searchResults" type="array" />
+        <field id="pagination" type="string" value="" />
     </interface>
     
     <script type="text/brightscript" uri="pkg:/components/GetCategories.brs" />

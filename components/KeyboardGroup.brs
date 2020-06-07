@@ -52,7 +52,7 @@ function onSearchItemSelect()
         m.getStuff.control = "RUN"
         m.wasLastScene = true
     else if m.categoryLine.visible = true
-        m.top.categorySelected = m.resultCategoryList.content.getChild(m.resultCategoryList.itemSelected).title
+        m.top.categorySelected = m.resultCategoryList.content.getChild(m.resultCategoryList.itemSelected).categories
         ? "KeyboardGroup >> categorySelected > ";m.top.categorySelected
     end if
 end function
@@ -93,6 +93,7 @@ function onSearchResultChange()
                 'child.id = channel.id
                 'fifty = Left(channel.logo, 98) + "50x50.png"
                 child.url = channel.logo
+                child.categories = channel.id.ToStr()
                 child.title = channel.name
             end for
         end if

@@ -32,6 +32,8 @@ sub onGetFocus()
     else if m.top.visible = false
         'm.offset = 0
         m.append = false
+        m.getStreams.gameRequested = ""
+        m.getStreams.pagination = ""
     end if
 end sub
 

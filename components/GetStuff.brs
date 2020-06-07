@@ -13,8 +13,6 @@ end function
 function getStreamLink() as Object
     access_token_url = "http://api.twitch.tv/api/channels/" + m.top.streamerRequested + "/access_token?client_id=jzkbprff40iqj646a697cyrvl0zt2m6"
 
-    ? "access_token_url >> ";access_token_url
-
     url = CreateObject("roUrlTransfer")
     url.EnableEncodings(true)
     url.RetainBodyOnError(true)

@@ -6,6 +6,7 @@
         <field id="offset" type="string" value="0" />
         <field id="gameRequested" type="string" />
         <field id="searchResults" type="array" />
+        <field id="pagination" type="string" value="" />
     </interface>
     
     <script type="text/brightscript" uri="pkg:/components/GetStreams.brs" />

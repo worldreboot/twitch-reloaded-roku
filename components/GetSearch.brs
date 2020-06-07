@@ -17,6 +17,7 @@ function getSearchResults() as Object
     url.EnableEncodings(true)
     url.RetainBodyOnError(true)
     url.SetCertificatesFile("common:/certs/ca-bundle.crt")
+    url.AddHeader("Accept", "application/vnd.twitchtv.v5+json")
     url.InitClientCertificates()
     url.SetUrl(search_results_url)
 

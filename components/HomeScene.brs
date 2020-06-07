@@ -57,7 +57,7 @@ sub onBrowseItemSelect()
         m.getStuff.control = "RUN"
         m.wasLastScene = true
     else if m.browseCategoryList.visible = true
-        m.top.categorySelected = m.browseCategoryList.content.getChild(m.browseCategoryList.rowItemSelected[0]).getChild(m.browseCategoryList.rowItemSelected[1]).Title
+        m.top.categorySelected = m.browseCategoryList.content.getChild(m.browseCategoryList.rowItemSelected[0]).getChild(m.browseCategoryList.rowItemSelected[1]).ShortDescriptionLine1
     end if
 end sub
 
@@ -66,6 +66,7 @@ sub onHomeLoad()
     m.browseList.visible = true
     m.getStreams.gameRequested = ""
     m.getStreams.offset = "0"
+    m.getStreams.pagination = ""
     m.offset = 0
     m.getStreams.control = "RUN"
 end sub
@@ -86,11 +87,7 @@ sub onSearchResultChange()
         alreadyAppended = false
         cnt = 0
         for each stream in m.getStreams.searchResults
-            if cnt <> 0 and cnt MOD 3 = 0
-                content.appendChild(row)
-                row = createObject("RoSGNode", "ContentNode")
-                alreadyAppended = true
-            end if
+            alreadyAppended = false
             rowItem = createObject("RoSGNode", "ContentNode")
             rowItem.Title = stream.title
             rowItem.Description = stream.display_name
@@ -100,6 +97,11 @@ sub onSearchResultChange()
             rowItem.ShortDescriptionLine2 = numberToText(stream.viewers)
             row.appendChild(rowItem)
             cnt += 1
+            if cnt <> 0 and cnt MOD 3 = 0
+                content.appendChild(row)
+                row = createObject("RoSGNode", "ContentNode")
+                alreadyAppended = true
+            end if
         end for
         if rowItem <> invalid and cnt <> 0 and alreadyAppended = false
             row.appendChild(rowItem)
@@ -143,21 +145,22 @@ sub onCategoryResultChange()
         alreadyAppended = false
         cnt = 0
         for each stream in m.getCategories.searchResults
+            rowItem = createObject("RoSGNode", "ContentNode")
+            rowItem.Title = stream.name
+            rowItem.Description = numberToText(stream.viewers)
+            rowItem.ShortDescriptionLine1 = stream.id
+            rowItem.HDPosterUrl = stream.logo
+            row.appendChild(rowItem)
+            cnt += 1
             if cnt <> 0 and cnt MOD 6 = 0
                 content.appendChild(row)
                 row = createObject("RoSGNode", "ContentNode")
                 alreadyAppended = true
             end if
-            rowItem = createObject("RoSGNode", "ContentNode")
-            rowItem.Title = stream.name
-            rowItem.Description = numberToText(stream.viewers)
-            rowItem.HDPosterUrl = stream.logo
-            row.appendChild(rowItem)
-            cnt += 1
         end for
-        if rowItem <> invalid and cnt <> 0 and alreadyAppended = false
-            row.appendChild(rowItem)
-        end if
+        'if rowItem <> invalid and cnt <> 0 and alreadyAppended = false
+            'row.appendChild(rowItem)
+        'end if
     end if
     m.browseCategoryList.content = content
     m.browseCategoryList.jumpToItem = lastFocusedRow
@@ -169,6 +172,7 @@ sub onCategorySelect()
     m.browseCategoryList.visible = true
     m.getCategories.searchText = ""
     m.getCategories.offset = "0"
+    m.getCategories.pagination = ""
     m.offsetCategory = 0
     m.getCategories.control = "RUN"
 end sub
