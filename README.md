@@ -1,6 +1,9 @@
 # Twitch Reloaded (alpha)
 An Improvable™ Twitch app for Roku. Still a little buggy, so feel free to suggest improvements (and code and features).
 
+## Discord
+https://discord.gg/kV5SXkZ
+
 ## How to Install
 1. [Enable developer mode for Roku](https://blog.roku.com/developer/developer-setup-guide)
 2. Log into your Roku from your browser using IP from previous step (http://192.168.x.x)
