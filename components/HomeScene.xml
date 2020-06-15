@@ -37,14 +37,14 @@
                     id="liveLine"
                     visible="true"
                     color="0xA970FFFF"
-                    width="150"
+                    width="210"
                     height="5"
                     translation="[0,40]" />
             </SimpleLabel> 
         </Group>
         <SimpleLabel
             id="searchHeader"
-            translation="[50,50]"
+            translation="[100,50]"
             text="Browse"
             fontSize="48"
             fontUri="pkg:/fonts/Roobert-Bold.ttf" />  

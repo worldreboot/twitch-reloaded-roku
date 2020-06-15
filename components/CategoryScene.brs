@@ -132,7 +132,6 @@ sub getMoreChannels()
     m.append = true
     m.getStreams.gameRequested = m.top.currentCategory
     m.getStreams.offset = m.offset.ToStr()
-    ? "m.offset >> ";m.getStreams.offset
     m.getStreams.control = "RUN"
 end sub
 
@@ -141,11 +140,6 @@ sub onKeyEvent(key, press) as Boolean
 
     if m.top.visible = true and press
         if m.browseList.hasFocus() = true and key = "up"
-            if m.clipLine.visible = true
-                m.liveButton.color = "0xA970FFFF"
-            else if m.liveLine.visible = true
-                m.clipButton.color = "0xA970FFFF"
-            end if
             m.browseButtons.setFocus(true)
             handled = true
         else if m.browseButtons.hasFocus() = true and key = "down"
@@ -158,21 +152,7 @@ sub onKeyEvent(key, press) as Boolean
                 m.browseList.setFocus(true)
                 handled = true
             end if
-        else if m.browseButtons.hasFocus() = true and key = "OK"
-            if m.clipLine.visible = true
-                m.liveButton.color = "0xA970FFFF"
-                m.liveLine.visible = true
-                m.clipLine.visible = false
-                m.clipButton.color = "0xEFEFF1FF"
-                m.browseList.setFocus(true)
-                handled = true
-            else if m.liveLine.visible = true
-                m.clipButton.color = "0xA970FFFF"
-                m.clipLine.visible = true
-                m.liveLine.visible = false
-                m.liveButton.color = "0xEFEFF1FF"
-                handled = true
-            end if
+        'else if m.browseButtons.hasFocus() = true and key = "OK"
         else if m.browseList.hasFocus() = true and key = "down"
             getMoreChannels()
         end if

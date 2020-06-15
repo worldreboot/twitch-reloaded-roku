@@ -48,8 +48,8 @@
             id="viewsRect"
             color="0x18181BCC"
             visible="true"
-            width="85"
-            height="16"
+            width="93"
+            height="22"
             translation="[2,157]" />
         <Label
             id = "itemViewers"

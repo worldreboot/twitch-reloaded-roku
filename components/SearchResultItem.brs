@@ -1,11 +1,11 @@
 sub init()
-    m.itemIcon = m.top.findNode("itemIcon")
+    m.image = m.top.findNode("image")
     m.itemTitle = m.top.findNode("itemTitle")
 end sub
 
 sub showContent()
     itemContent = m.top.itemContent
     m.itemId = itemContent.id
-    m.itemIcon.uri = itemContent.url
+    m.image.uri = itemContent.url
     m.itemTitle.text = itemContent.title
 end sub

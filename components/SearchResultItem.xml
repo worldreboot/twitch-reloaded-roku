@@ -10,10 +10,16 @@
 
     <children>
 
-        <Poster 
+        <MaskGroup
             id="itemIcon"
-            width="50"
-            height="50" />
+            maskuri="pkg:/images/profile-mask.png"
+            masksize="[50,50]"
+			maskOffset="[0,0]" >
+            <Poster 
+                id="image"
+                width="50"
+                height="50" />
+        </MaskGroup>
         
         <SimpleLabel
             id="itemTitle"

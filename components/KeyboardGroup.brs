@@ -39,11 +39,7 @@ function init()
 end function
 
 function onGetFocus()
-    if m.liveLine.visible = true
-        m.searchResultList.setFocus(true)
-    else if m.categoryLine.visible = true
-        m.resultCategoryList.setFocus(true)
-    end if
+    m.keyboard.setFocus(true)
 end function
 
 function onSearchItemSelect()
@@ -53,7 +49,6 @@ function onSearchItemSelect()
         m.wasLastScene = true
     else if m.categoryLine.visible = true
         m.top.categorySelected = m.resultCategoryList.content.getChild(m.resultCategoryList.itemSelected).categories
-        ? "KeyboardGroup >> categorySelected > ";m.top.categorySelected
     end if
 end function
 
