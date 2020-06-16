@@ -47,7 +47,13 @@
             translation="[100,50]"
             text="Browse"
             fontSize="48"
-            fontUri="pkg:/fonts/Roobert-Bold.ttf" />  
+            fontUri="pkg:/fonts/Roobert-Bold.ttf" /> 
+        <SimpleLabel
+            id="searchLabel"
+            translation="[975,60]"
+            text="Search *"
+            fontSize="24"
+            fontUri="pkg:/fonts/Roobert-Regular.ttf" />   
         <RowList 
             id="browseList"
             itemComponentName="BrowseChannelItem"

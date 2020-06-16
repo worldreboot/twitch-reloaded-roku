@@ -19,13 +19,13 @@ function getSearchResults() as Object
     url.SetCertificatesFile("common:/certs/ca-bundle.crt")
     url.AddHeader("Accept", "application/vnd.twitchtv.v5+json")
     url.InitClientCertificates()
-    url.SetUrl(search_results_url)
+    url.SetUrl(search_results_url.EncodeUri())
 
     response_string = url.GetToString()
     search = ParseJson(response_string)
     
     result = []
-    if search.games <> invalid
+    if search <> invalid and search.games <> invalid
         for each game in search.games
             item = {}
             item.id = game._id
