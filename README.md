@@ -6,7 +6,7 @@ https://discord.gg/kV5SXkZ
 
 ## How to Install
 ### With Access Code
-Install with access code: TWOKU (https://my.roku.com/account/add)
+Install with access code: TWOKU (https://my.roku.com/account/add?channel=TWOKU)
 
 ### Manual Developer Install
 1. [Enable developer mode for Roku](https://blog.roku.com/developer/developer-setup-guide)
