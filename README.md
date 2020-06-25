@@ -4,6 +4,11 @@ An Improvable™ Twitch app for Roku. Still a little buggy, so feel free to sugg
 ## Discord
 https://discord.gg/kV5SXkZ
 
+## Support
+If you would like to support Twoku:
+
+ [![Support with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YRPQDG5UY26DS&currency_code=CAD&source=url)
+
 ## How to Install
 ### With Access Code
 Install with access code: TWOKU (https://my.roku.com/account/add?channel=TWOKU)
