@@ -52,8 +52,8 @@ end sub
 
 sub onNewUser()
     m.loggedUserName.text = m.top.loggedInUserName
-    ? "profile name > ";m.top.loggedInUserName
-    ? "profile image > ";m.top.loggedInUserProfileImage
+    '? "profile name > ";m.top.loggedInUserName
+    '? "profile image > ";m.top.loggedInUserProfileImage
     m.profileImage.uri = m.top.loggedInUserProfileImage
     m.loggedUserGroup.visible = true
 end sub

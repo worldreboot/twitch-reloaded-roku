@@ -43,7 +43,6 @@
                     translation="[500,60]"
                     text="Live Channels"
                     color="0xA970FFFF"
-<<<<<<< HEAD
                     fontSize="32"
                     fontUri="pkg:/fonts/Roobert-SemiBold.ttf" >
                     <Rectangle
@@ -97,58 +96,6 @@
         </Group>
         <FollowedStreamsBar 
             id="followBar" />
-=======
-                    width="175"
-                    height="5"
-                    translation="[0,40]" />
-            </SimpleLabel> 
-            <SimpleLabel
-                id="liveButton"
-                translation="[700,50]"
-                text="Live Channels"
-                color="0xA970FFFF"
-                fontSize="32"
-                fontUri="pkg:/fonts/Roobert-SemiBold.ttf" >
-                <Rectangle
-                    id="liveLine"
-                    visible="true"
-                    color="0xA970FFFF"
-                    width="210"
-                    height="5"
-                    translation="[0,40]" />
-            </SimpleLabel> 
-        </Group>
-        <SimpleLabel
-            id="searchHeader"
-            translation="[100,50]"
-            text="Browse"
-            fontSize="48"
-            fontUri="pkg:/fonts/Roobert-Bold.ttf" /> 
-        <SimpleLabel
-            id="searchLabel"
-            translation="[975,60]"
-            text="Search *"
-            fontSize="24"
-            fontUri="pkg:/fonts/Roobert-Regular.ttf" />   
-        <RowList 
-            id="browseList"
-            itemComponentName="BrowseChannelItem"
-            translation = "[100,165]"
-            numRows = "2"
-            rowItemSize = "[[320,180]]"
-            rowItemSpacing = "[[30,0]]"
-            itemSize = "[1030,275]"
-            rowFocusAnimationStyle = "floatingFocus" />
-        <RowList 
-            id="browseCategoryList"
-            itemComponentName="BrowseCategoryItem"
-            translation = "[100,165]"
-            numRows = "2"
-            rowItemSize = "[[136,190]]"
-            rowItemSpacing = "[[20,0]]"
-            itemSize = "[1080,265]"
-            rowFocusAnimationStyle = "floatingFocus" />
->>>>>>> 676e1bcebd5775c32c4b75fa22e7bec696c4f31e
 
     </children>
 
