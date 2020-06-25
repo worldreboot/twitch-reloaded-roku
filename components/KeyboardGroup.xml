@@ -52,7 +52,7 @@
             fontUri="pkg:/fonts/Roobert-Bold.ttf" />   
         <MiniKeyboard 
             id="keyboard"
-            translation="[50,100]" />
+            translation="[50,130]" />
         <Button
             id="okButton"
             text="Search"

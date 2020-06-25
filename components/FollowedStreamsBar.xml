@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="FollowedStreamsBar" extends="Group">
+
+    <interface>
+        <field id="focused" type="bool" value="false" onChange="onGetFocus" />
+        <field id="streamerSelected" type="string" alwaysNotify="true" />
+        <field id="followedStreams" type="array" onChange="onFollowedStreamsChange" />
+    </interface>
+
+    <script type="text/brightscript" uri="pkg:/components/FollowedStreamsBar.brs" />
+
+    <children>
+        
+
+    </children>
+
+</component>

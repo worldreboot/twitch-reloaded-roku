@@ -7,10 +7,21 @@ sub init()
     m.liveButton = m.top.findNode("liveButton")
     m.liveLine = m.top.findNode("liveLine")
 
+    m.searchLabel = m.top.findNode("searchLabel")
+    m.loginButton = m.top.findNode("loginButton")
+
+    m.followBar = m.top.findNode("followBar")
     m.browseButtons = m.top.findNode("browseButtons")
+    m.browseMain = m.top.findNode("browseMain")
+
+    m.loggedUserGroup = m.top.findNode("loggedUserGroup")
+    m.profileImage = m.top.findNode("profileImage")
+    m.loggedUserName = m.top.findNode("loggedUserName")
 
     m.browseList.observeField("itemSelected", "onBrowseItemSelect")
     m.browseCategoryList.observeField("itemSelected", "onBrowseItemSelect")
+
+    m.followBar.observeField("streamerSelected", "onBrowseItemSelect")
 
     m.getStreams = createObject("roSGNode", "GetStreams")
     m.getStreams.observeField("searchResults", "onSearchResultChange")
@@ -28,6 +39,8 @@ sub init()
     m.offsetCategory = 0
     m.appendCategory = false
 
+    m.currentButton = 1
+
     m.wasLastScene = false
 
     if m.top.visible = true
@@ -37,9 +50,19 @@ sub init()
     m.browseList.setFocus(true)
 end sub
 
+sub onNewUser()
+    m.loggedUserName.text = m.top.loggedInUserName
+    ? "profile name > ";m.top.loggedInUserName
+    ? "profile image > ";m.top.loggedInUserProfileImage
+    m.profileImage.uri = m.top.loggedInUserProfileImage
+    m.loggedUserGroup.visible = true
+end sub
+
 sub onGetFocus()
     if m.top.visible = true
-        if m.browseCategoryList.visible = true
+        if m.followBar.focused
+            m.followBar.setFocus(true)
+        else if m.browseCategoryList.visible = true
             m.browseCategoryList.setFocus(true)
         else if m.browseList.visible = true
             m.browseList.setFocus(true)
@@ -52,7 +75,10 @@ sub onStreamUrlChange()
 end sub
 
 sub onBrowseItemSelect()
-    if m.browseList.visible = true
+    if m.followBar.hasFocus()
+        m.getStuff.streamerRequested = m.followBar.streamerSelected
+        m.getStuff.control = "RUN"
+    else if m.browseList.visible = true
         m.getStuff.streamerRequested = m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).ShortDescriptionLine1
         m.getStuff.control = "RUN"
         m.wasLastScene = true
@@ -202,43 +228,122 @@ sub onKeyEvent(key, press) as Boolean
         if (m.browseList.hasFocus() = true or m.browseCategoryList.hasFocus() = true) and key = "up"
             if m.categoryLine.visible = true
                 m.liveButton.color = "0xA970FFFF"
+                m.currentButton = 1
             else if m.liveLine.visible = true
                 m.categoryButton.color = "0xA970FFFF"
+                m.currentButton = 0
             end if
             m.browseButtons.setFocus(true)
             handled = true
-        else if m.browseButtons.hasFocus() = true and key = "down"
-            if m.categoryLine.visible = true
-                m.liveButton.color = "0xEFEFF1FF"
-                m.browseCategoryList.setFocus(true)
+        else if m.browseButtons.hasFocus() = true
+            if key = "right"
+                if m.currentButton = 0
+                    m.categoryButton.color = "0xEFEFF1FF"
+                    m.liveButton.color = "0xA970FFFF"
+                    handled = true
+                else if m.currentButton = 1
+                    m.liveButton.color = "0xEFEFF1FF"
+                    m.searchLabel.color = "0xA970FFFF"
+                    handled = true
+                else if m.currentButton = 2
+                    m.searchLabel.color = "0xEFEFF1FF"
+                    m.loginButton.color = "0xA970FFFF"
+                    handled = true
+                end if
+                if m.currentButton < 3
+                    m.currentButton += 1
+                end if
                 handled = true
-            else if m.liveLine.visible = true
-                m.categoryButton.color = "0xEFEFF1FF"
+            else if key = "left"
+                if m.currentButton = 1
+                    m.liveButton.color = "0xEFEFF1FF"
+                    m.categoryButton.color = "0xA970FFFF"
+                    handled = true
+                else if m.currentButton = 2
+                    m.searchLabel.color = "0xEFEFF1FF"
+                    m.liveButton.color = "0xA970FFFF"
+                    handled = true
+                else if m.currentButton = 3
+                    m.searchLabel.color = "0xA970FFFF"
+                    m.loginButton.color = "0xEFEFF1FF"
+                    handled = true
+                end if
+                if m.currentButton > 0
+                    m.currentButton -= 1
+                end if
+                handled = true
+            else if key = "down"
+                m.searchLabel.color = "0xEFEFF1FF"
+                m.loginButton.color = "0xEFEFF1FF"
+                if m.categoryLine.visible = true
+                    m.categoryButton.color = "0xA970FFFF"
+                    m.liveButton.color = "0xEFEFF1FF"
+                    m.browseCategoryList.setFocus(true)
+                    handled = true
+                else if m.liveLine.visible = true
+                    m.liveButton.color = "0xA970FFFF"
+                    m.categoryButton.color = "0xEFEFF1FF"
+                    m.browseList.setFocus(true)
+                    handled = true
+                end if
+            else if key = "OK"
+                if m.currentButton = 2
+                    m.top.buttonPressed = "search"
+                    m.searchLabel.color = "0xEFEFF1FF"
+                    m.liveButton.color = "0xA970FFFF"
+                    handled = true
+                else if m.currentButton = 3
+                    m.top.buttonPressed = "login"
+                    'm.loginButton.color = "0xEFEFF1FF"
+                    handled = true
+                else if m.categoryLine.visible = true
+                    m.searchLabel.color = "0xEFEFF1FF"
+                    m.loginButton.color = "0xEFEFF1FF"
+                    m.liveButton.color = "0xA970FFFF"
+                    m.liveLine.visible = true
+                    m.categoryLine.visible = false
+                    m.categoryButton.color = "0xEFEFF1FF"
+                    m.browseList.setFocus(true)
+                    onHomeLoad()
+                    handled = true
+                else if m.liveLine.visible = true
+                    m.searchLabel.color = "0xEFEFF1FF"
+                    m.loginButton.color = "0xEFEFF1FF"
+                    m.categoryButton.color = "0xA970FFFF"
+                    m.categoryLine.visible = true
+                    m.liveLine.visible = false
+                    m.liveButton.color = "0xEFEFF1FF"
+                    m.browseCategoryList.setFocus(true)
+                    onCategorySelect()
+                    handled = true
+                end if
+            end if 
+        else if (m.browseList.hasFocus() or m.browseCategoryList.hasFocus()) and key = "left"
+            'm.browseButtons.translation = "[200, 0]"
+            'm.browseList.translation = "[300,165]"
+            'm.browseCategoryList.translation = "[300,165]"
+            m.browseMain.translation = "[250, 0]"
+            m.followBar.setFocus(true)
+            m.followBar.focused = true
+            handled = true
+        else if m.followBar.hasFocus() = true and key = "right"
+            'm.browseButtons.translation = "[0, 0]"
+            'm.browseList.translation = "[100,165]"
+            'm.browseCategoryList.translation = "[100,165]"
+            m.browseMain.translation = "[0, 0]"
+            if m.liveLine.visible = true
                 m.browseList.setFocus(true)
-                handled = true
-            end if
-        else if m.browseButtons.hasFocus() = true and key = "OK"
-            if m.categoryLine.visible = true
-                m.liveButton.color = "0xA970FFFF"
-                m.liveLine.visible = true
-                m.categoryLine.visible = false
-                m.categoryButton.color = "0xEFEFF1FF"
-                m.browseList.setFocus(true)
-                onHomeLoad()
-                handled = true
-            else if m.liveLine.visible = true
-                m.categoryButton.color = "0xA970FFFF"
-                m.categoryLine.visible = true
-                m.liveLine.visible = false
-                m.liveButton.color = "0xEFEFF1FF"
+            else if m.categoryLine.visible = true
                 m.browseCategoryList.setFocus(true)
-                onCategorySelect()
-                handled = true
             end if
+            m.followBar.focused = false
+            handled = true
         else if m.browseList.hasFocus() = true and key = "down"
             getMoreChannels()
+            handled = true
         else if m.browseCategoryList.hasFocus() = true and key = "down"
             getMoreCategories()
+            handled = true
         end if
     else if press = false
         if key = "back" and m.wasLastScene = true

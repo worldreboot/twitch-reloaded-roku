@@ -5,67 +5,97 @@
     <interface>
         <field id="streamUrl" type="uri" />
         <field id="categorySelected" type="string" alwaysNotify="true" />
+        <field id="followedStreams" type="array" alias="followBar.followedStreams"/>
+        <field id="followBarFocused" type="bool" alias="followBar.focused"/>
+        <field id="loggedInUserName" type="string" />
+        <field id="loggedInUserProfileImage" type="uri" onChange="onNewUser" />
+        <field id="buttonPressed" type="string" alwaysNotify="true" value="" />
     </interface>
 
     <script type="text/brightscript" uri="pkg:/components/HomeScene.brs" />
 
     <children>
-        <Group id="browseButtons">
-            <SimpleLabel
-                id="categoryButton"
-                translation="[400,50]"
-                text="Categories"
-                color="0xEFEFF1FF"
-                fontSize="32"
-                fontUri="pkg:/fonts/Roobert-SemiBold.ttf" >
-                <Rectangle
-                    id="categoryLine"
-                    visible="false"
+        <Group id="browseMain" translation="[0,0]">
+            <Group id="browseButtons">
+                <SimpleLabel
+                    id="searchHeader"
+                    translation="[100,50]"
+                    text="Browse"
+                    fontSize="48"
+                    fontUri="pkg:/fonts/Roobert-Bold.ttf" />  
+                <SimpleLabel
+                    id="categoryButton"
+                    translation="[300,60]"
+                    text="Categories"
+                    color="0xEFEFF1FF"
+                    fontSize="32"
+                    fontUri="pkg:/fonts/Roobert-SemiBold.ttf" >
+                    <Rectangle
+                        id="categoryLine"
+                        visible="false"
+                        color="0xA970FFFF"
+                        width="175"
+                        height="5"
+                        translation="[0,40]" />
+                </SimpleLabel> 
+                <SimpleLabel
+                    id="liveButton"
+                    translation="[500,60]"
+                    text="Live Channels"
                     color="0xA970FFFF"
-                    width="175"
-                    height="5"
-                    translation="[0,40]" />
-            </SimpleLabel> 
-            <SimpleLabel
-                id="liveButton"
-                translation="[700,50]"
-                text="Live Channels"
-                color="0xA970FFFF"
-                fontSize="32"
-                fontUri="pkg:/fonts/Roobert-SemiBold.ttf" >
-                <Rectangle
-                    id="liveLine"
-                    visible="true"
-                    color="0xA970FFFF"
-                    width="150"
-                    height="5"
-                    translation="[0,40]" />
-            </SimpleLabel> 
+                    fontSize="32"
+                    fontUri="pkg:/fonts/Roobert-SemiBold.ttf" >
+                    <Rectangle
+                        id="liveLine"
+                        visible="true"
+                        color="0xA970FFFF"
+                        width="210"
+                        height="5"
+                        translation="[0,40]" />
+                </SimpleLabel>
+                <SimpleLabel
+                    id="searchLabel"
+                    translation="[755,72]"
+                    text="Search *"
+                    color="0xEFEFF1FF"
+                    fontSize="18"
+                    fontUri="pkg:/fonts/Roobert-Regular.ttf" />
+                <SimpleLabel
+                    id="loginButton"
+                    translation="[865,72]"
+                    text="Login"
+                    color="0xEFEFF1FF"
+                    fontSize="18"
+                    fontUri="pkg:/fonts/Roobert-Regular.ttf" >
+                </SimpleLabel>  
+            </Group>
+            <RowList 
+                id="browseList"
+                itemComponentName="BrowseChannelItem"
+                translation = "[100,165]"
+                numRows = "2"
+                rowItemSize = "[[320,180]]"
+                rowItemSpacing = "[[30,0]]"
+                itemSize = "[1030,275]"
+                rowFocusAnimationStyle = "floatingFocus" />
+            <RowList 
+                id="browseCategoryList"
+                itemComponentName="BrowseCategoryItem"
+                translation = "[100,165]"
+                numRows = "2"
+                rowItemSize = "[[136,190]]"
+                rowItemSpacing = "[[20,0]]"
+                itemSize = "[1080,265]"
+                rowFocusAnimationStyle = "floatingFocus" />
+            <Group id="loggedUserGroup" translation="[975,55]" visible="false">
+                <MaskGroup maskuri = "pkg:/images/profile-mask.png" masksize = "[50,50]" maskOffset = "[0,0]" >
+                    <Poster id="profileImage" width="50" height="50" />
+                </MaskGroup>
+                <SimpleLabel id="loggedUserName" translation="[60,20]" fontSize = "16" fontUri = "pkg:/fonts/Roobert-SemiBold.ttf" />
+            </Group>
         </Group>
-        <SimpleLabel
-            id="searchHeader"
-            translation="[50,50]"
-            text="Browse"
-            fontSize="48"
-            fontUri="pkg:/fonts/Roobert-Bold.ttf" />  
-        <RowList 
-            id="browseList"
-            itemComponentName="BrowseChannelItem"
-            translation = "[100,165]"
-            numRows = "2"
-            rowItemSize = "[[320,180]]"
-            rowItemSpacing = "[[30,0]]"
-            itemSize = "[1030,275]"
-            rowFocusAnimationStyle = "floatingFocus" />
-        <RowList 
-            id="browseCategoryList"
-            itemComponentName="BrowseCategoryItem"
-            translation = "[100,165]"
-            numRows = "2"
-            rowItemSize = "[[136,190]]"
-            rowItemSpacing = "[[20,0]]"
-            itemSize = "[1080,265]"
-            rowFocusAnimationStyle = "floatingFocus" />
+        <FollowedStreamsBar 
+            id="followBar" />
 
     </children>
 

@@ -6,6 +6,8 @@
         <field id="currentCategory" type="string" onChange="onCategoryChange"/>
         <field id="browseList" type="node" alias="browseList" />
         <field id="streamUrl" type="uri" />
+        <field id="clipUrl" type="uri" />
+        <field id="fromClip" type="bool" value="false" />
     </interface>
 
     <script type="text/brightscript" uri="pkg:/components/CategoryScene.brs" />
@@ -15,7 +17,7 @@
         <Group id="browseButtons">
             <SimpleLabel
                 id="liveButton"
-                translation="[400,50]"
+                translation="[400,60]"
                 text="Live Channels"
                 color="0xA970FFFF"
                 fontSize="32"
@@ -24,13 +26,13 @@
                     id="liveLine"
                     visible="true"
                     color="0xA970FFFF"
-                    width="150"
+                    width="210"
                     height="5"
                     translation="[0,40]" />
             </SimpleLabel>
             <SimpleLabel
                 id="clipButton"
-                translation="[700,50]"
+                translation="[700,60]"
                 text="Clips"
                 color="0xEFEFF1FF"
                 fontSize="32"
@@ -39,19 +41,28 @@
                     id="clipLine"
                     visible="false"
                     color="0xA970FFFF"
-                    width="175"
+                    width="80"
                     height="5"
                     translation="[0,40]" />
             </SimpleLabel> 
         </Group>
         <SimpleLabel
             id="searchHeader"
-            translation="[50,50]"
+            translation="[100,50]"
             text="Browse"
             fontSize="48"
             fontUri="pkg:/fonts/Roobert-Bold.ttf" />  
         <RowList 
             id="browseList"
+            itemComponentName="BrowseChannelItem"
+            translation = "[100,165]"
+			numRows = "2"
+			rowItemSize = "[[320,180]]"
+			rowItemSpacing = "[[30,0]]"
+			itemSize = "[1030,275]"
+			rowFocusAnimationStyle = "floatingFocus" />
+        <RowList 
+            id="browseClipsList"
             itemComponentName="BrowseChannelItem"
             translation = "[100,165]"
 			numRows = "2"

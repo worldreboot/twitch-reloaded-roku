@@ -22,8 +22,13 @@
             id="videoPlayer"
             visible="false"
             translation="[0,0]"
-            width="1280"
-            height="720" />
+            width="0.0"
+            height="0.0" />
+
+        <Timer
+            id="testTimer"
+            repeat="true"
+            duration="300" />
 
     </children>
 

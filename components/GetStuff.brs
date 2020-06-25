@@ -23,6 +23,10 @@ function getStreamLink() as Object
     response_string = url.GetToString()
     access_token = ParseJson(response_string)
     
+    if access_token = invalid
+        return ""
+    end if
+
     stream_link = "http://usher.ttvnw.net/api/channel/hls/" + m.top.streamerRequested + ".m3u8?allow_source=true&allow_spectre=true&type=any&token=" + access_token.token + "&sig=" + access_token.sig
 
     url.SetUrl(stream_link.EncodeUri())

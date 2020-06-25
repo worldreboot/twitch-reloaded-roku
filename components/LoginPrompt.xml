@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="LoginPrompt" extends="KeyboardDialog">
+
+    <interface>
+        <field id="enteredUser" type="string" />
+    </interface>
+
+    <script type="text/brightscript" uri="pkg:/components/LoginPrompt.brs" />
+
+    <children>
+
+    </children>
+
+</component>

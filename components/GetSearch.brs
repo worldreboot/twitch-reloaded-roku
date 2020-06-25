@@ -25,12 +25,21 @@ function getSearchResults() as Object
     search = ParseJson(response_string)
     
     result = []
-    if search.channels <> invalid
+    if search <> invalid and search.channels <> invalid
         for each channel in search.channels
             item = {}
             item.id = channel._id
             item.name = channel.name
-            item.logo = channel.logo
+            if channel.logo <> invalid
+                last = Right(channel.logo, 2)
+                if last = "eg"
+                    item.logo = Left(channel.logo, Len(channel.logo) - 12) + "50x50.jpeg"
+                else if last = "pg"
+                    item.logo = Left(channel.logo, Len(channel.logo) - 11) + "50x50.jpg"
+                else
+                    item.logo = Left(channel.logo, Len(channel.logo) - 11) + "50x50.png"
+                end if
+            end if
             result.push(item)
         end for
     end if
