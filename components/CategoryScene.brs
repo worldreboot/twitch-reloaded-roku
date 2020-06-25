@@ -245,11 +245,6 @@ sub onKeyEvent(key, press) as Boolean
 
     if m.top.visible = true and press
         if m.browseList.hasFocus() = true and key = "up"
-            if m.clipLine.visible = true
-                m.liveButton.color = "0xA970FFFF"
-            else if m.liveLine.visible = true
-                m.clipButton.color = "0xA970FFFF"
-            end if
             m.browseButtons.setFocus(true)
             handled = true
         else if m.browseClipsList.hasFocus() = true and key = "up"

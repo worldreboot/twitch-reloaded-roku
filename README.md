@@ -1,7 +1,14 @@
-# Twitch Reloaded (alpha)
+# Twoku (Twitch Reloaded) (alpha)
 An Improvable™ Twitch app for Roku. Still a little buggy, so feel free to suggest improvements (and code and features).
 
+## Discord
+https://discord.gg/kV5SXkZ
+
 ## How to Install
+### With Access Code
+Install with access code: TWOKU (https://my.roku.com/account/add?channel=TWOKU)
+
+### Manual Developer Install
 1. [Enable developer mode for Roku](https://blog.roku.com/developer/developer-setup-guide)
 2. Log into your Roku from your browser using IP from previous step (http://192.168.x.x)
 3. ZIP (into a ZIP file) all contents of this repo (using 7-Zip, WinRAR, etc.)
