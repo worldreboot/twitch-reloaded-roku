@@ -26,11 +26,11 @@ Install with access code: TWOKU (https://my.roku.com/account/add?channel=TWOKU)
 * Search (with buggy auto-complete) (Press * on remote to load Search menu)
 * Viewing followed live streamers
 * Viewing popular clips from the past 7 days for each category
+* Chat
+* VODs (except subscriber-only)
 
 ## Notable Unsupported Features
 * All clip functionality not mentioned
-* Chat
-* VODs
 * Everything else not mentioned
 
 ## Screenshots
