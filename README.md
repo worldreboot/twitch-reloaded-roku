@@ -10,6 +10,7 @@ If you would like to support Twoku:
  [![Support with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YRPQDG5UY26DS&currency_code=CAD&source=url)
 
 ## How to Install
+<em>Note: some features are not on the GitHub version</em>
 ### With Access Code
 Install with access code: TWOKU (https://my.roku.com/account/add?channel=TWOKU)
 
@@ -22,6 +23,7 @@ Install with access code: TWOKU (https://my.roku.com/account/add?channel=TWOKU)
 6. Navigate to channel with black Roku Developers graphic channel in your Roku to use (should be last channel in your channel list)
 
 ## Supported Features
+<em>Note: some features are not on the GitHub version</em>
 * Browsing live channels and categories by viewer count (press down to load more)
 * Search (with buggy auto-complete) (Press * on remote to load Search menu)
 * Viewing followed live streamers
