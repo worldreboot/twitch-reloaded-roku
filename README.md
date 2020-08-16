@@ -10,7 +10,7 @@ If you would like to support Twoku:
  [![Support with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YRPQDG5UY26DS&currency_code=CAD&source=url)
 
 ## How to Install
-<em>Note: some features are not on the GitHub version</em>
+<em>Note: the GitHub version may be outdated and might not work</em>
 ### With Access Code
 Install with access code: TWOKU (https://my.roku.com/account/add?channel=TWOKU)
 
