@@ -10,7 +10,7 @@ If you would like to support Twoku:
  [![Support with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YRPQDG5UY26DS&currency_code=CAD&source=url)
 
 ## Contributing
-If you have an idea (feature, etc.) that you would like to contribute to the project with, DM one of the developers on the Discord with your idea.
+If you have an idea (feature, etc.) that you would like to contribute (with code) to the project with, DM one of the developers on the Discord with your idea. Otherwise, if you just have an idea, post it in the #features channel on Discord.
 
 ## How to Install
 <em>Note: the GitHub version is currently outdated because of some security concerns (use the access code for the updated version)</em>
