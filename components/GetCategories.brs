@@ -16,8 +16,8 @@ function createUrl()
     url.RetainBodyOnError(true)
     url.SetCertificatesFile("common:/certs/ca-bundle.crt")
     url.InitClientCertificates()
-    url.AddHeader("Client-ID", "w9msa6phhl3u8s2jyjcmshrfjczj2y")
-    url.AddHeader("Authorization", "Bearer 4c4wmfffp3td582d17c1e76yveh3cd")
+    url.AddHeader("Client-ID", m.global.CLIENT_ID)
+    url.AddHeader("Authorization", m.global.AUTHORIZATION)
     return url
 end function
 

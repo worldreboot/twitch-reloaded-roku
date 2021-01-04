@@ -2,6 +2,16 @@
 'usher.ttvnw.net/api/channel/hls/${user}.m3u8?allow_source=true&allow_spectre=true&type=any&token=${token}&sig=${sig}
 
 function init()
+    environment_variables = ReadAsciiFile("pkg:/env").Split(Chr(10))
+    for each var in environment_variables
+        var_info = var.Split("=")
+        if var_info[0] = "CLIENT-ID"
+            m.global.addFields({CLIENT_ID: Left(var_info[1], Len(var_info[1]) - 1)})
+        else if var_info[0] = "AUTHORIZATION"
+            m.global.addFields({AUTHORIZATION: var_info[1]})
+        end if
+    end for
+
     m.videoPlayer = m.top.findNode("videoPlayer")
     m.keyboardGroup = m.top.findNode("keyboardGroup")
     m.homeScene = m.top.findNode("homeScene")
