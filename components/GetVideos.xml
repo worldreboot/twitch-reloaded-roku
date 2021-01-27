@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="GetVideos" extends="Task">
+
+    <interface>
+        <field id="offset" type="string" value="0" />
+        <field id="userId" type="string" />
+        <field id="searchResults" type="array" />
+        <field id="pagination" type="string" value="" />
+    </interface>
+    
+    <script type="text/brightscript" uri="pkg:/components/GetVideos.brs" />
+    <script type="text/brightscript" uri="pkg:/components/UrlFunctions.brs" />
+
+</component>

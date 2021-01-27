@@ -13,8 +13,7 @@
         <MaskGroup
             id="itemIcon"
             maskuri="pkg:/images/profile-mask.png"
-            masksize="[50,50]"
-			maskOffset="[0,0]" >
+            maskSize="[50,50]" >
             <Poster 
                 id="image"
                 width="50"

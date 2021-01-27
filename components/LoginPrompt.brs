@@ -8,4 +8,3 @@ sub onKeyEvent(key, press) as Boolean
     handled = false
     return handled
 end sub
-

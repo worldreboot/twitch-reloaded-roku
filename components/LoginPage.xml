@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="LoginPage" extends="Group">
+
+    <interface>
+        <field id="finished" type="bool" />
+    </interface>
+
+    <script type="text/brightscript" uri="pkg:/components/LoginPage.brs" />
+
+    <children>
+        <SimpleLabel
+            translation="[100,72]"
+            text="Go to twoku-web.herokuapp.com and type the following code:"
+            color="0xEFEFF1FF"
+            fontSize="18"
+            fontUri="pkg:/fonts/Roobert-SemiBold.ttf" />
+        <SimpleLabel
+            translation="[300,202]"
+            id="code"
+            text=""
+            color="0xEFEFF1FF"
+            fontSize="36"
+            fontUri="pkg:/fonts/Rajdhani-Bold.ttf" />
+        <SimpleLabel
+            translation="[100,302]"
+            text="Twoku should log you in soon after you authorize your account for use."
+            color="0xEFEFF1FF"
+            fontSize="18"
+            fontUri="pkg:/fonts/Roobert-SemiBold.ttf" />
+    </children>
+
+</component>

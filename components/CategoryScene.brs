@@ -127,8 +127,8 @@ sub onGetFocus()
             m.liveLine.visible = true
             m.liveButton.color = "0xA970FFFF"
         end if
-        m.getStreams.gameRequested = ""
-        m.getStreams.pagination = ""
+        'm.getStreams.gameRequested = ""
+        'm.getStreams.pagination = ""
     end if
 end sub
 
@@ -201,17 +201,21 @@ sub onCategoryChange()
     m.getClips.pagination = ""
     m.getStreams.offset = "0"
     m.getStreams.gameRequested = m.top.currentCategory
+    m.getStreams.pagination = ""
     m.getStreams.control = "RUN"
 end sub
 
 sub onStreamUrlChange()
+    m.top.streamerRequested = m.getStuff.streamerRequested
     m.top.streamUrl = m.getStuff.streamUrl
 end sub
 
 sub onBrowseItemSelect()
     if m.browseList.visible = true
-        m.getStuff.streamerRequested = m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).ShortDescriptionLine1
-        m.getStuff.control = "RUN"
+        'm.getStuff.streamerRequested = m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).ShortDescriptionLine1
+        'm.getStuff.control = "RUN"
+        m.top.streamerSelectedName =  m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).ShortDescriptionLine1
+        m.top.streamerSelectedThumbnail =  m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).HDPosterUrl
         m.wasLastScene = true
     end if
 end sub
@@ -245,6 +249,7 @@ sub onKeyEvent(key, press) as Boolean
 
     if m.top.visible = true and press
         if m.browseList.hasFocus() = true and key = "up"
+            m.clipButton.color = "0xA970FFFF"
             m.browseButtons.setFocus(true)
             handled = true
         else if m.browseClipsList.hasFocus() = true and key = "up"

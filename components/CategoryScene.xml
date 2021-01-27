@@ -3,11 +3,15 @@
 <component name="CategoryScene" extends="Group">
 
     <interface>
-        <field id="currentCategory" type="string" onChange="onCategoryChange"/>
+        <field id="currentCategory" type="string" alwaysNotify="true" onChange="onCategoryChange" />
         <field id="browseList" type="node" alias="browseList" />
         <field id="streamUrl" type="uri" />
-        <field id="clipUrl" type="uri" />
+        <field id="streamerRequested" type="string" />
+        <field id="clipUrl" type="uri" alwaysNotify="true" />
         <field id="fromClip" type="bool" value="false" />
+
+        <field id="streamerSelectedName" type="string" value="" />
+        <field id="streamerSelectedThumbnail" type="string" value="" alwaysNotify="true" />
     </interface>
 
     <script type="text/brightscript" uri="pkg:/components/CategoryScene.brs" />
@@ -60,6 +64,7 @@
 			rowItemSize = "[[320,180]]"
 			rowItemSpacing = "[[30,0]]"
 			itemSize = "[1030,275]"
+            focusBitmapUri="pkg:/images/focusIndicator.9.png"
 			rowFocusAnimationStyle = "floatingFocus" />
         <RowList 
             id="browseClipsList"
@@ -69,6 +74,7 @@
 			rowItemSize = "[[320,180]]"
 			rowItemSpacing = "[[30,0]]"
 			itemSize = "[1030,275]"
+            focusBitmapUri="pkg:/images/focusIndicator.9.png"
 			rowFocusAnimationStyle = "floatingFocus" />
 
     </children>

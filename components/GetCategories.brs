@@ -10,17 +10,6 @@ function onSearchTextChange()
 
 end function
 
-function createUrl()
-    url = CreateObject("roUrlTransfer")
-    url.EnableEncodings(true)
-    url.RetainBodyOnError(true)
-    url.SetCertificatesFile("common:/certs/ca-bundle.crt")
-    url.InitClientCertificates()
-    url.AddHeader("Client-ID", "w9msa6phhl3u8s2jyjcmshrfjczj2y")
-    url.AddHeader("Authorization", "Bearer 4c4wmfffp3td582d17c1e76yveh3cd")
-    return url
-end function
-
 function getSearchResults() as Object
     limit = 24
     if m.top.offset = "0"
@@ -40,6 +29,12 @@ function getSearchResults() as Object
 
     response_string = url.GetToString()
     search = ParseJson(response_string)
+
+    if search.status <> invalid and search.status = 401
+        ? "401"
+        refreshToken()
+        return getSearchResults()
+    end if
 
     result = []
     if search.data <> invalid

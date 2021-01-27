@@ -3,10 +3,11 @@
 <component name="GetStuff" extends="Task">
 
     <interface>
-        <field id="streamerRequested" type="uri" />
+        <field id="streamerRequested" type="string" />
         <field id="streamUrl" type="uri" />
     </interface>
     
     <script type="text/brightscript" uri="pkg:/components/GetStuff.brs" />
+    <script type="text/brightscript" uri="pkg:/components/UrlFunctions.brs" />
 
 </component>

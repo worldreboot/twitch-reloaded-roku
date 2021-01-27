@@ -3,7 +3,7 @@
 
 function init()
     m.keyboard = m.top.findNode("keyboard")
-    m.okButton = m.top.findNode("okButton")
+    'm.okButton = m.top.findNode("okButton")
     m.keyboardGroup = m.top.findNode("keyboardGroup")
     m.browseButtons = m.top.findNode("browseButtons")
     m.searchResultList = m.top.findNode("resultList")
@@ -17,7 +17,7 @@ function init()
     m.searchResultList.observeField("itemSelected", "onSearchItemSelect")
     m.resultCategoryList.observeField("itemSelected", "onSearchItemSelect")
 
-    m.okButton.observeField("buttonSelected", "onOkButtonSelect")
+    'm.okButton.observeField("buttonSelected", "onOkButtonSelect")
 
     m.getSearch = createObject("roSGNode", "GetSearch")
     m.getSearch.observeField("searchResults", "onSearchResultChange")
@@ -44,8 +44,9 @@ end function
 
 function onSearchItemSelect()
     if m.liveLine.visible = true
-        m.getStuff.streamerRequested = m.searchResultList.content.getChild(m.searchResultList.itemSelected).title
-        m.getStuff.control = "RUN"
+        'm.getStuff.streamerRequested = m.searchResultList.content.getChild(m.searchResultList.itemSelected).title
+        'm.getStuff.control = "RUN"
+        m.top.streamerSelectedName = m.searchResultList.content.getChild(m.searchResultList.itemSelected).title
         m.wasLastScene = true
     else if m.categoryLine.visible = true
         m.top.categorySelected = m.resultCategoryList.content.getChild(m.resultCategoryList.itemSelected).categories
@@ -54,6 +55,9 @@ end function
 
 function onSearchTextChange()
     if m.liveLine.visible = true
+        if Right(m.keyboard.text, 1) = " "
+            m.keyboard.text = Left(m.keyboard.text, Len(m.keyboard.text) - 1) + "_"
+        end if
         m.getSearch.searchText = m.keyboard.text
         m.getSearch.control = "RUN"
     else if m.categoryLine.visible = true
@@ -97,25 +101,20 @@ function onSearchResultChange()
 end function
 
 function onStreamUrlChange()
+    m.top.streamerRequested = m.getStuff.streamerRequested
     m.top.streamUrl = m.getStuff.streamUrl
 end function
 
 function onKeyEvent(key, press) as Boolean
     handled = false
 
-    okHasFocus = m.okButton.hasFocus()
+    'okHasFocus = m.okButton.hasFocus()
     searchResultsHasFocus = m.searchResultList.hasFocus()
     searchCategoryResultsHasFocus = m.resultCategoryList.hasFocus()
     browseButtonsHasFocus = m.browseButtons.hasFocus()
 
     if m.top.visible = true and press
-        if key = "down" and okHasFocus = false and browseButtonsHasFocus = false
-            m.okButton.setFocus(true)
-            handled = true
-        else if key = "up" and okHasFocus = true
-            m.keyboard.setFocus(true)
-            handled = true
-        else if key = "right" and searchResultsHasFocus = false and searchCategoryResultsHasFocus = false and browseButtonsHasFocus = false 
+        if key = "right" and searchResultsHasFocus = false and searchCategoryResultsHasFocus = false and browseButtonsHasFocus = false 
             if m.categoryLine.visible = true
                 m.resultCategoryList.setFocus(true)
             else if m.liveLine.visible = true
@@ -125,7 +124,7 @@ function onKeyEvent(key, press) as Boolean
         else if key ="left" and (searchResultsHasFocus = true or searchCategoryResultsHasFocus = true)
             m.keyboard.setFocus(true)
             handled = true
-        else if key = "up" and browseButtonsHasFocus = false and okHasFocus = false
+        else if key = "up" and browseButtonsHasFocus = false
             if m.categoryLine.visible = true
                 m.liveButton.color = "0xA970FFFF"
             else if m.liveLine.visible = true
@@ -164,7 +163,7 @@ function onKeyEvent(key, press) as Boolean
             end if
         end if
     else if press = false
-        if m.wasLastScene = true and m.top.visible = false and key = "back" and okHasFocus = false and m.keyboard.hasFocus() = false
+        if m.wasLastScene = true and m.top.visible = false and key = "back" and m.keyboard.hasFocus() = false
             m.keyboard.setFocus(true)
             m.wasLastScene = false
             handled = true

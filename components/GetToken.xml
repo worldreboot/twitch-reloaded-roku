@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="GetToken" extends="Task">
+
+    <interface>
+        <field id="streamerRequested" type="string" />
+        <field id="appBearerToken" type="string" />
+    </interface>
+    
+    <script type="text/brightscript" uri="pkg:/components/GetToken.brs" />
+
+</component>

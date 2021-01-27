@@ -18,12 +18,26 @@
             id="keyboardGroup"
             visible="false" />
 
-        <Video 
+        <CustomVideo 
             id="videoPlayer"
+            enableUI="false"
+            enableTrickPlay="false"
             visible="false"
             translation="[0,0]"
-            width="0.0"
-            height="0.0" />
+            width="0"
+            height="0" />
+        
+        <!--<ChannelPage
+            id="channelPage"
+            visible="false" /> -->
+        
+        <LoginPage 
+            id="loginPage"
+            visible="false" />
+
+        <Chat 
+           id="chat"
+           visible="false" />
 
         <Timer
             id="testTimer"

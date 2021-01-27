@@ -1,11 +1,15 @@
 title=Twoku
 
 major_version=0
-minor_version=1
-build_version=00001
+minor_version=8
+build_version=00000
 
 mm_icon_focus_hd=pkg:/images/channel-poster_hd.png
 mm_icon_focus_sd=pkg:/images/channel-poster_sd.png
 
-splash_screen_hd=pkg:/images/splash-screen_hd.png
-splash_screen_sd=pkg:/images/splash-screen_sd.png
+splash_screen_hd=pkg:/images/splash-screen_hd.jpg
+splash_screen_sd=pkg:/images/splash-screen_sd.jpg
+
+supports_input_launch=1
+
+ui_resolutions=hd

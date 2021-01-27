@@ -3,6 +3,7 @@
 function init()
     m.gameNames = CreateObject("roAssociativeArray")
     m.userProfiles = CreateObject("roAssociativeArray")
+    m.userLogins = CreateObject("roAssociativeArray")
     m.top.functionName = "onSearchTextChange"
 end function
 
@@ -10,17 +11,6 @@ function onSearchTextChange()
 
     m.top.searchResults = getSearchResults()
 
-end function
-
-function createUrl()
-    url = CreateObject("roUrlTransfer")
-    url.EnableEncodings(true)
-    url.RetainBodyOnError(true)
-    url.SetCertificatesFile("common:/certs/ca-bundle.crt")
-    url.InitClientCertificates()
-    url.AddHeader("Client-ID", "w9msa6phhl3u8s2jyjcmshrfjczj2y")
-    url.AddHeader("Authorization", "Bearer 4c4wmfffp3td582d17c1e76yveh3cd")
-    return url
 end function
 
 function getGameNameFromId(link)
@@ -51,6 +41,7 @@ function getProfilePicture(link)
         return ""
     end if
     for each profile in search.data
+        m.userLogins[profile.id] = profile.login
         'uri = search.data[0].profile_image_url
         uri = profile.profile_image_url
         '? "uri? "; uri
@@ -65,6 +56,29 @@ function getProfilePicture(link)
     end for
 end function
 
+function convertToTimeFormat(timestamp as String) as String
+    secondsSincePublished = createObject("roDateTime")
+    secondsSincePublished.FromISO8601String(timestamp)
+    currentTime = createObject("roDateTime").AsSeconds()
+    elapsedTime = currentTime - secondsSincePublished.AsSeconds()
+    hours = Int(elapsedTime / 60 / 60)
+    mins = elapsedTime / 60 MOD 60
+    secs = elapsedTime MOD 60
+    if mins < 10
+        mins = mins.ToStr()
+        mins = "0" + mins
+    else
+        mins = mins.ToStr()
+    end if
+    if secs < 10
+        secs = secs.ToStr()
+        secs = "0" + secs
+    else
+        secs = secs.ToStr()
+    end if
+    return hours.ToStr() + ":" + mins + ":" + secs
+end function
+
 function getSearchResults() as Object
     'search_results_url = "https://api.twitch.tv/kraken/streams?client_id=jzkbprff40iqj646a697cyrvl0zt2m6&limit=24&offset=" + m.top.offset + "&game="
     search_results_url = "https://api.twitch.tv/helix/users?login=" + m.top.loginRequested
@@ -75,6 +89,13 @@ function getSearchResults() as Object
 
     response_string = url.GetToString()
     search = ParseJson(response_string)
+
+    if search.status <> invalid and search.status = 401
+        ? "401"
+        refreshToken()
+        return getSearchResults()
+    end if
+
     result = {}
     if search <> invalid and search.data <> invalid
         for each stream in search.data
@@ -101,6 +122,7 @@ function getSearchResults() as Object
     url2.SetUrl(user_follows_url.EncodeUri())
     response_string = url2.GetToString()
     search = ParseJson(response_string)
+    live_streamer_ids = {}
     if search <> invalid and search.data <> invalid
         result.followed_users = []
         total = search.total
@@ -135,11 +157,16 @@ function getSearchResults() as Object
                 response_string = url2.GetToString()
                 search = ParseJson(response_string)
             end if
+            actually_added_followed_user = false
             actually_streaming_url = "https://api.twitch.tv/helix/streams?first=100"
             for each followed_user in search.data
                 actually_streaming_url += "&user_id=" + followed_user.to_id
+                actually_added_followed_user = true
                 current += 1
             end for
+
+            if not actually_added_followed_user then exit while
+
             url3 = createUrl()
             url3.SetUrl(actually_streaming_url.EncodeUri())
             response_string = url3.GetToString()
@@ -149,6 +176,10 @@ function getSearchResults() as Object
                 item.user_name = streamer.user_name
                 item.viewer_count = streamer.viewer_count
                 item.game_id = streamer.game_id
+                item.title = streamer.title
+                item.thumbnail = Left(streamer.thumbnail_url, Len(streamer.thumbnail_url) - 20) + "320x180.jpg"
+                item.live_duration = convertToTimeFormat(streamer.started_at)
+                live_streamer_ids[streamer.user_id.ToStr()] = true
                 if addedGameIds = 0
                     game_ids_url += "?id=" + streamer.game_id.ToStr()
                     addedGameIds += 1
@@ -185,10 +216,14 @@ function getSearchResults() as Object
 
     for each streamer in result.followed_users
         streamer.game_id = m.gameNames[streamer.game_id]
+        streamer.login = m.userLogins[streamer.profile_image_url]
         streamer.profile_image_url = m.userProfiles[streamer.profile_image_url]
     end for
 
     result.followed_users.SortBy("viewer_count", "r")
+
+    m.top.currentlyLiveStreamerIds = live_streamer_ids
+    '? "currentlyLiveStreamerIds getuser " m.top.currentlyLiveStreamerIds
 
     return result
 end function

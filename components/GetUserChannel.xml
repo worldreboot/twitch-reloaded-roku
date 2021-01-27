@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="GetUserChannel" extends="Task">
+
+    <interface>
+        <field id="loginRequested" type="string" />
+        <field id="searchResults" type="assocarray" />
+    </interface>
+    
+    <script type="text/brightscript" uri="pkg:/components/GetUserChannel.brs" />
+    <script type="text/brightscript" uri="pkg:/components/UrlFunctions.brs" />
+
+</component>

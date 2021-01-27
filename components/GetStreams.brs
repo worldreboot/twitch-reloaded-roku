@@ -2,6 +2,7 @@
 
 function init()
     m.gameNames = CreateObject("roAssociativeArray")
+    m.loginNames = CreateObject("roAssociativeArray")
     m.top.functionName = "onSearchTextChange"
 end function
 
@@ -11,15 +12,16 @@ function onSearchTextChange()
 
 end function
 
-function createUrl()
-    url = CreateObject("roUrlTransfer")
-    url.EnableEncodings(true)
-    url.RetainBodyOnError(true)
-    url.SetCertificatesFile("common:/certs/ca-bundle.crt")
-    url.InitClientCertificates()
-    url.AddHeader("Client-ID", "w9msa6phhl3u8s2jyjcmshrfjczj2y")
-    url.AddHeader("Authorization", "Bearer 4c4wmfffp3td582d17c1e76yveh3cd")
-    return url
+function getLoginFromId(user_ids_url)
+    url = createUrl()
+    url.SetUrl(user_ids_url.EncodeUri())
+    response_string = url.GetToString()
+    search = ParseJson(response_string)
+    if search.data <> invalid
+        for each user in search.data
+            m.loginNames[user.id] = user.login
+        end for
+    end if
 end function
 
 function getGameNameFromId(game_ids_url)
@@ -32,19 +34,6 @@ function getGameNameFromId(game_ids_url)
             m.gameNames[game.id] = game.name
         end for
     end if
-end function
-
-function getEnglishDisplayName(id)
-    url = createUrl()
-    search_results_url = "https://api.twitch.tv/helix/users?id=" + id
-    url.SetUrl(search_results_url.EncodeUri())
-    response_string = url.GetToString()
-    search = ParseJson(response_string)
-    name = ""
-    if search.data[0] <> invalid
-        name = search.data[0].login
-    end if
-    return name
 end function
 
 function getSearchResults() as Object
@@ -67,29 +56,29 @@ function getSearchResults() as Object
 
     response_string = url.GetToString()
     search = ParseJson(response_string)
+
+    if search.status <> invalid and search.status = 401
+        ? "401"
+        refreshToken()
+        return getSearchResults()
+    end if
+
     game_ids_url = "https://api.twitch.tv/helix/games?id="
+    user_ids_url = "https://api.twitch.tv/helix/users?id="
     first = true
     result = []
     if search <> invalid and search.data <> invalid
         for each stream in search.data
             item = {}
             item.id = stream.user_id
-            if Asc(stream.user_name) >= 144
-                item.display_name = getEnglishDisplayName(stream.user_id)
-            else
-                item.display_name = stream.user_name
-            end if
+            item.display_name = stream.user_name
             item.game_id = stream.game_id
-            item.name = LCase(item.display_name)
-            'if m.gameNames.DoesExist(stream.game_id.ToStr())
-                'item.game = m.gameNames[stream.game_id.ToStr()]
-            'else
-                'item.game = getGameNameFromId(stream.game_id)
-            'end if
             if first = false
                 game_ids_url += "&id=" + stream.game_id
+                user_ids_url += "&id=" + stream.user_id
             else
                 game_ids_url += stream.game_id
+                user_ids_url += stream.user_id
             end if
             item.title = stream.title
             item.viewers = stream.viewer_count
@@ -98,8 +87,11 @@ function getSearchResults() as Object
             first = false
         end for
         getGameNameFromId(game_ids_url)
+        getLoginFromId(user_ids_url)
         for each stream in result
             stream.game = m.gameNames[stream.game_id]
+            '? "login > "; m.loginNames[stream.id]
+            stream.name = m.loginNames[stream.id]
         end for
     end if
 

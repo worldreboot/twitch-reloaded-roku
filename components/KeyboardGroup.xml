@@ -4,8 +4,11 @@
 
     <interface>
         <field id="streamUrl" type="uri" />
+        <field id="streamerSelectedName" type="string" alwaysNotify="true" />
+
+        <field id="streamerRequested" type="string" />
         <field id="categorySelected" type="string" alwaysNotify="true" />
-        <field id="searchText" type="string" alias="keyboard.text" onChange="onSearchTextChange" />
+        <field id="searchText" type="string" alias="keyboard.text" alwaysNotify="true" onChange="onSearchTextChange" />
     </interface>
 
     <script type="text/brightscript" uri="pkg:/components/KeyboardGroup.brs" />
@@ -53,10 +56,6 @@
         <MiniKeyboard 
             id="keyboard"
             translation="[50,130]" />
-        <Button
-            id="okButton"
-            text="Search"
-            translation="[50,600]" />
         <MarkupList 
             id="resultList"
             itemComponentName="SearchResultItem"

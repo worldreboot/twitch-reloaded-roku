@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="ChatTest" extends="Task">
+
+    <interface>
+        <field id="channel" type="string" />
+        <field id="readyForNextComment" type="bool" value="true" />
+        <field id="nextComment" type="string" />
+    </interface>
+    
+    <script type="text/brightscript" uri="pkg:/components/ChatTest.brs" />
+    <script type="text/brightscript" uri="pkg:/components/UrlFunctions.brs" />
+
+</component>

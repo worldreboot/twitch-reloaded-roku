@@ -5,8 +5,10 @@
     <interface>
         <field id="loginRequested" type="string" />
         <field id="searchResults" type="assocarray" />
+        <field id="currentlyLiveStreamerIds" type="assocarray" />
     </interface>
     
     <script type="text/brightscript" uri="pkg:/components/GetUser.brs" />
+    <script type="text/brightscript" uri="pkg:/components/UrlFunctions.brs" />
 
 </component>

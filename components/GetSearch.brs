@@ -23,7 +23,7 @@ function getSearchResults() as Object
 
     response_string = url.GetToString()
     search = ParseJson(response_string)
-    
+
     result = []
     if search <> invalid and search.channels <> invalid
         for each channel in search.channels
