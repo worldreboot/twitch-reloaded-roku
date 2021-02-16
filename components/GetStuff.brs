@@ -38,7 +38,7 @@ function getStreamLink() as Object
 
     rsp = url.GetToString()
 
-    ? rsp
+    '? rsp
 
     list = rsp.Split(chr(10))
 
@@ -96,7 +96,7 @@ function getStreamLink() as Object
     end if
 
     '? "GetStuff >> token > "; access_token.token
-    ? "GetStuff >> link > "; link
+    '? "GetStuff >> link > "; link
 
     return link
 end function

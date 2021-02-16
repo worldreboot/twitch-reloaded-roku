@@ -42,6 +42,15 @@ function init()
     getInfo = createObject("RoSGNode", "GetInfo")
     getInfo.control = "RUN"
 
+    'pubSub = createObject("RoSGNode", "PubSub")
+    'pubSub.control = "RUN"
+
+    ' m.ws = createObject("roSGNode", "WebSocketClient")
+    ' m.ws.observeField("on_open", "on_open")
+    ' m.ws.observeField("on_message", "on_message")
+    ' m.ws.open = "wss://pubsub-edge.twitch.tv/"
+    ' 'm.ws.open = "ws://echo.websocket.org/"
+
     m.stream = createObject("RoSGNode", "ContentNode")
     m.stream["streamFormat"] = "hls"
 
@@ -65,6 +74,9 @@ function init()
         setReset("true")
     end if
     
+    ' registry = CreateObject("roRegistry")
+    ' registry.Delete("LoggedInUserData")
+    ' registry.Delete("VideoSettings")
 
     loggedInUser = checkIfLoggedIn()
     if loggedInUser <> invalid
@@ -114,6 +126,7 @@ function init()
     ? "MainScene >> registry space > " createObject("roRegistry").GetSpaceAvailable()
 
     m.chat = m.top.findNode("chat")
+    m.chat.observeField("doneFocus", "onChatDoneFocus")
 
     m.options = createObject("roSGNode", "Options")
     m.options.visible = false
@@ -122,6 +135,20 @@ function init()
 
     m.homeScene.setFocus(true)
 end function
+
+sub onChatDoneFocus()
+    if m.chat.doneFocus
+        m.videoPlayer.setFocus(true)
+        m.chat.doneFocus = false
+    end if
+end sub
+' function on_open(event as object) as void
+'     m.ws.send = ["Hello World"]
+' end function
+
+' function on_message(event as object) as void
+'     print event.getData().message
+' end function
 
 sub onLoginFinish()
     if m.loginPage.finished = true
@@ -147,6 +174,7 @@ sub onStreamChangeFromChannelPage()
     m.stream["streamFormat"] = "hls"
     m.stream["url"] = m.homeScene.videoUrl
     m.chat.visible = false
+    m.videoPlayer.chatIsVisible = m.chat.visible
 
     m.videoPlayer.videoTitle =  m.homeScene.videoTitle
     m.videoPlayer.channelUsername =  m.homeScene.channelUsername
@@ -291,6 +319,7 @@ end function
 function onUserLogin()
     m.homeScene.loggedInUserName = m.getUser.searchResults.display_name
     m.homeScene.loggedInUserProfileImage = m.getUser.searchResults.profile_image_url
+    m.chat.loggedInUsername = m.getUser.searchResults.login
     m.homeScene.followedStreams = m.getUser.searchResults.followed_users
     m.homeScene.currentlyLiveStreamerIds = m.getUser.currentlyLiveStreamerIds
     '? "currentlyLiveStreamerIds mainscene " m.getUser.currentlyLiveStreamerIds
@@ -344,6 +373,7 @@ function onStreamChange()
         m.videoPlayer.videoTitle =  m.homeScene.videoTitle
         m.videoPlayer.channelUsername =  m.homeScene.channelUsername
         m.videoPlayer.channelAvatar =  m.homeScene.channelAvatar
+        m.videoPlayer.streamDurationSeconds =  m.homeScene.streamDurationSeconds
         m.stream["url"] = m.homeScene.streamUrl
     else if m.categoryScene.visible
         m.currentScene = "category"
@@ -356,6 +386,7 @@ function onStreamChange()
     '     m.stream["url"] = m.channelPage.streamUrl
     end if
     m.chat.visible = m.global.chatOption
+    m.videoPlayer.chatIsVisible = m.chat.visible
     if not m.global.chatOption
         m.videoPlayer.width = 0
         m.videoPlayer.height = 0
@@ -393,7 +424,6 @@ sub onVideoPlayerBack()
         m.videoPlayer.visible = false
         m.keyboardGroup.visible = false
         if m.currentScene = "home"
-            ? "current scene: home"
             m.homeScene.visible = false
             m.homeScene.visible = true
             m.homeScene.setFocus(true)
@@ -411,6 +441,7 @@ sub onVideoPlayerBack()
             'm.channelPage.setFocus(true)
         end if
         m.chat.visible = false
+        m.videoPlayer.chatIsVisible = m.chat.visible
         m.videoPlayer.back = false
     end if
 end sub
@@ -418,6 +449,7 @@ end sub
 sub onToggleChat()
     if m.videoPlayer.toggleChat = true
         m.chat.visible = not m.chat.visible
+        m.videoPlayer.chatIsVisible = m.chat.visible
         m.videoPlayer.toggleChat = false
     end if
 end sub
@@ -429,8 +461,8 @@ function onKeyEvent(key, press) as Boolean
             m.videoPlayer.back = true
             handled = true
         else if m.videoPlayer.visible = true and key = "rewind"
-            m.chat.visible = not m.chat.visible
-            handled = true
+            'm.chat.visible = not m.chat.visible
+            'handled = true
         else if m.homeScene.visible = true and key = "options"
             m.homeScene.visible = false
             m.keyboardGroup.visible = true
@@ -444,53 +476,50 @@ function onKeyEvent(key, press) as Boolean
             handled = true
         'else if (m.keyboardGroup.visible or m.categoryScene.visible or m.channelPage.visible) and key = "back"
         else if (m.keyboardGroup.visible or m.categoryScene.visible) and key = "back"
-            ? "CATEGORY"
             m.categoryScene.visible = false
             m.keyboardGroup.visible = false
             m.options.visible = false
             'm.channelPage.visible = false
             m.homeScene.visible = false
             if m.lastScene = "home"
-                ? "here?"
                 m.homeScene.visible = false
                 m.homeScene.visible = true
                 m.homeScene.setFocus(true)
             else if m.lastScene = "category"
-                ? "1"
                 m.lastScene = m.lastLastScene
                 m.lastLastScene = "home"
                 m.categoryScene.visible = true
                 'm.categoryScene.fromClip = false
                 m.categoryScene.setFocus(true)
             else if m.lastScene = "search"
-                ? "2"
                 m.lastScene = m.lastLastScene
                 m.lastLastScene = "home"
                 m.keyboardGroup.visible = true
             else
-                ? "3"
                 m.homeScene.visible = false
                 m.homeScene.visible = true
                 m.homeScene.setFocus(true)
             end if
             handled = true
         else if m.homeScene.visible and key = "back"
-            ? "MAINSCENE"
             if m.homeScene.lastScene = "category"
                 m.homeScene.visible = false
                 m.categoryScene.visible = true
                 m.lastScene = m.lastLastScene
                 m.lastLastScene = "home"
                 'm.categoryScene.setFocus(true)
+                handled = true
             end if
-            handled = true
+            'handled = true
         else if m.loginPage.visible and key = "back"
-            ? "MainScene >> back from login page"
             m.loginPage.visible = false
             m.homeScene.visible = false
             m.homeScene.visible = true
             m.homeScene.setFocus(true)
             return true
+        else if key = "OK" and m.videoPlayer.visible
+            m.chat.setKeyboardFocus = true
+            handled = true
         end if
     end if
 

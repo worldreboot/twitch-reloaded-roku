@@ -1,6 +1,7 @@
 'api.twitch.tv/kraken/search/channels?query=${search_text}&limit=5&client_id=jzkbprff40iqj646a697cyrvl0zt2m6
 
 function init()
+    'm.DURATION_REGEX = createObject("roRegex", "h|m|s", "")
     m.top.functionName = "onSearchTextChange"
 end function
 
@@ -76,6 +77,31 @@ function numberToText(number) as Object
     return result + " views"
 end function
 
+function convertDurationFormat(org_duration as String) as String
+    new_duration = ""
+    DURATION_REGEX = createObject("roRegex", "h|m|s", "")
+    
+    values = DURATION_REGEX.Split(org_duration)
+    values_length = values.Count()
+
+
+    for number = 0 to values_length - 1
+        if values[number].Len() = 1 and not (number = 0 and values_length = 3)
+            values[number] = "0" + values[number]
+        end if
+    end for
+
+    if values_length = 3
+        new_duration = values[0] + ":" + values[1] + ":" + values[2]
+    else if values_length = 2
+        new_duration = values[0] + ":" + values[1]
+    else if values_length = 1
+        new_duration = "0" + ":" + values[0]
+    end if
+
+    return new_duration
+end function
+
 function getSearchResults() as Object
     search_results_url = "https://api.twitch.tv/helix/videos?user_id=" + m.top.userId
 
@@ -104,7 +130,7 @@ function getSearchResults() as Object
             item = {}
             item.id = video.id
             item.user_name = video.user_name
-            item.duration = video.duration
+            item.duration = convertDurationFormat(video.duration)
             item.title = video.title
             item.published_at = getRelativeTimePublished(video.published_at)
             item.viewer_count = numberToText(video.view_count)

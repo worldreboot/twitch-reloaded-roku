@@ -10,7 +10,8 @@ function init()
     m.controlButton = m.top.findNode("controlButton")
     m.timeTravelButton = m.top.findNode("timeTravelButton")
     m.messagesButton = m.top.findNode("messagesButton")
-    m.backButton = m.top.findNode("backButton")
+    m.glow = m.top.findNode("bg-glow")
+    'm.backButton = m.top.findNode("backButton")
     m.timeTravelRect = m.top.findNode("timeTravelRect")
     m.top.observeField("position", "onVideoPositionChange")
     m.currentProgressBarState = 0
@@ -45,6 +46,7 @@ function init()
     m.loadingIndicator = m.top.findNode("loadingIndicator")
     m.top.observeField("state", "onvideoStateChange")
     m.top.observeField("channelAvatar", "onChannelAvatarChange")
+    m.top.observeField("chatIsVisible", "onChatVisibilityChange")
 
     m.uiResolutionWidth = createObject("roDeviceInfo").GetUIResolution().width
     if m.uiResolutionWidth = 1920
@@ -70,6 +72,26 @@ function init()
     m.scrollInterval = 10
 end function
 
+sub onChatVisibilityChange()
+    if m.top.chatIsVisible
+        m.progressBarBase.width = 816
+        'm.progressBarProgress.width = 810
+        m.glow.translation = [534, 32]
+        m.timeTravelButton.translation = [390, 51]
+        m.controlButton.translation = [476, 53]
+        m.messagesButton.translation = [552, 52]
+        m.timeDuration.translation = [814, 61]
+    else
+        m.progressBarBase.width = 1200
+        'm.progressBarProgress.width = 1200
+        m.glow.translation = [692, 32]
+        m.timeTravelButton.translation = [548, 51]
+        m.controlButton.translation = [634, 53]
+        m.messagesButton.translation = [710, 52]
+        m.timeDuration.translation = [1198, 61]
+    end if
+end sub
+
 sub onVideoStateChange()
     if m.top.state = "buffering"
         m.loadingIndicator.control = "start"
@@ -82,8 +104,8 @@ sub onButtonHold()
     if m.buttonHeld <> invalid and m.top.thumbnailInfo <> invalid
         if m.buttonHeld = "right"
             m.currentPositionSeconds += m.scrollInterval
-            m.progressBarProgress.width = 1120 * (m.currentPositionSeconds / m.top.duration)
-            m.progressDot.translation = [1120 * (m.currentPositionSeconds / m.top.duration) + 68, 62]
+            m.progressBarProgress.width = m.progressBarBase.width * (m.currentPositionSeconds / m.top.duration)
+            m.progressDot.translation = [m.progressBarBase.width * (m.currentPositionSeconds / m.top.duration) + 33, 77]
             if m.currentPositionSeconds > m.top.duration
                 m.currentPositionSeconds = m.top.duration
             end if
@@ -100,8 +122,8 @@ sub onButtonHold()
             end if
         else if m.buttonHeld = "left"
             m.currentPositionSeconds -= m.scrollInterval
-            m.progressBarProgress.width = 1120 * (m.currentPositionSeconds / m.top.duration)
-            m.progressDot.translation = [1120 * (m.currentPositionSeconds / m.top.duration) + 68, 62]
+            m.progressBarProgress.width = m.progressBarBase.width * (m.currentPositionSeconds / m.top.duration)
+            m.progressDot.translation = [m.progressBarBase.width * (m.currentPositionSeconds / m.top.duration) + 33, 77]
             if m.currentPositionSeconds < 0
                 m.currentPositionSeconds = 0
             end if
@@ -128,7 +150,7 @@ sub onButtonHold()
 end sub
 
 function convertToReadableTimeFormat(time) as String
-    time = Int(time)
+    time = Int(time) '+ m.top.streamDurationSeconds
     if time < 3600
         seconds = Int((time MOD 60))
         if seconds < 10
@@ -157,8 +179,8 @@ end function
 
 sub onVideoPositionChange()
     if m.top.duration > 0
-        m.progressBarProgress.width = 1120 * (m.top.position / m.top.duration)
-        m.progressDot.translation = [1120 * (m.top.position / m.top.duration) + 68, 62]
+        m.progressBarProgress.width = m.progressBarBase.width * (m.top.position / m.top.duration)
+        m.progressDot.translation = [m.progressBarBase.width * (m.top.position / m.top.duration) + 33, 77]
         m.timeProgress.text = convertToReadableTimeFormat(m.top.position)
         m.timeDuration.text = convertToReadableTimeFormat(m.top.duration)
     end if
@@ -181,6 +203,7 @@ sub showThumbnail()
         if m.top.thumbnailInfo.info_url <> invalid and m.top.thumbnailInfo.thumbnail_parts[Int(thumbnailPosOverall / thumbnailsPerPart)] <> invalid 
             m.thumbnailImage.uri = m.top.thumbnailInfo.info_url + m.top.thumbnailInfo.thumbnail_parts[Int(thumbnailPosOverall / thumbnailsPerPart)]
         end if
+        m.thumbnailImage.visible = true
     end if
 end sub
 
@@ -253,21 +276,25 @@ sub onChannelAvatarChange()
 end sub
 
 function onKeyEvent(key, press) as Boolean
+    handled = false
     if press
         if key = "up"
             if m.currentProgressBarState = 0
                 m.currentProgressBarState = 1
                 m.progressBar.visible = true
+                w = m.controlButton.width
+                h = m.controlButton.height
+                m.glow.translation = [m.controlButton.translation[0] - 30 + w / 2, m.controlButton.translation[1] - 30 + h / 2]
                 m.controlButton.blendColor = "0xBD00FFFF"
                 'm.controlSelectRect.visible = true
             else if m.currentProgressBarState = 1
-                m.currentProgressBarState = 5
-                m.progressBarBase.height = 2
-                m.progressBarProgress.height = 2
-                m.controlButton.blendColor = "0xFFFFFFFF"
-                m.backButton.blendColor = "0xBD00FFFF"
-                'm.controlSelectRect.visible = false
-                m.thumbnailImage.visible = true
+                ' m.currentProgressBarState = 5
+                ' m.progressBarBase.height = 2
+                ' m.progressBarProgress.height = 2
+                ' m.controlButton.blendColor = "0xFFFFFFFF"
+                ' m.backButton.blendColor = "0xBD00FFFF"
+                ' 'm.controlSelectRect.visible = false
+                ' m.thumbnailImage.visible = true
             else if m.currentProgressBarState = 2
                 m.currentProgressBarState = 0
                 m.progressBarBase.height = 2
@@ -275,9 +302,9 @@ function onKeyEvent(key, press) as Boolean
                 m.progressBar.visible = false
                 m.thumbnailImage.visible = false
             else if m.currentProgressBarState = 3
-                m.currentProgressBarState = 4
-                m.timeTravelButton.blendColor = "0xFFFFFFFF"
-                m.messagesButton.blendColor = "0xBD00FFFF"
+                ' m.currentProgressBarState = 4
+                ' m.timeTravelButton.blendColor = "0xFFFFFFFF"
+                ' m.messagesButton.blendColor = "0xBD00FFFF"
             else if m.currentProgressBarState = 6
                 number = (Int(Val(m.timeTravelTimeSlot[ m.focusedTimeSlot ].getChild(0).text)) + 1)
                 if m.focusedTimeSlot = 2 or m.focusedTimeSlot = 4
@@ -290,50 +317,21 @@ function onKeyEvent(key, press) as Boolean
             return true
         else if key = "right"
             if m.currentProgressBarState = 1
-                m.currentProgressBarState = 2
-                m.controlButton.blendColor = "0xFFFFFFFF"
-                'm.timeTravelButton.blendColor = "0xBD00FFFF"
-            else if m.currentProgressBarState = 2
-                if m.progressBarFocused
-                    if m.currentPositionUpdated = false
-                        m.currentPositionSeconds = m.top.position
-                        m.currentPositionUpdated = true
-                        m.top.control = "pause"
-                        m.controlButton.uri = "pkg:/images/play.png"
-                    end if
-                    m.currentPositionSeconds += 10
-                    if m.currentPositionSeconds > m.top.duration
-                        m.currentPositionSeconds = m.top.duration
-                    end if
-                    m.progressBarProgress.width = 1120 * (m.currentPositionSeconds / m.top.duration)
-                    m.progressDot.translation = [1120 * (m.currentPositionSeconds / m.top.duration) + 68, 62]
-                    if m.top.thumbnailInfo <> invalid and m.top.thumbnailInfo.width <> invalid
-                        if m.progressBarProgress.width + m.top.thumbnailInfo.width / 2 <= m.progressBarBase.width
-                            if m.progressBarProgress.width - m.top.thumbnailInfo.width / 2 >= 0
-                                m.thumbnails.translation = [m.progressBarProgress.width - m.top.thumbnailInfo.width / 2, -150]
-                            else
-                                m.thumbnails.translation = [0, -150]
-                            end if
-                        else
-                            m.thumbnails.translation = [m.progressBarBase.width - m.top.thumbnailInfo.width, -150]
-                        end if
-    
-                        m.timeProgress.text = convertToReadableTimeFormat(m.currentPositionSeconds)
-                        m.timeDuration.text = convertToReadableTimeFormat(m.top.duration)
-                        if m.top.thumbnailInfo.width <> invalid
-                            showThumbnail()
-                        end if
-                    end if
-                    m.buttonHeld = "right"
-                    m.buttonHoldTimer.control = "start"
-                else
-                    m.currentProgressBarState = 3
-                    m.timeTravelButton.blendColor = "0xBD00FFFF"
-                end if
-            else if m.currentProgressBarState = 5
                 m.currentProgressBarState = 4
-                m.backButton.blendColor = "0xFFFFFFFF"
+                m.controlButton.blendColor = "0xFFFFFFFF"
+                w = m.messagesButton.width
+                h = m.messagesButton.height
+                m.glow.translation = [m.messagesButton.translation[0] - 30 + w / 2, m.messagesButton.translation[1] - 30 + h / 2]
                 m.messagesButton.blendColor = "0xBD00FFFF"
+            else if m.currentProgressBarState = 2
+                
+            else if m.currentProgressBarState = 3
+                m.currentProgressBarState = 1
+                m.timeTravelButton.blendColor = "0xFFFFFFFF"
+                w = m.controlButton.width
+                h = m.controlButton.height
+                m.glow.translation = [m.controlButton.translation[0] - 30 + w / 2, m.controlButton.translation[1] - 30 + h / 2]
+                m.controlButton.blendColor = "0xBD00FFFF"
             else if m.currentProgressBarState = 6
                 if m.focusedTimeSlot <> -1 and m.focusedTimeSlot + 1 <= 5
                     m.timeTravelTimeSlot[ m.focusedTimeSlot ].uri = "pkg:/images/unfocusedTimeSlot.png"
@@ -359,8 +357,8 @@ function onKeyEvent(key, press) as Boolean
                 if m.currentPositionSeconds > m.top.duration
                     m.currentPositionSeconds = m.top.duration
                 end if
-                m.progressBarProgress.width = 1120 * (m.currentPositionSeconds / m.top.duration)
-                m.progressDot.translation = [1120 * (m.currentPositionSeconds / m.top.duration) + 68, 62]
+                m.progressBarProgress.width = m.progressBarBase.width * (m.currentPositionSeconds / m.top.duration)
+                m.progressDot.translation = [m.progressBarBase.width * (m.currentPositionSeconds / m.top.duration) + 33, 77]
                 if m.top.thumbnailInfo <> invalid and m.top.thumbnailInfo.width <> invalid
                     if m.progressBarProgress.width + m.top.thumbnailInfo.width / 2 <= m.progressBarBase.width
                         if m.progressBarProgress.width - m.top.thumbnailInfo.width / 2 >= 0
@@ -384,53 +382,21 @@ function onKeyEvent(key, press) as Boolean
             return true
         else if key = "left"
             if m.currentProgressBarState = 2
-                if m.progressBarFocused
-                    if m.currentPositionUpdated = false
-                        m.currentPositionSeconds = m.top.position
-                        m.currentPositionUpdated = true
-                        m.top.control = "pause"
-                        m.controlButton.uri = "pkg:/images/play.png"
-                    end if
-                    m.currentPositionSeconds -= 10
-                    if m.currentPositionSeconds < 0
-                        m.currentPositionSeconds = 0
-                    end if
-                    if m.top.thumbnailInfo <> invalid and m.top.thumbnailInfo.width <> invalid
-                        if m.progressBarProgress.width - m.top.thumbnailInfo.width / 2 >= 0
-                            if m.progressBarProgress.width + m.top.thumbnailInfo.width / 2 <= m.progressBarBase.width
-                                m.thumbnails.translation = [m.progressBarProgress.width - m.top.thumbnailInfo.width / 2, -150]
-                            else
-                                m.thumbnails.translation = [m.progressBarBase.width - m.top.thumbnailInfo.width, -150]
-                            end if
-                        else
-                            m.thumbnails.translation = [0, -150]
-                        end if
-
-                        m.progressBarProgress.width = 1120 * (m.currentPositionSeconds / m.top.duration)
-                        m.progressDot.translation = [1120 * (m.currentPositionSeconds / m.top.duration) + 68, 62]
-                        'm.thumbnails.translation = [m.progressBarProgress.width - m.top.thumbnailInfo.width / 2, -150]
-                        m.timeProgress.text = convertToReadableTimeFormat(m.currentPositionSeconds)
-                        m.timeDuration.text = convertToReadableTimeFormat(m.top.duration)
-                        if m.top.thumbnailInfo.width <> invalid
-                            showThumbnail()
-                        end if
-                    end if
-                    m.buttonHeld = "left"
-                    m.buttonHoldTimer.control = "start"
-                else 
-                    m.currentProgressBarState = 1
-                    m.controlButton.blendColor = "0xBD00FFFF"
-                end if
-            else if m.currentProgressBarState = 3
-                ' m.currentProgressBarState = 1
-                ' m.timeTravelButton.blendColor = "0xFFFFFFFF"
-                ' m.controlButton.blendColor = "0xBD00FFFF"
-                m.currentProgressBarState = 2
-                m.timeTravelButton.blendColor = "0xFFFFFFFF"
+               
             else if m.currentProgressBarState = 4
-                m.currentProgressBarState = 5
+                m.currentProgressBarState = 1
                 m.messagesButton.blendColor = "0xFFFFFFFF"
-                m.backButton.blendColor = "0xBD00FFFF"
+                w = m.controlButton.width
+                h = m.controlButton.height
+                m.glow.translation = [m.controlButton.translation[0] - 30 + w / 2, m.controlButton.translation[1] - 30 + h / 2]
+                m.controlButton.blendColor = "0xBD00FFFF"
+            else if m.currentProgressBarState = 1
+                m.currentProgressBarState = 3
+                m.controlButton.blendColor = "0xFFFFFFFF"
+                w = m.timeTravelButton.width
+                h = m.timeTravelButton.height
+                m.glow.translation = [m.timeTravelButton.translation[0] - 30 + w / 2, m.timeTravelButton.translation[1] - 30 + h / 2]
+                m.timeTravelButton.blendColor = "0xBD00FFFF"
             else if m.currentProgressBarState = 6
                 if m.focusedTimeSlot <> -1 and m.focusedTimeSlot - 1 >= 0
                     m.timeTravelTimeSlot[ m.focusedTimeSlot ].uri = "pkg:/images/unfocusedTimeSlot.png"
@@ -450,15 +416,7 @@ function onKeyEvent(key, press) as Boolean
             end if
             return true
         else if key = "down"
-            if m.currentProgressBarState = 5
-                m.currentProgressBarState = 1
-                m.backButton.blendColor = "0xFFFFFFFF"
-                m.controlButton.blendColor = "0xBD00FFFF"
-            else if m.currentProgressBarState = 4
-                m.currentProgressBarState = 3
-                m.messagesButton.blendColor = "0xFFFFFFFF"
-                m.timeTravelButton.blendColor = "0xBD00FFFF"
-            else if m.currentProgressBarState = 6
+            if m.currentProgressBarState = 6
                 number = (Int(Val(m.timeTravelTimeSlot[ m.focusedTimeSlot ].getChild(0).text)) - 1)
                 if number = -1
                     if m.focusedTimeSlot = 2 or m.focusedTimeSlot = 4
@@ -469,20 +427,32 @@ function onKeyEvent(key, press) as Boolean
                 end if
                 m.timeTravelTimeSlot[ m.focusedTimeSlot ].getChild(0).text = number.ToStr()
             else
+                m.controlButton.blendColor = "0xFFFFFFFF"
+                m.messagesButton.blendColor = "0xFFFFFFFF"
+                m.timeTravelButton.blendColor = "0xFFFFFFFF"
                 m.currentProgressBarState = 0
+                m.thumbnailImage.visible = false
                 m.progressBar.visible = false
                 return true
             end if
         else if key = "back"
-            m.currentPositionSeconds = 0
-            m.currentProgressBarState = 0
-            m.progressBar.visible = false
-            'm.controlSelectRect.visible = false
-            m.currentPositionUpdated = false
-            m.thumbnailImage.uri = ""
-            saveVideoBookmark()
-            m.top.thumbnailInfo = invalid
+            if m.timeTravelRect.visible
+                m.timeTravelRect.visible = false
+                m.currentProgressBarState = 3
+                handled = true
+            else
+                m.currentPositionSeconds = 0
+                m.currentProgressBarState = 0
+                m.timeTravelRect.visible = false
+                m.progressBar.visible = false
+                'm.controlSelectRect.visible = false
+                m.currentPositionUpdated = false
+                m.thumbnailImage.uri = ""
+                saveVideoBookmark()
+                m.top.thumbnailInfo = invalid
+            end if
         else if key = "OK"
+            ? "CustomVideo >> OK"
             if m.currentProgressBarState = 1
                 if m.top.state = "paused"
                     m.top.control = "resume"
@@ -492,14 +462,14 @@ function onKeyEvent(key, press) as Boolean
                     m.top.control = "pause"
                     m.controlButton.uri = "pkg:/images/play.png"
                 end if
+                return true
             else if m.currentProgressBarState = 2
-                if m.progressBarFocused
-                    m.top.seek = m.currentPositionSeconds
-                    m.controlButton.uri = "pkg:/images/pause.png"
-                    m.currentPositionUpdated = false
-                end if
-                m.progressDot.visible = not m.progressDot.visible
-                m.progressBarFocused = not m.progressBarFocused
+                m.top.seek = m.currentPositionSeconds
+                m.controlButton.uri = "pkg:/images/pause.png"
+                m.currentPositionUpdated = false
+                m.currentProgressBarState = 1
+                'm.progressBarFocused = not m.progressBarFocused
+                return true
             else if m.currentProgressBarState = 3
                 m.currentProgressBarState = 6
                 m.focusedTimeSlot = 0
@@ -507,8 +477,10 @@ function onKeyEvent(key, press) as Boolean
                 m.timeTravelTimeSlot[ m.focusedTimeSlot ].getChild(0).color = "0xDC79FFFF"
                 m.arrows.translation = [m.timeTravelTimeSlot[ m.focusedTimeSlot ].translation[0] + 18, m.timeTravelTimeSlot[ m.focusedTimeSlot ].translation[1] - 6]
                 m.timeTravelRect.visible = true
+                return true
             else if m.currentProgressBarState = 4
                 m.top.toggleChat = true
+                return true
             else if m.currentProgressBarState = 5
                 m.currentPositionSeconds = 0
                 m.currentProgressBarState = 0
@@ -518,8 +490,9 @@ function onKeyEvent(key, press) as Boolean
                 m.thumbnailImage.uri = ""
                 saveVideoBookmark()
                 m.top.thumbnailInfo = invalid
-                m.backButton.blendColor = "0xFFFFFFFF"
+                'm.backButton.blendColor = "0xFFFFFFFF"
                 m.top.back = true
+                return true
             else if m.currentProgressBarState = 6
                 if m.focusedTimeSlot <> -1
                     m.timeTravelTimeSlot[ m.focusedTimeSlot ].uri = "pkg:/images/unfocusedTimeSlot.png"
@@ -539,14 +512,110 @@ function onKeyEvent(key, press) as Boolean
                     m.currentProgressBarState = 3
                     m.timeTravelRect.visible = false
                 end if
+                return true
             end if
-            return true
+            'return true
+        else if key = "fastforward"
+            m.progressBar.visible = true
+            w = m.controlButton.width
+            h = m.controlButton.height
+            m.glow.translation = [m.controlButton.translation[0] - 30 + w / 2, m.controlButton.translation[1] - 30 + h / 2]
+            m.controlButton.blendColor = "0xBD00FFFF"
+            m.currentProgressBarState = 2
+            if m.currentPositionUpdated = false
+                m.currentPositionSeconds = m.top.position
+                m.currentPositionUpdated = true
+                m.top.control = "pause"
+                m.controlButton.uri = "pkg:/images/play.png"
+            end if
+            m.currentPositionSeconds += 10
+            if m.currentPositionSeconds > m.top.duration
+                m.currentPositionSeconds = m.top.duration
+            end if
+            m.progressBarProgress.width = m.progressBarBase.width * (m.currentPositionSeconds / m.top.duration)
+            m.progressDot.translation = [m.progressBarBase.width * (m.currentPositionSeconds / m.top.duration) + 33, 77]
+            if m.top.thumbnailInfo <> invalid and m.top.thumbnailInfo.width <> invalid
+                if m.progressBarProgress.width + m.top.thumbnailInfo.width / 2 <= m.progressBarBase.width
+                    if m.progressBarProgress.width - m.top.thumbnailInfo.width / 2 >= 0
+                        m.thumbnails.translation = [m.progressBarProgress.width - m.top.thumbnailInfo.width / 2, -150]
+                    else
+                        m.thumbnails.translation = [0, -150]
+                    end if
+                else
+                    m.thumbnails.translation = [m.progressBarBase.width - m.top.thumbnailInfo.width, -150]
+                end if
+
+                m.timeProgress.text = convertToReadableTimeFormat(m.currentPositionSeconds)
+                m.timeDuration.text = convertToReadableTimeFormat(m.top.duration)
+                if m.top.thumbnailInfo.width <> invalid
+                    showThumbnail()
+                end if
+            end if
+            m.buttonHeld = "right"
+            m.buttonHoldTimer.control = "start"
+        else if key = "rewind"
+            m.progressBar.visible = true
+            w = m.controlButton.width
+            h = m.controlButton.height
+            m.glow.translation = [m.controlButton.translation[0] - 30 + w / 2, m.controlButton.translation[1] - 30 + h / 2]
+            m.controlButton.blendColor = "0xBD00FFFF"
+            m.currentProgressBarState = 2
+            if m.currentPositionUpdated = false
+                m.currentPositionSeconds = m.top.position
+                m.currentPositionUpdated = true
+                m.top.control = "pause"
+                m.controlButton.uri = "pkg:/images/play.png"
+            end if
+            m.currentPositionSeconds -= 10
+            if m.currentPositionSeconds < 0
+                m.currentPositionSeconds = 0
+            end if
+            if m.top.thumbnailInfo <> invalid and m.top.thumbnailInfo.width <> invalid
+                if m.progressBarProgress.width - m.top.thumbnailInfo.width / 2 >= 0
+                    if m.progressBarProgress.width + m.top.thumbnailInfo.width / 2 <= m.progressBarBase.width
+                        m.thumbnails.translation = [m.progressBarProgress.width - m.top.thumbnailInfo.width / 2, -150]
+                    else
+                        m.thumbnails.translation = [m.progressBarBase.width - m.top.thumbnailInfo.width, -150]
+                    end if
+                else
+                    m.thumbnails.translation = [0, -150]
+                end if
+
+                m.progressBarProgress.width = m.progressBarBase.width * (m.currentPositionSeconds / m.top.duration)
+                m.progressDot.translation = [m.progressBarBase.width * (m.currentPositionSeconds / m.top.duration) + 33, 77]
+                'm.thumbnails.translation = [m.progressBarProgress.width - m.top.thumbnailInfo.width / 2, -150]
+                m.timeProgress.text = convertToReadableTimeFormat(m.currentPositionSeconds)
+                m.timeDuration.text = convertToReadableTimeFormat(m.top.duration)
+                if m.top.thumbnailInfo.width <> invalid
+                    showThumbnail()
+                end if
+            end if
+            m.buttonHeld = "left"
+            m.buttonHoldTimer.control = "start"
+        else if key = "play"
+            if m.currentProgressBarState = 2
+                m.top.seek = m.currentPositionSeconds
+                m.controlButton.uri = "pkg:/images/pause.png"
+                m.currentPositionUpdated = false
+                m.currentProgressBarState = 1
+                'm.progressBarFocused = not m.progressBarFocused
+            else
+                if m.top.state = "paused"
+                    m.top.control = "resume"
+                    m.controlButton.uri = "pkg:/images/pause.png"
+                    m.currentPositionUpdated = false
+                else
+                    m.top.control = "pause"
+                    m.controlButton.uri = "pkg:/images/play.png"
+                end if
+            end if
         end if
     else if not press
-        if key = "left" or key = "right"
+        if key = "rewind" or key = "fastforward"
             m.scrollInterval = 10
             m.buttonHeld = invalid
             m.buttonHoldTimer.control = "stop"
         end if
     end if
+    return handled
 end function

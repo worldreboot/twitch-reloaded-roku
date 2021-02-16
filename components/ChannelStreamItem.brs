@@ -11,7 +11,7 @@ sub showContent()
     m.itemThumbnail.uri = itemContent.HDPosterUrl
     m.itemTitle.text = itemContent.ShortDescriptionLine2
     m.itemGame.text = itemContent.Categories
-    ? "itemViewers: " itemContent.Title
+    '? "itemViewers: " itemContent.Title
     m.itemViewers.text = itemContent.Title
     m.viewsRect.width = m.itemViewers.localBoundingRect().width + 16
     m.viewsRect.height = m.itemViewers.localBoundingRect().height

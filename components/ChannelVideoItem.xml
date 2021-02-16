@@ -43,23 +43,36 @@
                 width="93"
                 height="22"
                 translation="[2,20]" /> -->
-
-            <Rectangle
-                color="0x18181BCC"
-                visible="true"
-                width="93"
-                height="22"
-                translation="[200,157]" />
             
-            <Label
+            <Poster
+                id="viewsRect"
+                uri="pkg:/images/live_rectangle.9.png"
+                opacity="0.8"
+                translation="[235,160]" >
+                <!---
+                <Label
+                    id = "itemViewers"
+                    horizAlign = "left"
+                    color = "0xFFFFFFFF"
+                    translation = "[16, 1]" >
+                    <Font role = "font" uri = "pkg:/fonts/Inter-Regular.ttf" size = "8" /> 
+                </Label>-->
+                <Label
+                    id = "itemDuration"
+                    horizAlign = "left"
+                    color = "0xFFFFFFFF"
+                    translation = "[7, 0]" >
+                    <Font role = "font" uri = "pkg:/fonts/Inter-Regular.ttf" size = "14" />
+                </Label>
+            </Poster>
+            
+            <!--<Label
                 id = "itemDuration"
-                height = "30"
-                width = "320"
                 horizAlign = "left"
                 color = "0xFFFFFFFF"
-                translation = "[200, 160]" >
+                translation = "[210, 160]" >
                 <Font role = "font" uri = "pkg:/fonts/Inter-Regular.ttf" size = "14" />
-            </Label>
+            </Label>-->
 
             <!---
             <Label

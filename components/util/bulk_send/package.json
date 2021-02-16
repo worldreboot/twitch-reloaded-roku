@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "start": "node ./websocket_bulk_send_server.js"
+  },
+  "dependencies": {
+    "ws": "3.0.0"
+  }
+}

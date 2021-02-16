@@ -55,6 +55,7 @@ function convertToTimeFormat(timestamp as String) as String
     secondsSincePublished.FromISO8601String(timestamp)
     currentTime = createObject("roDateTime").AsSeconds()
     elapsedTime = currentTime - secondsSincePublished.AsSeconds()
+    m.top.streamDurationSeconds = elapsedTime
     hours = Int(elapsedTime / 60 / 60)
     mins = elapsedTime / 60 MOD 60
     secs = elapsedTime MOD 60

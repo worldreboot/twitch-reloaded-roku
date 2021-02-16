@@ -4,6 +4,7 @@
 
     <interface>
         <field id="loginRequested" type="string" />
+        <field id="streamDurationSeconds" type="Integer" />
         <field id="searchResults" type="assocarray" />
     </interface>
     

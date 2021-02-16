@@ -33,13 +33,14 @@ sub onOfflineChannelsChange()
 
         profile_image = createObject("roSGNode", "Poster")
         profile_image.uri = channel.profile_image_url
-        '? "image > "; profile_image.uri
+        '? "OfflineChannelList > image > "; profile_image.uri
         profile_image.width = 150
         profile_image.height = 150
         profile_image.visible = true
 
         stream_user = createObject("roSGNode", "SimpleLabel")
         stream_user.text = channel.display_name
+        '? "OfflineChannelList > stream_user > "; stream_user.text
         stream_user.translation = "[5,5]"
         stream_user.visible = false
         stream_user.fontSize = "18"
@@ -113,18 +114,29 @@ end sub
 
 function onKeyEvent(key, press) as Boolean
     handled = false
-    if press
-        m.children[m.currentlyFocused].getChild(0).opacity = 0.5
+    if press 'and m.currentlyFocused <= m.total_channels
+        'm.children[m.currentlyFocused].getChild(0).opacity = 0.5
         'm.children[m.currentlyFocused].getChild(1).visible = false
         'm.indicator.getChild(0).text = m.children[m.currentlyFocused].getChild(1).text
-        m.indicator.visible = false
-        if key = "right" and m.currentlyFocused MOD 7 < 6
+        'm.indicator.visible = false
+        if key = "right" and m.currentlyFocused MOD 7 < 6 and m.currentlyFocused < m.total_channels - 1
+            m.children[m.currentlyFocused].getChild(0).opacity = 0.5
+            m.indicator.visible = false
+            ? m.currentlyFocused " " m.total_channels
             m.currentlyFocused += 1
             handled = true
         else if key = "left" and m.currentlyFocused MOD 7 > 0
+            m.children[m.currentlyFocused].getChild(0).opacity = 0.5
+            m.indicator.visible = false
+            ? m.currentlyFocused " " m.total_channels
             m.currentlyFocused -= 1
             handled = true
+        else if key = "left"
+            m.children[m.currentlyFocused].getChild(0).opacity = 0.5
+            m.indicator.visible = false
         else if key = "up" and m.currentlyFocused > 6
+            m.children[m.currentlyFocused].getChild(0).opacity = 0.5
+            m.indicator.visible = false
             for each channel in m.children
                 channel.translation = [channel.translation[0], channel.translation[1] + 170]
                 if channel.translation[1] >= 0
@@ -134,8 +146,11 @@ function onKeyEvent(key, press) as Boolean
             m.currentlyFocused -= 7
             handled = true
         else if key = "up"
+            m.children[m.currentlyFocused].getChild(0).opacity = 0.5
             m.indicator.visible = false
         else if key = "down" and m.currentlyFocused + 7 <= m.total_channels - 1
+            m.children[m.currentlyFocused].getChild(0).opacity = 0.5
+            m.indicator.visible = false
             for each channel in m.children
                 channel.translation = [channel.translation[0], channel.translation[1] - 170]
                 if channel.translation[1] < 0
@@ -145,11 +160,13 @@ function onKeyEvent(key, press) as Boolean
             m.currentlyFocused += 7
             handled = true
         else if key = "OK"
+            m.children[m.currentlyFocused].getChild(0).opacity = 0.5
+            m.indicator.visible = false
             m.top.channelSelected = m.children[m.currentlyFocused].getChild(2).text
             handled = true
         end if
 
-        if handled
+        if handled 'and m.currentlyFocused <= m.total_channels
             m.children[m.currentlyFocused].getChild(0).opacity = 1
             'm.children[m.currentlyFocused].getChild(1).visible = true
             'm.indicator.getChild(0).text = m.children[m.currentlyFocused].getChild(1).text
@@ -161,7 +178,7 @@ function onKeyEvent(key, press) as Boolean
 
             m.indicator.getChild(1).width = width
             m.indicator.getChild(1).height = stream_user.localBoundingRect().height + 10
-            ? "circle translation: " m.indicator.getChild(0).translation
+            '? "circle translation: " m.indicator.getChild(0).translation
             '? "channel translation: " m.children[m.currentlyFocused].translation
             if (width / 2) > 75
                 m.indicator.translation = [m.children[m.currentlyFocused].translation[0] + -(width / 2 - 75), m.children[m.currentlyFocused].translation[1] + 160]
@@ -176,8 +193,7 @@ function onKeyEvent(key, press) as Boolean
             m.indicator.visible = true
         end if
     else
-        if key = "down"
-            ? "OfflineChannelList down"
+        if key = "down" 'and m.currentlyFocused <= m.total_channels
             m.children[m.currentlyFocused].getChild(0).opacity = 1
             'm.children[m.currentlyFocused].getChild(1).visible = true
             'm.indicator.getChild(0).text = m.children[m.currentlyFocused].getChild(1).text

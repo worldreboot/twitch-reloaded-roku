@@ -100,6 +100,7 @@ function getSearchResults() as Object
     if search <> invalid and search.data <> invalid
         for each stream in search.data
             result.id = stream.id
+            result.login = stream.login
             result.display_name = stream.display_name
             last = Right(stream.profile_image_url, 2)
             if last = "eg"

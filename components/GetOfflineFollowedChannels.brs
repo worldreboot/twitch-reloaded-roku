@@ -27,8 +27,8 @@ function getSearchResults() as Object
     addedChannelLogins = {}
     offlineFollowedStreamers = []
     while true
-        appended = false
         for each streamer in followed_streamers.data
+            appended = false
             if not m.top.currentlyLiveStreamerIds.DoesExist(streamer.to_id)
                 if addedUsers = 0
                     streamer_info_url += "?id=" + streamer.to_id
@@ -43,8 +43,8 @@ function getSearchResults() as Object
                 for each offline_streamer in offline_streamer_info.data
                     streamer_info = {}
                     streamer_info.login = offline_streamer.login
-                    streamer_info.display_name = offline_streamer_info.display_name
-                    streamer_info.profile_image_url = offline_streamer_info.profile_image_url
+                    streamer_info.display_name = offline_streamer.display_name
+                    streamer_info.profile_image_url = offline_streamer.profile_image_url
                     offlineFollowedStreamers.push(streamer_info)
                 end for
                 appended = true
@@ -52,10 +52,13 @@ function getSearchResults() as Object
                 streamer_info_url = "https://api.twitch.tv/helix/users"
             end if
         end for
+        'addedUsers = 0
         if followed_streamers.pagination.cursor <> invalid
+            '? "GetOfflineFollowedChannels > next > " "https://api.twitch.tv/helix/users/follows?first=100&from_id=" + current_user_info.data[0].id + "&after=" + followed_streamers.pagination.cursor
             followed_streamers = GETJSON("https://api.twitch.tv/helix/users/follows?first=100&from_id=" + current_user_info.data[0].id + "&after=" + followed_streamers.pagination.cursor)
         else
             if appended = false
+                '? "GetOfflineFollowedChannels > last round > " streamer_info_url
                 offline_streamer_info = GETJSON(streamer_info_url)
                 for each offline_streamer in offline_streamer_info.data
                     streamer_info = {}
@@ -72,7 +75,6 @@ function getSearchResults() as Object
                         streamer_info.profile_image_url = Left(profile_pic_uri, Len(profile_pic_uri) - 11) + "150x150.png"
                     end if
                     'streamer_info.profile_image_url = offline_streamer.profile_image_url
-                    '? "streamer_info " streamer_info
                     offlineFollowedStreamers.push(streamer_info)
                 end for
             end if

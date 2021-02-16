@@ -66,7 +66,7 @@ sub onFollowedStreamsChange()
 
         stream_game = createObject("roSGNode", "Label")
         stream_game.text = stream.game_id
-        stream_game.width = "175"
+        'stream_game.width = "175"
         stream_game.translation = "[90,20]"
         stream_game.color = "0xC26BE1FF"
         stream_game.visible = false
@@ -121,7 +121,13 @@ sub onFollowedStreamsChange()
         selected.translation = "[64,-5]"
         selected.uri = "pkg:/images/barFocusIndicator.9.png"
         selected.height = 50
-        selected.width = 300
+        '? "WIDTHS: " stream_user.localBoundingRect().width " " stream_game.localBoundingRect().width
+        if stream_user.localBoundingRect().width >= stream_game.localBoundingRect().width
+            selected.width = stream_user.localBoundingRect().width + 36
+        else
+            selected.width = stream_game.localBoundingRect().width + 36
+        end if
+        'selected.width = 300
         selected.visible = false
 
         mask_group.appendChild(profile_image)
@@ -160,9 +166,9 @@ sub onGetFocus()
             m.children[m.currentIndex].getChild(0).visible = true
             m.children[m.currentIndex].getChild(2).visible = true
             m.children[m.currentIndex].getChild(3).visible = true
-            m.children[m.currentIndex].getChild(4).visible = true
-            m.children[m.currentIndex].getChild(5).visible = true
-            m.children[m.currentIndex].getChild(6).visible = true
+            'm.children[m.currentIndex].getChild(4).visible = true
+            'm.children[m.currentIndex].getChild(5).visible = true
+            'm.children[m.currentIndex].getChild(6).visible = true
             m.children[m.currentIndex].getChild(8).visible = true
         end if
     else if m.top.focused = false
@@ -177,9 +183,9 @@ sub onGetFocus()
             m.children[m.currentIndex].getChild(0).visible = false
             m.children[m.currentIndex].getChild(2).visible = false
             m.children[m.currentIndex].getChild(3).visible = false
-            m.children[m.currentIndex].getChild(4).visible = false
-            m.children[m.currentIndex].getChild(5).visible = false
-            m.children[m.currentIndex].getChild(6).visible = false
+            'm.children[m.currentIndex].getChild(4).visible = false
+            'm.children[m.currentIndex].getChild(5).visible = false
+            'm.children[m.currentIndex].getChild(6).visible = false
             m.children[m.currentIndex].getChild(8).visible = false
         end if
     end if
@@ -193,9 +199,9 @@ sub onKeyEvent(key, press) as Boolean
                 m.children[m.currentIndex].getChild(0).visible = false
                 m.children[m.currentIndex].getChild(2).visible = false
                 m.children[m.currentIndex].getChild(3).visible = false
-                m.children[m.currentIndex].getChild(4).visible = false
-                m.children[m.currentIndex].getChild(5).visible = false
-                m.children[m.currentIndex].getChild(6).visible = false
+                'm.children[m.currentIndex].getChild(4).visible = false
+                'm.children[m.currentIndex].getChild(5).visible = false
+                'm.children[m.currentIndex].getChild(6).visible = false
                 m.children[m.currentIndex].getChild(8).visible = false
                 m.currentIndex -= 1
                 if m.currentIndex < m.min
@@ -211,9 +217,9 @@ sub onKeyEvent(key, press) as Boolean
                 m.children[m.currentIndex].getChild(0).visible = true
                 m.children[m.currentIndex].getChild(2).visible = true
                 m.children[m.currentIndex].getChild(3).visible = true
-                m.children[m.currentIndex].getChild(4).visible = true
-                m.children[m.currentIndex].getChild(5).visible = true
-                m.children[m.currentIndex].getChild(6).visible = true
+                'm.children[m.currentIndex].getChild(4).visible = true
+                'm.children[m.currentIndex].getChild(5).visible = true
+                'm.children[m.currentIndex].getChild(6).visible = true
                 m.children[m.currentIndex].getChild(8).visible = true
             end if
         else if key = "down"
@@ -221,9 +227,9 @@ sub onKeyEvent(key, press) as Boolean
                 m.children[m.currentIndex].getChild(0).visible = false
                 m.children[m.currentIndex].getChild(2).visible = false
                 m.children[m.currentIndex].getChild(3).visible = false
-                m.children[m.currentIndex].getChild(4).visible = false
-                m.children[m.currentIndex].getChild(5).visible = false
-                m.children[m.currentIndex].getChild(6).visible = false
+                'm.children[m.currentIndex].getChild(4).visible = false
+                'm.children[m.currentIndex].getChild(5).visible = false
+                'm.children[m.currentIndex].getChild(6).visible = false
                 m.children[m.currentIndex].getChild(8).visible = false
                 if m.children[m.currentIndex + 1] <> invalid
                     m.currentIndex += 1
@@ -241,9 +247,9 @@ sub onKeyEvent(key, press) as Boolean
                 m.children[m.currentIndex].getChild(0).visible = true
                 m.children[m.currentIndex].getChild(2).visible = true
                 m.children[m.currentIndex].getChild(3).visible = true
-                m.children[m.currentIndex].getChild(4).visible = true
-                m.children[m.currentIndex].getChild(5).visible = true
-                m.children[m.currentIndex].getChild(6).visible = true
+                'm.children[m.currentIndex].getChild(4).visible = true
+                'm.children[m.currentIndex].getChild(5).visible = true
+                'm.children[m.currentIndex].getChild(6).visible = true
                 m.children[m.currentIndex].getChild(8).visible = true
             end if
         else if key = "OK"

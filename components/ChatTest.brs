@@ -1,42 +1,12 @@
-'api.twitch.tv/kraken/search/channels?query=${search_text}&limit=5&client_id=jzkbprff40iqj646a697cyrvl0zt2m6
-
 function init()
-    'm.gameNames = CreateObject("roAssociativeArray")
-    'm.userProfiles = CreateObject("roAssociativeArray")
     m.top.functionName = "main"
 end function
 
-' function getJSON(link as Object)
-'     url = createUrl()
-'     ' url = CreateObject("roUrlTransfer")
-'     ' url.EnableEncodings(true)
-'     ' url.RetainBodyOnError(true)
-'     ' url.SetCertificatesFile("common:/certs/ca-bundle.crt")
-'     ' url.InitClientCertificates()
-'     ' url.AddHeader("Client-ID", "w9msa6phhl3u8s2jyjcmshrfjczj2y")
-'     ' url.AddHeader("Authorization", "Bearer kp3nfb1pwuo6imnfbf20x3gqtbxu2e")
-
-'     'search_results_url = link.EncodeUri()
-'     url.SetUrl(link.EncodeUri())
-'     response_string = url.GetToString()
-
-'     '? "test > "; response_string
-'     return ParseJson(response_string)
-' end function
-
 function getChannelBadges() as Object
     url = createUrl()
-    ' url = CreateObject("roUrlTransfer")
-    ' url.EnableEncodings(true)
-    ' url.RetainBodyOnError(true)
-    ' url.SetCertificatesFile("common:/certs/ca-bundle.crt")
-    ' url.InitClientCertificates()
-    ' url.AddHeader("Client-ID", "w9msa6phhl3u8s2jyjcmshrfjczj2y")
-    ' url.AddHeader("Authorization", "Bearer kp3nfb1pwuo6imnfbf20x3gqtbxu2e")
     search_results_url = "https://api.twitch.tv/helix/users?login=" + m.top.channel
     url.SetUrl(search_results_url.EncodeUri())
     response_string = url.GetToString()
-    '? "test > "; response_string
     user_data = ParseJson(response_string)
     user_id = ""
     if user_data.data[0].id <> invalid
@@ -44,7 +14,6 @@ function getChannelBadges() as Object
     end if
 
     return user_id
-    'return getJSON("https://badges.twitch.tv/v1/badges/channels/" + user_id + "/display")
 end function
 
 function main()
@@ -63,18 +32,39 @@ function main()
     end if
 
     if m.top.channel <> ""
-        tcpListen = CreateObject("roStreamSocket")
+        tcpListen = createObject("roStreamSocket")
         
-        addr = CreateObject("roSocketAddress")
+        addr = createObject("roSocketAddress")
         addr.SetAddress("irc.chat.twitch.tv:6667")
+
+        'messagePort = createObject("roMessagePort")
         
         tcpListen.SetSendToAddress(addr)
+        'tcpListen.SetMessagePort(messagePort)
         tcpListen.notifyReadable(true)
-        tcpListen.Connect()
+        ? "connect " tcpListen.Connect()
         tcpListen.SendStr("CAP REQ :twitch.tv/tags twitch.tv/commands" + Chr(13) + Chr(10))
-        tcpListen.SendStr("PASS SCHMOOPIIE" + Chr(13) + Chr(10))
-        tcpListen.SendStr("NICK justinfan32006" + Chr(13) + Chr(10))
+        user_auth_token = m.global.userToken
+        if m.top.loggedInUsername <> "" and user_auth_token <> invalid and user_auth_token <> ""
+            ? "PASS " tcpListen.SendStr("PASS oauth:" + user_auth_token + Chr(13) + Chr(10))
+            ? "USER " tcpListen.SendStr("USER " + m.top.loggedInUsername + " 8 * :" + m.top.loggedInUsername + Chr(13) + Chr(10))
+            ? "NICK " tcpListen.SendStr("NICK " + m.top.loggedInUsername + Chr(13) + Chr(10))
+            ? "first eOK " tcpListen.eOK()
+            ? "first IsReadable " tcpListen.IsReadable()
+            ? "first IsWritable " tcpListen.IsWritable()
+            ? "first IsException " tcpListen.IsException()
+            ? "first eSuccess " tcpListen.eSuccess()
+            '? "PASS oauth:" + user_auth_token
+            '? "USER " + m.top.loggedInUsername + " 8 * :" + m.top.loggedInUsername
+            '? "NICK " + m.top.loggedInUsername
+        else
+            tcpListen.SendStr("PASS SCHMOOPIIE" + Chr(13) + Chr(10))
+            tcpListen.SendStr("NICK justinfan32006" + Chr(13) + Chr(10))
+        end if
+        ? "ChatTest >> JOIN > " m.top.channel
         tcpListen.SendStr("JOIN #" + m.top.channel + Chr(13) + Chr(10))
+
+        'm.top.observeField("sendMessage", "sendMessage")
 
         channel_id = getChannelBadges()
 
@@ -112,13 +102,60 @@ function main()
         while true
             get = ""
             received = ""
-            while not get = Chr(10)
-                get = tcpListen.ReceiveStr(1)
-                received += get
-            end while
+            '? "tcpListen isConnected " tcpListen.IsConnected()
+            if m.top.sendMessage <> "" and m.top.readyForNextComment
+                ? "tcpListen isConnected " tcpListen.IsConnected()
+                ? "second eOK " tcpListen.eOK()
+                ? "second IsReadable " tcpListen.IsReadable()
+                ? "second IsWritable " tcpListen.IsWritable()
+                ? "second IsException " tcpListen.IsException()
+                ? "second eSuccess " tcpListen.eSuccess()
+                sent = tcpListen.SendStr("PRIVMSG #" + m.top.channel + " :" + m.top.sendMessage + Chr(13) + Chr(10))
+                ? "Send Status " tcpListen.Status()
+                ? "sent ;) " sent
+                if sent > 0
+                    m.top.nextComment = ""
+                    m.top.clientComment = m.top.sendMessage
+                end if
+                m.top.sendMessage = ""
+                'm.top.clientComment = m.top.sendMessage
+            end if
+
+            if tcpListen.GetCountRcvBuf() > 0
+                while not get = Chr(10)
+                    get = tcpListen.ReceiveStr(1)
+                    '? "receive Status " tcpListen.Status()
+                    received += get
+                end while
+            end if
+
+            if tcpListen.GetCountRcvBuf() = 0 and tcpListen.IsReadable()
+                ? "chat connection failed?"
+                'tcpListen.Close()
+                tcpListen.SetSendToAddress(addr)
+                'tcpListen.SetMessagePort(messagePort)
+                'tcpListen.notifyReadable(true)
+                ? "connect " tcpListen.Connect()
+                tcpListen.SendStr("CAP REQ :twitch.tv/tags twitch.tv/commands" + Chr(13) + Chr(10))
+                user_auth_token = m.global.userToken
+                if m.top.loggedInUsername <> "" and user_auth_token <> invalid and user_auth_token <> ""
+                    ? "PASS " tcpListen.SendStr("PASS oauth:" + user_auth_token + Chr(13) + Chr(10))
+                    ? "USER " tcpListen.SendStr("USER " + m.top.loggedInUsername + " 8 * :" + m.top.loggedInUsername + Chr(13) + Chr(10))
+                    ? "NICK " tcpListen.SendStr("NICK " + m.top.loggedInUsername + Chr(13) + Chr(10))
+                    '? "PASS oauth:" + user_auth_token
+                    '? "USER " + m.top.loggedInUsername + " 8 * :" + m.top.loggedInUsername
+                    '? "NICK " + m.top.loggedInUsername
+                else
+                    tcpListen.SendStr("PASS SCHMOOPIIE" + Chr(13) + Chr(10))
+                    tcpListen.SendStr("NICK justinfan32006" + Chr(13) + Chr(10))
+                end if
+                tcpListen.SendStr("JOIN #" + m.top.channel + Chr(13) + Chr(10))
+            end if
+
             if not received = ""
                 if Left(received, 4) = "PING"
                     tcpListen.SendStr("PONG :tmi.twitch.tv" + Chr(13) + Chr(10))
+                    '? "send PONG Status " tcpListen.Status()
                 else
                     queue[last] = received
                     if last + 1 < 100
@@ -128,6 +165,7 @@ function main()
                     end if
                 end if
             end if
+
             if m.top.readyForNextComment and not queue[first] = invalid
                 m.top.nextComment = queue[first]
                 queue[first] = invalid
@@ -137,8 +175,8 @@ function main()
                     first = 0
                 end if
             end if
-        end while
 
+        end while
     end if
     
 

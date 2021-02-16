@@ -6,6 +6,7 @@ sub init()
     'm.itemViewers = m.top.findNode("itemViewers")
     m.itemDuration = m.top.findNode("itemDuration")
     m.itemPosted = m.top.findNode("itemPosted")
+    m.viewsRect = m.top.findNode("viewsRect")
 
     m.top.observeField("itemHasFocus", "onItemHasFocus")
 end sub
@@ -27,4 +28,6 @@ sub showContent()
     'm.itemViewers.text = itemContent.ShortDescriptionLine2
     m.itemDuration.text = itemContent.Categories
     m.itemPosted.text = itemContent.ReleaseDate
+    m.viewsRect.width = m.itemDuration.localBoundingRect().width + 14
+    m.viewsRect.height = m.itemDuration.localBoundingRect().height
 end sub

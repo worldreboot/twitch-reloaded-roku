@@ -7,11 +7,11 @@ sub init()
     m.offlineChannelList = m.top.findNode("offlineChannelList")
 
     m.categoryButton = m.top.findNode("categoryButton")
-    'm.categoryLine = m.top.findNode("categoryLine")
+    m.categoryLine = m.top.findNode("categoryLine")
     m.liveButton = m.top.findNode("liveButton")
-    'm.liveLine = m.top.findNode("liveLine")
+    m.liveLine = m.top.findNode("liveLine")
     m.followingButton = m.top.findNode("followingButton")
-    'm.followingLine = m.top.findNode("followingLine")
+    m.followingLine = m.top.findNode("followingLine")
 
     m.searchLabel = m.top.findNode("searchLabel")
     'm.loginButton = m.top.findNode("loggedUserName")'m.top.findNode("loginButton")
@@ -116,11 +116,14 @@ sub onLiveStreamSelectedFromChannel()
 end sub
 
 sub onNewUser()
+    ? "HomeScene > loggedInUserProfileImage > " m.top.loggedInUserProfileImage
     m.loggedUserName.text = m.top.loggedInUserName
+    m.loggedUserName.color = "0xEFEFF1FF"
+    m.loggedUserName.translation = [60, 20]
     m.profileImage.uri = m.top.loggedInUserProfileImage
     width = m.loggedUserName.localBoundingRect().width + 10
-    m.searchLabel.translation = [1080 - width, 29]
-    m.optionsButton.translation = [1145 - width, 29]
+    m.searchLabel.translation = [1080 - width, 24]
+    m.optionsButton.translation = [1145 - width, 24]
     m.headerRect.translation = [-150 - width, 0]
     m.loggedUserGroup.translation = [1220 - width, 15]
     m.loggedUserGroup.visible = true
@@ -540,10 +543,10 @@ sub onKeyEvent(key, press) as Boolean
                     m.searchLabel.blendColor = "0xEFEFF1FF"
                     m.loggedUserName.color = "0xEFEFF1FF"
                     m.liveButton.color = "0x00FFD1FF"
-                    'm.liveLine.visible = true
-                    'm.categoryLine.visible = false
+                    m.liveLine.visible = true
+                    m.categoryLine.visible = false
                     m.categoryButton.color = "0xEFEFF1FF"
-                    'm.followingLine.visible = false
+                    m.followingLine.visible = false
                     m.getCategories.pagination = ""
                     m.browseList.setFocus(true)
                     m.currentlySelectedButton = 1
@@ -554,10 +557,10 @@ sub onKeyEvent(key, press) as Boolean
                     m.searchLabel.blendColor = "0xEFEFF1FF"
                     m.loggedUserName.color = "0xEFEFF1FF"
                     m.categoryButton.color = "0x00FFD1FF"
-                    'm.categoryLine.visible = true
-                    'm.liveLine.visible = false
+                    m.categoryLine.visible = true
+                    m.liveLine.visible = false
                     m.liveButton.color = "0xEFEFF1FF"
-                    'm.followingLine.visible = false
+                    m.followingLine.visible = false
                     m.browseCategoryList.setFocus(true)
                     m.currentlySelectedButton = 0
                     onCategorySelect()
@@ -566,9 +569,9 @@ sub onKeyEvent(key, press) as Boolean
                     m.actualBrowseButtons[m.currentlyFocusedButton].color = "0x00FFD1FF"
                     m.categoryButton.color = "0xEFEFF1FF"
                     m.liveButton.color = "0xEFEFF1FF"
-                    'm.categoryLine.visible = false
-                    'm.liveLine.visible = false
-                    'm.followingLine.visible = true
+                    m.categoryLine.visible = false
+                    m.liveLine.visible = false
+                    m.followingLine.visible = true
                     m.currentlySelectedButton = 2
                     m.browseFollowingList.setFocus(true)
                     m.followingListIsFocused = true
@@ -669,6 +672,6 @@ sub onKeyEvent(key, press) as Boolean
         end if
     end if
 
-    '? "HOMESCENE > handled " handled
+    ? "HOMESCENE > key " key " " handled
     return handled
 end sub

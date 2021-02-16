@@ -148,6 +148,7 @@ sub onGetUserInfo()
     end if
     if m.getUserChannel.searchResults.is_live
         m.liveDuration.text = "Streaming for " + m.getUserChannel.searchResults.live_duration
+        m.top.streamDurationSeconds = m.getUserChannel.streamDurationSeconds
     else
         m.liveDuration.text = ""
     end if

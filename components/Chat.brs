@@ -1,11 +1,29 @@
 sub init()
     m.chatPanel = m.top.findNode("chatPanel")
+    m.keyboard = m.top.findNode("keyboard")
+    m.chatButton = m.top.findNode("chatButton")
     m.chat = CreateObject("roSGNode", "ChatTest")
     m.chat.observeField("nextComment", "onNewComment")
+    m.chat.observeField("clientComment", "onNewComment")
     m.top.observeField("visible", "onInvisible")
+    m.top.observeField("loggedInUsername", "setLoggedInUsername")
     m.chat.readyForNextComment = true
     m.chat.control = "run"
+    m.userstate_change = false
     m.translation = 0
+end sub
+
+sub onSetKeyboardFocus()
+    if m.top.setKeyboardFocus
+        m.keyboard.visible = true
+        m.chatButton.visible = true
+        m.top.setKeyboardFocus = false
+        m.keyboard.setFocus(true)
+    end if
+end sub
+
+sub setLoggedInUsername()
+    m.chat.loggedInUsername = m.top.loggedInUsername
 end sub
 
 sub onInvisible()
@@ -24,6 +42,7 @@ sub onVideoChange()
 end sub
 
 sub onEnterChannel()
+    ? "Chat >> onEnterChannel > " m.top.channel
     m.chat.channel = m.top.channel
     m.chat.control = "stop"
     m.chat.control = "run"
@@ -31,6 +50,9 @@ end sub
 
 sub extractMessage(section) as Object
     words = section.Split(" ")
+    if words[2] = "USERSTATE"
+        m.userstate_change = true
+    end if
     reachedActualMessage = false
     message = ""
     for i=4 to words.Count() - 1
@@ -42,6 +64,7 @@ end sub
 sub onNewComment()
     m.chat.readyForNextComment = false
     comment = m.chat.nextComment.Split(";")
+    '? "comment: " comment
     display_name = ""
     message = ""
     color = ""
@@ -77,9 +100,29 @@ sub onNewComment()
         end if
     end for
 
-    if display_name = ""
-        m.chat.readyForNextComment = true
-        return
+    if display_name = "" or message = ""
+        if m.userstate_change
+            clientInfo = {}
+            clientInfo.display_name = display_name
+            clientInfo.color = color
+            clientInfo.badges = badges
+            'm.top.clientInfo.emotes = emotes
+            clientInfo.emote_set = emote_set
+            m.top.clientInfo = clientInfo
+            m.userstate_change = false
+        end if
+        if m.chat.clientComment <> ""
+            message = m.chat.clientComment
+            display_name = m.top.clientInfo.display_name
+            color = m.top.clientInfo.color
+            badges = m.top.clientInfo.badges
+            'emotes = m.top.clientInfo.emotes
+            emote_set = m.top.clientInfo.emote_set
+            m.chat.clientComment = ""
+        else
+            m.chat.readyForNextComment = true
+            return
+        end if
     end if
 
     group = createObject("roSGNode", "Group")
@@ -123,7 +166,7 @@ sub onNewComment()
     username.translation = [badge_translation,0]
     username.visible = true
     username.fontSize = "14"
-    username.fontUri = "pkg:/fonts/Roobert-SemiBold.ttf"
+    username.fontUri = "pkg:/fonts/Inter-SemiBold.ttf"
     
     message_chars = message.Split(" ")
 
@@ -135,13 +178,13 @@ sub onNewComment()
 
     message_text = createObject("roSGNode", "SimpleLabel")
     message_text.fontSize = "14"
-    message_text.fontUri = "pkg:/fonts/Roobert-Regular.ttf"
+    message_text.fontUri = "pkg:/fonts/Inter-Regular.ttf"
     message_text.visible = true
     message_text.text = ""
 
     colon = createObject("roSGNode", "SimpleLabel")
     colon.fontSize = "14"
-    colon.fontUri = "pkg:/fonts/Roobert-Regular.ttf"
+    colon.fontUri = "pkg:/fonts/Inter-Regular.ttf"
     colon.color = "0xFFFFFFFF"
     colon.translation = [x_translation, y_translation]
     colon.visible = true
@@ -149,7 +192,7 @@ sub onNewComment()
 
     currentWord = createObject("roSGNode", "SimpleLabel")
     currentWord.fontSize = "14"
-    currentWord.fontUri = "pkg:/fonts/Roobert-Regular.ttf"
+    currentWord.fontUri = "pkg:/fonts/Inter-Regular.ttf"
     currentWord.color = "0xFFFFFFFF"
     currentWord.translation = [x_translation, y_translation]
     currentWord.visible = true
@@ -178,7 +221,7 @@ sub onNewComment()
 
                     message_text = createObject("roSGNode", "SimpleLabel")
                     message_text.fontSize = "14"
-                    message_text.fontUri = "pkg:/fonts/Roobert-Regular.ttf"
+                    message_text.fontUri = "pkg:/fonts/Inter-Regular.ttf"
                     message_text.visible = true
                     message_text.text = ""
 
@@ -193,9 +236,9 @@ sub onNewComment()
 
                     x_translation += 35
 
-                    if x_translation >= 370 or word_number = message_chars.Count()
+                    if x_translation >= 230 or word_number = message_chars.Count()
                         x_translation = 0
-                        y_translation += 28
+                        y_translation += 23
                     end if
 
                     is_emote = true
@@ -211,7 +254,7 @@ sub onNewComment()
 
                 message_text = createObject("roSGNode", "SimpleLabel")
                 message_text.fontSize = "14"
-                message_text.fontUri = "pkg:/fonts/Roobert-Regular.ttf"
+                message_text.fontUri = "pkg:/fonts/Inter-Regular.ttf"
                 message_text.visible = true
                 message_text.text = ""
 
@@ -226,9 +269,9 @@ sub onNewComment()
 
                 x_translation += 35
 
-                if x_translation >= 370 or word_number = message_chars.Count()
+                if x_translation >= 230 or word_number = message_chars.Count()
                     x_translation = 0
-                    y_translation += 28
+                    y_translation += 23
                 end if
 
                 is_emote = true
@@ -245,7 +288,7 @@ sub onNewComment()
 
                     message_text = createObject("roSGNode", "SimpleLabel")
                     message_text.fontSize = "14"
-                    message_text.fontUri = "pkg:/fonts/Roobert-Regular.ttf"
+                    message_text.fontUri = "pkg:/fonts/Inter-Regular.ttf"
                     message_text.visible = true
                     message_text.text = ""
 
@@ -260,9 +303,9 @@ sub onNewComment()
 
                     x_translation += 35
 
-                    if x_translation >= 370 or word_number = message_chars.Count()
+                    if x_translation >= 230 or word_number = message_chars.Count()
                         x_translation = 0
-                        y_translation += 28
+                        y_translation += 23
                     end if
 
                     is_emote = true
@@ -280,7 +323,7 @@ sub onNewComment()
 
                     message_text = createObject("roSGNode", "SimpleLabel")
                     message_text.fontSize = "14"
-                    message_text.fontUri = "pkg:/fonts/Roobert-Regular.ttf"
+                    message_text.fontUri = "pkg:/fonts/Inter-Regular.ttf"
                     message_text.visible = true
                     message_text.text = ""
 
@@ -295,9 +338,9 @@ sub onNewComment()
 
                     x_translation += 35
 
-                    if x_translation >= 370 or word_number = message_chars.Count()
+                    if x_translation >= 230 or word_number = message_chars.Count()
                         x_translation = 0
-                        y_translation += 28
+                        y_translation += 23
                     end if
 
                     is_emote = true
@@ -307,19 +350,19 @@ sub onNewComment()
         end if
 
         if not is_emote
-            if (x_translation + currentWordWidth + width) < 370
+            if (x_translation + currentWordWidth + width) < 230
                 temp = message_text.text
                 temp2 = word + " "
                 temp.AppendString(temp2, Len(temp2))
                 message_text.text = temp
                 'appended_last_line = false
-            else if (x_translation + currentWordWidth + width) >= 370
-                if currentWordWidth >= 370
+            else if (x_translation + currentWordWidth + width) >= 230
+                if currentWordWidth >= 230
                     currentWordChars = word.Split("")
                     for each character in currentWordChars
                         width = message_text.localBoundingRect().width
                         appended_last_line = false
-                        if width >= 370
+                        if width >= 230
                             message_text.translation = [ x_translation, y_translation ]
                             group.appendChild(message_text)
 
@@ -327,12 +370,12 @@ sub onNewComment()
                             
                             message_text = createObject("roSGNode", "SimpleLabel")
                             message_text.fontSize = "14"
-                            message_text.fontUri = "pkg:/fonts/Roobert-Regular.ttf"
+                            message_text.fontUri = "pkg:/fonts/Inter-Regular.ttf"
                             message_text.visible = true
                             message_text.text = ""
 
                             x_translation = 0
-                            y_translation += 28
+                            y_translation += 23
                         end if
                         message_text.text += character
                     end for
@@ -342,14 +385,14 @@ sub onNewComment()
                     
                     message_text = createObject("roSGNode", "SimpleLabel")
                     message_text.fontSize = "14"
-                    message_text.fontUri = "pkg:/fonts/Roobert-Regular.ttf"
+                    message_text.fontUri = "pkg:/fonts/Inter-Regular.ttf"
                     message_text.visible = true
                     message_text.text = word
 
                     appended_last_line = false
 
                     x_translation = 0
-                    y_translation += 28
+                    y_translation += 23
                 end if
                 message_text.text += " "
             else
@@ -358,7 +401,7 @@ sub onNewComment()
                 
                 ' message_text = createObject("roSGNode", "SimpleLabel")
                 ' message_text.fontSize = "14"
-                ' message_text.fontUri = "pkg:/fonts/Roobert-Regular.ttf"
+                ' message_text.fontUri = "pkg:/fonts/Inter-Regular.ttf"
                 ' message_text.visible = true
                 ' message_text.text = word + " "
                 
@@ -377,7 +420,7 @@ sub onNewComment()
 
         group.appendChild(message_text)
         
-        y_translation += 28
+        y_translation += 32
     end if
 
     group.appendChild(username)
@@ -397,8 +440,47 @@ sub onNewComment()
         m.translation += y_translation
     end if
 
-    '? "";display_name;"";message
+    '? "";display_name;": ";message
+    'm.chat.clientComment = ""
     m.chat.readyForNextComment = true
 end sub
 
-
+function onKeyEvent(key, press) as Boolean
+    handled = false
+    if press
+        if key = "down" and m.keyboard.hasFocus()
+            m.chatButton.color = "0xBD00FFFF"
+            m.chatButton.setFocus(true)
+            handled = true
+        else if key = "down"
+            m.chatButton.color = "0xBD00FFFF"
+            m.chatButton.setFocus(true)
+            handled = true
+        else if key = "up" and m.chatButton.hasFocus()
+            m.keyboard.setFocus(true)
+            m.chatButton.color = "0x18181BFF"
+            handled = true
+        else if key = "OK" and m.chatButton.hasFocus()
+            m.chat.sendMessage = m.keyboard.text
+            m.keyboard.text = ""
+            m.chatButton.visible = false
+            m.keyboard.visible = false
+            m.chatButton.color = "0x18181BFF"
+            m.chatButton.setFocus(false)
+            m.top.doneFocus = true
+            handled = true
+        else if key = "OK" and not m.keyboard.visible
+            m.keyboard.visible = true
+            m.chatButton.visible = true
+            m.keyboard.setFocus(true)
+        else if key = "back"
+            m.keyboard.text = ""
+            m.chatButton.visible = false
+            m.keyboard.visible = false
+            m.chatButton.color = "0x18181BFF"
+            handled = true
+            m.top.doneFocus = true
+        end if
+    end if
+    return handled
+end function

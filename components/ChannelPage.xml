@@ -14,6 +14,7 @@
         <field id="channelAvatar" type="string" alias="avatar.uri" />
         <field id="channelUsername" type="string" alias="username.text" />
         <field id="videoTitle" type="string" />
+        <field id="streamDurationSeconds" type="Integer" />
     </interface>
 
     <script type="text/brightscript" uri="pkg:/components/ChannelPage.brs" />

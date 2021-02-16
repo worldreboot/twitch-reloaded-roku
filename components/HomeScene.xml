@@ -24,6 +24,7 @@
         <field id="channelAvatar" type="string" alias="channelPage.channelAvatar" />
         <field id="channelUsername" type="string" alias="channelPage.channelUsername" />
         <field id="videoTitle" type="string" alias="channelPage.videoTitle" />
+        <field id="streamDurationSeconds" type="Integer" alias="channelPage.streamDurationSeconds" />
     </interface>
 
     <script type="text/brightscript" uri="pkg:/components/HomeScene.brs" />
@@ -38,7 +39,7 @@
                     width="1358"
                     height="78"
                     translation="[-150,0]" />
-                <Poster translation="[23,27]" uri="pkg:/images/twoku_logo.png" />
+                <Poster translation="[21,26]" uri="pkg:/images/twoku_logo.png" />
                 <!--<SimpleLabel
                     id="searchHeader"
                     translation="[100,50]"
@@ -47,48 +48,48 @@
                     fontUri="pkg:/fonts/Roobert-Bold.ttf" /> -->
                 <SimpleLabel
                     id="categoryButton"
-                    translation="[164,29]"
+                    translation="[163,24]"
                     text="Categories"
                     color="0xEFEFF1FF"
                     fontSize="24"
                     fontUri="pkg:/fonts/Inter-SemiBold.ttf" >
-                    <!--<Rectangle
+                    <Rectangle
                         id="categoryLine"
                         visible="false"
-                        color="0xA970FFFF"
-                        width="175"
-                        height="5"
-                        translation="[0,40]" /> -->
+                        color="0x00FFD1FF"
+                        width="130"
+                        height="3"
+                        translation="[0,51]" />
                 </SimpleLabel> 
                 <SimpleLabel
                     id="liveButton"
-                    translation="[323,29]"
+                    translation="[313,24]"
                     text="Live Channels"
                     color="0x00FFD1FF"
                     fontSize="24"
                     fontUri="pkg:/fonts/Inter-SemiBold.ttf" >
-                    <!--<Rectangle
+                    <Rectangle
                         id="liveLine"
                         visible="true"
-                        color="0xA970FFFF"
-                        width="210"
-                        height="5"
-                        translation="[0,40]" /> -->
+                        color="0x00FFD1FF"
+                        width="165"
+                        height="3"
+                        translation="[0,51]" />
                 </SimpleLabel>
                 <SimpleLabel
                     id="followingButton"
-                    translation="[520,29]"
+                    translation="[498,24]"
                     text="Following"
                     color="0xEFEFF1FF"
                     fontSize="24"
                     fontUri="pkg:/fonts/Inter-SemiBold.ttf" >
-                    <!--<Rectangle
+                    <Rectangle
                         id="followingLine"
                         visible="false"
-                        color="0xA970FFFF"
-                        width="140"
-                        height="5"
-                        translation="[0,40]" /> -->
+                        color="0x00FFD1FF"
+                        width="113"
+                        height="3"
+                        translation="[0,51]" />
                 </SimpleLabel>
                 <!--<SimpleLabel
                     id="searchLabel"
@@ -101,7 +102,7 @@
                     id="searchLabel"
                     height="32" 
                     width="32" 
-                    translation="[1080,29]" 
+                    translation="[1080,24]" 
                     uri="pkg:/images/search.png" 
                     blendColor="0xEFEFF1FF" />
                 <!--<SimpleLabel
@@ -124,7 +125,7 @@
                     id="optionsButton"
                     height="32" 
                     width="32" 
-                    translation="[1145,29]" 
+                    translation="[1145,24]" 
                     uri="pkg:/images/options.png" 
                     blendColor="0xEFEFF1FF" />
             </Group>
@@ -179,11 +180,11 @@
                 focusBitmapUri="pkg:/images/focusIndicator.9.png"
                 rowFocusAnimationStyle = "floatingFocus" />
 
-            <Group id="loggedUserGroup" translation="[1220,15]" visible="false">
+            <Group id="loggedUserGroup" translation="[1220,15]" visible="true">
                 <MaskGroup id="profileImageMask" maskuri = "pkg:/images/profile-mask.png" masksize = "[50,50]" >
                     <Poster id="profileImage" width="50" height="50" />
                 </MaskGroup>
-                <SimpleLabel id="loggedUserName" translation="[60,20]" fontSize = "16" fontUri = "pkg:/fonts/Roobert-SemiBold.ttf" text="Login" />
+                <SimpleLabel id="loggedUserName" translation="[0,20]" fontSize = "16" fontUri = "pkg:/fonts/Roobert-SemiBold.ttf" text="Login" />
             </Group>
         </Group>
 

@@ -21,7 +21,7 @@
             text=""
             color="0xEFEFF1FF"
             fontSize="36"
-            fontUri="pkg:/fonts/Rajdhani-Bold.ttf" />
+            fontUri="pkg:/fonts/JetBrainsMono-Bold.ttf" />
         <SimpleLabel
             translation="[100,302]"
             text="Twoku should log you in soon after you authorize your account for use."
