@@ -1,4 +1,4 @@
-# Twoku (Twitch Reloaded) (alpha)
+# Twoku
 An Improvable™ Twitch app for Roku. Still a little buggy, so feel free to suggest improvements (and code and features).
 
 ## Discord
