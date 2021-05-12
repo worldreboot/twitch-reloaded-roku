@@ -24,13 +24,10 @@ Beta version: TTWOKU (https://my.roku.com/account/add?channel=TTWOKU)
 ### Manual Developer Install
 1. [Enable developer mode for Roku](https://blog.roku.com/developer/developer-setup-guide)
 2. Log into your Roku from your browser using IP from previous step (http://192.168.x.x)
-3. Get your own Twitch client ID from https://dev.twitch.tv/
-4. Get your own App access token (https://dev.twitch.tv/docs/authentication/getting-tokens-oauth#oauth-client-credentials-flow)
-5. Put your client ID (step 3) right after (no spaces) ```CLIENT-ID=``` and put your App access token (step 4) right after (no spaces) ```AUTHORIZATION=``` in the ```env``` file. <em>Note: due to some unresolved whitespace issues, this step may not be correctly done</em>
-6. ZIP (into a ZIP file) all contents of this repo (you do not have to include README.md) (using 7-Zip, WinRAR, etc.)
-7. Upload previous ZIP file in Roku Development Application Installer (step 2)
-8. Press Install
-9. Twoku should now be installed on your Roku
+3. ZIP (into a ZIP file) all contents of this repo (you do not have to include README.md) (using 7-Zip, WinRAR, etc.)
+4. Upload previous ZIP file in Roku Development Application Installer (step 2)
+5. Press Install
+6. Twoku should now be installed on your Roku
 
 ## Supported Features
 <em>Note: some features are not on the GitHub version</em>
