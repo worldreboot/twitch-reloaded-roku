@@ -1,3 +1,5 @@
+![Overview](https://media.discordapp.net/attachments/791115330680389693/803760770931228692/preview.jpg?width=831&height=467)
+
 # Twoku (for Roku)
 An Improvable™ Twitch app for Roku. Still a little buggy, so feel free to suggest improvements (and code and features).
 
@@ -42,6 +44,3 @@ Beta version: TTWOKU (https://my.roku.com/account/add?channel=TTWOKU)
 ## Notable Unsupported Features
 * All clip functionality not mentioned
 * Everything else not mentioned
-
-## Screenshots
-![Overview](https://media.discordapp.net/attachments/791115330680389693/803760770931228692/preview.jpg?width=831&height=467)
