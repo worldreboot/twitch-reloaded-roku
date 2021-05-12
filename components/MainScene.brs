@@ -45,11 +45,11 @@ function init()
     'pubSub = createObject("RoSGNode", "PubSub")
     'pubSub.control = "RUN"
 
-    ' m.ws = createObject("roSGNode", "WebSocketClient")
-    ' m.ws.observeField("on_open", "on_open")
-    ' m.ws.observeField("on_message", "on_message")
-    ' m.ws.open = "wss://pubsub-edge.twitch.tv/"
-    ' 'm.ws.open = "ws://echo.websocket.org/"
+    m.ws = createObject("roSGNode", "WebSocketClient")
+    m.ws.observeField("on_open", "on_open")
+    m.ws.observeField("on_message", "on_message")
+    m.ws.open = "wss://pubsub-edge.twitch.tv/"
+    'm.ws.open = "ws://echo.websocket.org/"
 
     m.stream = createObject("RoSGNode", "ContentNode")
     m.stream["streamFormat"] = "hls"
@@ -142,6 +142,7 @@ sub onChatDoneFocus()
         m.chat.doneFocus = false
     end if
 end sub
+
 ' function on_open(event as object) as void
 '     m.ws.send = ["Hello World"]
 ' end function

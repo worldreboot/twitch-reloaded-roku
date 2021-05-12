@@ -30,7 +30,7 @@ function getStreamLink() as Object
     ' end if
 
     ' stream_link = "http://usher.ttvnw.net/api/channel/hls/" + m.top.streamerRequested + ".m3u8?allow_source=true&allow_spectre=true&type=any&playlist_include_framerate=true&token=" + access_token.token + "&sig=" + access_token.sig
-    ' 'stream_link = "http://usher.ttvnw.net/api/channel/hls/" + m.top.streamerRequested + ".m3u8?allow_source=true&fast_bread=true&p=3737804&play_session_id=ea4af70a988073e598e8c1cab7fc6281&player_backend=mediaplayer&playlist_include_framerate=true&reassignments_supported=true&sig=" + access_token.data.streamPlaybackAccessToken.signature + "&supported_codecs=vp09,avc1&token=" + access_token.data.streamPlaybackAccessToken.value + "&cdm=wv" + "&player_version=1.2.0"
+    'stream_link = "http://usher.ttvnw.net/api/channel/hls/" + m.top.streamerRequested + ".m3u8?allow_source=true&fast_bread=true&p=3737804&play_session_id=ea4af70a988073e598e8c1cab7fc6281&player_backend=mediaplayer&playlist_include_framerate=true&reassignments_supported=true&sig=" + access_token.data.streamPlaybackAccessToken.signature + "&supported_codecs=vp09,avc1&token=" + access_token.data.streamPlaybackAccessToken.value + "&cdm=wv" + "&player_version=1.2.0"
 
     stream_link = "https://ancient-journey-35965.herokuapp.com/stream?streamer=" + m.top.streamerRequested
 

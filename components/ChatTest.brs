@@ -96,7 +96,7 @@ function main()
             m.global.setField("channelTTVFrankerEmotes", assocEmotes)
         end if
 
-        queue = createObject("roArray", 300, false)
+        queue = createObject("roArray", 300, true)
         first = 0
         last = 0
         while true
@@ -104,15 +104,15 @@ function main()
             received = ""
             '? "tcpListen isConnected " tcpListen.IsConnected()
             if m.top.sendMessage <> "" and m.top.readyForNextComment
-                ? "tcpListen isConnected " tcpListen.IsConnected()
-                ? "second eOK " tcpListen.eOK()
-                ? "second IsReadable " tcpListen.IsReadable()
-                ? "second IsWritable " tcpListen.IsWritable()
-                ? "second IsException " tcpListen.IsException()
-                ? "second eSuccess " tcpListen.eSuccess()
+                ' ? "tcpListen isConnected " tcpListen.IsConnected()
+                ' ? "second eOK " tcpListen.eOK()
+                ' ? "second IsReadable " tcpListen.IsReadable()
+                ' ? "second IsWritable " tcpListen.IsWritable()
+                ' ? "second IsException " tcpListen.IsException()
+                ' ? "second eSuccess " tcpListen.eSuccess()
                 sent = tcpListen.SendStr("PRIVMSG #" + m.top.channel + " :" + m.top.sendMessage + Chr(13) + Chr(10))
-                ? "Send Status " tcpListen.Status()
-                ? "sent ;) " sent
+                ' ? "Send Status " tcpListen.Status()
+                ' ? "sent ;) " sent
                 if sent > 0
                     m.top.nextComment = ""
                     m.top.clientComment = m.top.sendMessage
@@ -132,6 +132,7 @@ function main()
             if tcpListen.GetCountRcvBuf() = 0 and tcpListen.IsReadable()
                 ? "chat connection failed?"
                 'tcpListen.Close()
+                tcpListen = createObject("roStreamSocket")
                 tcpListen.SetSendToAddress(addr)
                 'tcpListen.SetMessagePort(messagePort)
                 'tcpListen.notifyReadable(true)
@@ -154,10 +155,13 @@ function main()
 
             if not received = ""
                 if Left(received, 4) = "PING"
+                    ? "PONG"
                     tcpListen.SendStr("PONG :tmi.twitch.tv" + Chr(13) + Chr(10))
                     '? "send PONG Status " tcpListen.Status()
                 else
-                    queue[last] = received
+                    'queue[last] = received
+                    queue.push(received)
+                    ' ? "Message queue: " queue.count()
                     if last + 1 < 100
                         last += 1
                     else
@@ -166,9 +170,9 @@ function main()
                 end if
             end if
 
-            if m.top.readyForNextComment and not queue[first] = invalid
-                m.top.nextComment = queue[first]
-                queue[first] = invalid
+            if m.top.readyForNextComment and queue.count() > 0
+                m.top.nextComment = queue.shift()
+                'queue[first] = invalid
                 if first + 1 < 100
                     first += 1
                 else
