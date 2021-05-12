@@ -44,10 +44,4 @@ Beta version: TTWOKU (https://my.roku.com/account/add?channel=TTWOKU)
 * Everything else not mentioned
 
 ## Screenshots
-![Image of categories](https://i.imgur.com/M6nS93X.jpg)
-
-![Image of live channels](https://i.imgur.com/mFmkztf.jpg)
-
-![Image of selected category](https://i.imgur.com/ulzJFuK.jpg)
-
-![Image of search](https://i.imgur.com/EMXEfUE.jpg)
+![Overview](https://media.discordapp.net/attachments/791115330680389693/803760770931228692/preview.jpg?width=831&height=467)
