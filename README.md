@@ -5,7 +5,6 @@ An Improvable™ Twitch app for Roku. Still a little buggy, so feel free to sugg
 
 ## Discord
 If you have any questions or comments.
-
 https://discord.gg/kV5SXkZ
 
 ## Support
