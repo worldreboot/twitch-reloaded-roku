@@ -13,7 +13,7 @@ If you would like to support Twoku:
 If you have an idea (feature, etc.) that you would like to contribute (with code) to the project with, DM one of the developers on the Discord with your idea. Otherwise, if you just have an idea, post it in the ```#features``` channel on the Discord server.
 
 ## How to Install
-<em>Note: the GitHub version is currently outdated because of some security concerns (use the access code for the updated version). If you are in Mexico or Brazil the access code version might not work due to Roku's region restrictions. Instead, try to install the app manually. </em>
+<em>If you are in Mexico or Brazil the access code version might not work due to Roku's region restrictions. Instead, try to install the app manually. </em>
 ### With Access Code
 Install with access code: TWOKU (https://my.roku.com/account/add?channel=TWOKU)
 
