@@ -1,3 +1,4 @@
+![Splash](https://i.imgur.com/lDRu49L.png)
 ![Overview](https://media.discordapp.net/attachments/791115330680389693/803760770931228692/preview.jpg?width=831&height=467)
 
 # Twoku (for Roku)
@@ -14,7 +15,7 @@ If you would like to support Twoku:
  [![Support with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YRPQDG5UY26DS&currency_code=CAD&source=url)
 
 ## Contributing
-If you have an idea (feature, etc.) that you would like to contribute (with code) to the project with, DM one of the developers on the Discord with your idea. Otherwise, if you just have an idea, post it in the ```#features``` channel on the Discord server.
+If you have an idea (feature, etc.) that you would like to contribute (with code) to the project with, DM one of the developers on the Discord with your idea. Otherwise, if you just have an idea, post it in the ```#features``` channel on the Discord server. You can also just fork this repository as its up to date and implement the feature yourself.
 
 ## How to Install
 <em>If you are in Mexico or Brazil the access code version might not work due to Roku's region restrictions. Instead, try to install the app manually. </em>
@@ -32,7 +33,6 @@ Beta version: TTWOKU (https://my.roku.com/account/add?channel=TTWOKU)
 6. Twoku should now be installed on your Roku
 
 ## Supported Features
-<em>Note: some features are not on the GitHub version</em>
 * Browsing live channels and categories by viewer count (press down to load more)
 * Search (with buggy auto-complete) (Press * on remote to load Search menu)
 * Viewing followed live streamers
