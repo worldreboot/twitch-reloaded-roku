@@ -27,7 +27,7 @@ Beta version: TTWOKU (https://my.roku.com/account/add?channel=TTWOKU)
 ### Manual Developer Install
 1. [Enable developer mode for Roku](https://blog.roku.com/developer/developer-setup-guide)
 2. Log into your Roku from your browser using IP from previous step (http://192.168.x.x)
-3. ZIP (into a ZIP file) all contents of this repo (you do not have to include README.md) (using 7-Zip, WinRAR, etc.)
+3. ZIP (into a ZIP file) all contents of this repo (you do not have to include README.md) (using 7-Zip, WinRAR, etc.). Do not include extra top level directories in the ZIP file, otherwise you may get the error: "Install Failure: No manifest. Invalid package.".
 4. Upload previous ZIP file in Roku Development Application Installer (step 2)
 5. Press Install
 6. Twoku should now be installed on your Roku
