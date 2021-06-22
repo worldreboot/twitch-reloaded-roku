@@ -1,4 +1,5 @@
-![Splash](https://i.imgur.com/lDRu49L.png)
+![Splash](https://i.imgur.com/LXhqf4J.png)
+
 ![Overview](https://media.discordapp.net/attachments/791115330680389693/803760770931228692/preview.jpg?width=831&height=467)
 
 # 🔮 Twoku (for Roku)
