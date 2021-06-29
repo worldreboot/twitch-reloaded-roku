@@ -55,10 +55,10 @@ function init()
     'pubSub = createObject("RoSGNode", "PubSub")
     'pubSub.control = "RUN"
 
-    m.ws = createObject("roSGNode", "WebSocketClient")
-    m.ws.observeField("on_open", "on_open")
-    m.ws.observeField("on_message", "on_message")
-    m.ws.open = "wss://pubsub-edge.twitch.tv/"
+    ' m.ws = createObject("roSGNode", "WebSocketClient")
+    ' m.ws.observeField("on_open", "on_open")
+    ' m.ws.observeField("on_message", "on_message")
+    ' m.ws.open = "wss://pubsub-edge.twitch.tv/"
     'm.ws.open = "ws://echo.websocket.org/"
 
     m.stream = createObject("RoSGNode", "ContentNode")
@@ -81,6 +81,7 @@ function init()
         sec.Write("UserToken", "")
         sec.Write("RefreshToken", "")
         sec.Write("LoggedInUser", "")
+        ? "RESETTED"
         setReset("true")
     end if
     
@@ -178,6 +179,7 @@ sub onLoginFinish()
 end sub
 
 sub onBearerTokenReceived()
+
     m.global.addFields({appBearerToken: m.getToken.appBearerToken})
 end sub
 
@@ -299,7 +301,7 @@ end function
 
 function setReset(word as String) as Void
     sec = createObject("roRegistrySection", "LoggedInUserData")
-    sec.Write("Reset", "true")
+    sec.Write("Reset", word)
     sec.Flush()
 end function
 
