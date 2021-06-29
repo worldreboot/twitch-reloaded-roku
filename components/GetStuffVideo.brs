@@ -89,27 +89,46 @@ function getStreamLink() as Object
     cnt = 0
     for line = 2 to list.Count() - 1
         stream_info = list[line + 1].Split(",")
-        stream_quality = Int(Val(stream_info[3].Split("x")[1]))
-        stream_framerate = Int(Val(stream_info[5].Split("=")[1]))
-        compatible_link = false
-        last_stream_link = list[line + 2]
-        if m.global.videoFramerate >= stream_framerate
-            if m.global.videoQuality <= 1 and stream_quality <= 1080
-                compatible_link = true
-            else if m.global.videoQuality <= 3 and stream_quality <= 720
-                compatible_link = true
-            else if m.global.videoQuality = 4 and stream_quality <= 480
-                compatible_link = true
-            else if m.global.videoQuality = 5 and stream_quality <= 360
-                compatible_link = true
-            else if m.global.videoQuality = 6 and stream_quality <= 160
-                compatible_link = true
+        stream_quality = invalid
+        stream_framerate = invalid
+        for info = 0 to stream_info.Count() - 1
+            info_parsed = stream_info[info].Split("=")
+            if info_parsed[0] = "RESOLUTION"
+                stream_quality = Int(Val(info_parsed[1].Split("x")[1]))
+            else if info_parsed[0] = "VIDEO"
+                if info_parsed[1] = (chr(34) + "chunked" + chr(34))
+                    stream_framerate = 30
+                else
+                    stream_framerate = Int(Val(info_parsed[1]))
+                end if
             end if
+        end for
+
+        if stream_framerate = invalid
+            stream_framerate = 30
         end if
 
-        if compatible_link
-            link = list[line + 2]
-            exit for
+        if not stream_quality = invalid
+            compatible_link = false
+            last_stream_link = list[line + 2]
+            if m.global.videoFramerate >= stream_framerate
+                if m.global.videoQuality <= 1 and stream_quality <= 1080
+                    compatible_link = true
+                else if m.global.videoQuality <= 3 and stream_quality <= 720
+                    compatible_link = true
+                else if m.global.videoQuality = 4 and stream_quality <= 480
+                    compatible_link = true
+                else if m.global.videoQuality = 5 and stream_quality <= 360
+                    compatible_link = true
+                else if m.global.videoQuality = 6 and stream_quality <= 160
+                    compatible_link = true
+                end if
+            end if
+
+            if compatible_link
+                link = list[line + 2]
+                exit for
+            end if
         end if
 
         line += 2
