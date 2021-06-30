@@ -99,7 +99,7 @@ function getStreamLink() as Object
                 if info_parsed[1] = (chr(34) + "chunked" + chr(34))
                     stream_framerate = 30
                 else
-                    stream_framerate = Int(Val(info_parsed[1]))
+                    stream_framerate = Int(Val(info_parsed[1].Split("p")[1]))
                 end if
             end if
         end for
