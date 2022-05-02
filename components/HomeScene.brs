@@ -127,6 +127,7 @@ sub onNewUser()
     m.headerRect.translation = [-150 - width, 0]
     m.loggedUserGroup.translation = [1220 - width, 15]
     m.loggedUserGroup.visible = true
+    m.followingButton.visible = true
 end sub
 
 sub onGetFocus()
@@ -189,12 +190,13 @@ sub onHomeLoad()
     m.browseOfflineFollowingList.visible = false
     m.offlineChannelList.visible = false
     m.offlineChannelsLabel.visible = false
+    m.followingButton.visible = false
     m.browseList.visible = true
     m.getStreams.gameRequested = ""
     m.getStreams.offset = "0"
     m.getStreams.pagination = ""
     m.offset = 0
-    m.getStreams.control = "RUN"
+    m.getStreams.control = "RUN" 
 end sub
 
 sub onSearchResultChange()
@@ -465,6 +467,9 @@ sub onKeyEvent(key, press) as Boolean
                     if m.currentlyFocusedButton = m.currentlySelectedButton and m.currentlyFocusedButton < 5
                         m.currentlyFocusedButton += 1
                     end if
+                    if m.loggedUserName.text = "Login" and m.currentlyFocusedButton = 2
+                        m.currentlyFocusedButton += 1
+                    end if
                 end if
                 'm.actualBrowseButtons[m.currentlyFocusedButton].color = "0x00FFD1FF"
                 if m.currentlyFocusedButton <> 3 and m.currentlyFocusedButton <> 4
@@ -482,6 +487,9 @@ sub onKeyEvent(key, press) as Boolean
                 end if
                 if m.currentlyFocusedButton > 0 and not (m.currentlyFocusedButton = 1 and m.currentlySelectedButton = 0)
                     m.currentlyFocusedButton -= 1
+                    if m.loggedUserName.text = "Login" and m.currentlyFocusedButton = 2
+                        m.currentlyFocusedButton -= 1
+                    end if
                     if m.currentlyFocusedButton = m.currentlySelectedButton and m.currentlyFocusedButton > 0
                         m.currentlyFocusedButton -= 1
                     end if
