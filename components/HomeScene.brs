@@ -196,7 +196,7 @@ sub onHomeLoad()
     m.getStreams.offset = "0"
     m.getStreams.pagination = ""
     m.offset = 0
-    m.getStreams.control = "RUN" 
+    m.getStreams.control = "RUN"
 end sub
 
 sub onSearchResultChange()
