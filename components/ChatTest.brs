@@ -101,6 +101,7 @@ function main()
         last = 0
         waitingComment = ""
         waitingCommentAge = 0
+        sendWaitingMessage = true
         while true
             get = ""
             received = ""
@@ -172,6 +173,10 @@ function main()
                 end if
             end if
 
+            if sendWaitingMessage and m.top.readyForNextComment
+                sendWaitingMessage = false
+                m.top.nextComment = "display-name=System;user-type= :test!test@test.tmi.twitch.tv PRIVMSG #test :Delaying Chat by 30 seconds to sync with the stream"
+            end if
             if m.top.readyForNextComment and queue.count() > 0
                 ' Check if delay is complete using irc timestamp
                 oldestComment = queue.peek()
@@ -195,7 +200,7 @@ function main()
                     queue.pop()
                 else
                     commentAge = currentTimestamp - commentTimestamp
-                    ' This block useful for debugging
+                    ' This block is useful for debugging
                     ' if waitingComment <> oldestComment or waitingCommentAge <> commentAge
                     '     waitingComment = oldestComment
                     '     waitingCommentAge = commentAge
