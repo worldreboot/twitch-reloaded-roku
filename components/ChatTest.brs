@@ -175,7 +175,7 @@ function main()
 
             if sendWaitingMessage and m.top.readyForNextComment
                 sendWaitingMessage = false
-                m.top.nextComment = "display-name=System;user-type= :test!test@test.tmi.twitch.tv PRIVMSG #test :Delaying Chat by 30 seconds to sync with the stream"
+                m.top.nextComment = "display-name=System;user-type= :test!test@test.tmi.twitch.tv PRIVMSG #test :Delaying Chat by 30 seconds to sync to stream  " ' whitespace at end is removed by comment parser
             end if
             if m.top.readyForNextComment and queue.count() > 0
                 ' Check if delay is complete using irc timestamp
