@@ -99,6 +99,8 @@ function main()
         queue = createObject("roArray", 300, true)
         first = 0
         last = 0
+        waitingComment = ""
+        waitingCommentAge = 0
         while true
             get = ""
             received = ""
@@ -160,7 +162,7 @@ function main()
                     '? "send PONG Status " tcpListen.Status()
                 else
                     'queue[last] = received
-                    queue.push(received)
+                    queue.unshift(received)
                     ' ? "Message queue: " queue.count()
                     if last + 1 < 100
                         last += 1
@@ -171,13 +173,46 @@ function main()
             end if
 
             if m.top.readyForNextComment and queue.count() > 0
-                m.top.nextComment = queue.shift()
-                'queue[first] = invalid
-                if first + 1 < 100
-                    first += 1
+                ' Check if delay is complete using irc timestamp
+                oldestComment = queue.peek()
+                commentComponents = oldestComment.Split(";")
+                currentTimestamp = CreateObject("roDateTime").AsSeconds()
+                commentTimestamp = ""
+                comment = ""
+                for each section in commentComponents
+                    if Left(section, 11) = "tmi-sent-ts"
+                        ' tmi-sent-ts=1550868292494 (in ms) -> 1550868292 (in secs)
+                        timestamp_ms = Right(section, Len(section) - 12)
+                        ' convert millisecond epoch to second epoch
+                        timestamp_s = Left(timestamp_ms, 10)
+                        commentTimestamp = Val(timestamp_s, 10)
+                    else if Left(section, 9) = "user-type"
+                        comment = section
+                    end if
+                end for
+                ' This will discard anything in the queue that doesn't have "tmi-sent-ts"
+                if GetInterface(commentTimestamp, "ifString") <> invalid
+                    queue.pop()
                 else
-                    first = 0
+                    commentAge = currentTimestamp - commentTimestamp
+                    ' This block useful for debugging
+                    ' if waitingComment <> oldestComment or waitingCommentAge <> commentAge
+                    '     waitingComment = oldestComment
+                    '     waitingCommentAge = commentAge
+                    '     ? "Message " comment " was sent " waitingCommentAge " secs ago"
+                    '     ? "Queue size: " queue.count()
+                    ' end if
+                    if commentAge > 30 ' measured in seconds
+                        m.top.nextComment = queue.pop()
+                        'queue[first] = invalid
+                        if first + 1 < 100
+                            first += 1
+                        else
+                            first = 0
+                        end if
+                    end if
                 end if
+
             end if
 
         end while
