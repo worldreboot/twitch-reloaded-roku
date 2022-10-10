@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="GetUser" extends="Task">
+
+    <interface>
+        <field id="loginRequested" type="string" />
+        <field id="searchResults" type="assocarray" />
+        <field id="currentlyLiveStreamerIds" type="assocarray" />
+    </interface>
+    
+    <script type="text/brightscript" uri="GetUser.brs" />
+    <script type="text/brightscript" uri="UrlFunctions.brs" />
+
+</component>

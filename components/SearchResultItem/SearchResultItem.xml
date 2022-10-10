@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="SearchResultItem" extends="Group">
+
+    <interface>
+        <field id="itemContent" type="node" onChange="showContent" />
+    </interface>
+
+    <script type="text/brightscript" uri="SearchResultItem.brs" />
+
+    <children>
+
+        <MaskGroup
+            id="itemIcon"
+            maskuri="pkg:/images/profile-mask.png"
+            maskSize="[50,50]" >
+            <Poster 
+                id="image"
+                width="50"
+                height="50" />
+        </MaskGroup>
+        
+        <SimpleLabel
+            id="itemTitle"
+            translation="[60,10]"
+            fontUri="pkg:/fonts/Roobert-Regular.ttf" />    
+
+    </children>
+
+</component>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="GetStuff" extends="Task">
+
+    <interface>
+        <field id="streamerRequested" type="string" />
+        <field id="streamUrl" type="uri" />
+    </interface>
+    
+    <script type="text/brightscript" uri="GetStuff.brs" />
+    <script type="text/brightscript" uri="UrlFunctions.brs" />
+
+</component>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="BrowseCategoryItem" extends="Group">
+
+    <interface>
+        <field id="itemContent" type="node" onChange="showContent" />
+    </interface>
+
+    <script type="text/brightscript" uri="BrowseCategoryItem.brs" />
+
+    <children>
+
+        <Poster 
+            id="itemThumbnail"
+            height = "190"
+			width = "136"
+			loadWidth = "136"
+			loadHeight = "190"
+			loadDisplayMode = "scaleToFit" />
+        <Label
+            id = "itemTitle"
+            height = "30"
+            width = "136"
+            horizAlign = "left"
+            color = "0xFFFFFFFF"
+            translation = "[0, 205]" >
+            <Font role = "font" uri = "pkg:/fonts/Roobert-SemiBold.ttf" size = "16" />
+        </Label>
+        <Label
+            id = "itemViewers"
+            height = "30"
+            width = "136"
+            horizAlign = "left"
+            color = "0xFFFFFFFF"
+            translation = "[0, 225]" >
+            <Font role = "font" uri = "pkg:/fonts/Roobert-Regular.ttf" size = "14" />
+		</Label>
+
+    </children>
+
+</component>
