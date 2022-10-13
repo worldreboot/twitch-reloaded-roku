@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="SidebarItem" extends="Group">
+
+    <interface>
+     <!--
+        <field id="focused" type="bool" value="false" onChange="onGetFocus" />
+        <field id="streamerSelected" type="string" alwaysNotify="true" />
+   -->
+      <field id="itemContent" type="roAssociativeArray" onChange="showContent" />
+      <field id = "focusPercent" type = "float" onChange = "showfocus" />
+    </interface>
+
+    <script type="text/brightscript" uri="SidebarItem.brs" />
+
+    <children>
+         <Group
+              id="itemGroup">
+              <MaskGroup
+                   id="itemMask"
+                   maskUri="pkg:/images/profile-mask.png">
+                   <Poster
+                        id="streamerProfile"
+                        uri=""
+                        width="50"
+                        height="50"
+                        translation="[0,0]" />
+               </MaskGroup>
+               <Group
+                    id="focusedGroup"
+                    translation="[0,0]"
+                    opacity="0.0">
+                   <Poster
+                        id="boundingBox"
+                        uri="pkg:/images/barFocusIndicator.9.png"
+                        width="240"
+                        height="50"
+                        translation="[64,-5]" />
+                   <Label
+                        id="streamerName"
+                        text=""
+                        translation="[90,0]"/>
+                   <Label
+                        id="gameId"
+                        width="175"
+                        height="20"
+                        text=""
+                        color="0xC26BE1FF"
+                        translation="[90,20]"/>
+                    <Poster
+                      id="selectionIndicator"
+                      uri="pkg:/images/purple_circle.png"
+                      width="52"
+                      height="52"
+                      translation="[0,0]" />
+               </Group>
+          </Group>
+<!--
+
+real font example:
+ font="font:MediumBoldSystemFont"
+
+
+
+ font=" pkg:/fonts/Inter-Regular.ttf"
+ todo:bounding box's width
+                -->
+
+    </children>
+
+</component>
+
+
+<!--
+
+
+group = createObject("roSGNode", "Group")
+group.translation = "[5," + translation.ToStr() + "]"
+
+mask_group = createObject("roSGNode", "MaskGroup")
+mask_group.maskuri = "pkg:/images/profile-mask.png"
+mask_group.masksize = m.maskSize
+'mask_group.maskOffset = "[0,0]"
+'mask_group.visible = true
+
+profile_image = createObject("roSGNode", "Poster")
+profile_image.uri = stream.profile_image_url
+'? "image > "; profile_image.uri
+profile_image.width = 50
+profile_image.height = 50
+profile_image.visible = true
+
+stream_user = createObject("roSGNode", "SimpleLabel")
+stream_user.text = stream.user_name
+stream_user.translation = "[90,0]"
+stream_user.visible = false
+stream_user.fontSize = "18"
+stream_user.fontUri = "pkg:/fonts/Inter-SemiBold.ttf"
+
+stream_game = createObject("roSGNode", "Label")
+stream_game.text = stream.game_id
+'stream_game.width = "175"
+stream_game.translation = "[90,20]"
+stream_game.color = "0xC26BE1FF"
+stream_game.visible = false
+'stream_game.fontSize = "12"
+game_font = createObject("roSGNode", "Font")
+'game_font.role = "font" 
+game_font.uri = "pkg:/fonts/Inter-Regular.ttf" 
+game_font.size = "14"
+stream_game.font = game_font
+'stream_game.fontUri="pkg:/fonts/Roobert-Regular.ttf"
+
+
+red_rectangle = createObject("roSGNode", "Poster")
+red_rectangle.uri = "pkg:/images/red_rectangle.9.png"
+red_rectangle.width = stream_viewers.localBoundingRect().width + 23
+red_rectangle.height = 28 'stream_viewers.localBoundingRect().height + 5
+red_rectangle.translation = "[285,5]"
+red_rectangle.visible = false
+
+login_name = createObject("roSGNode", "SimpleLabel")
+login_name.text = stream.login
+login_name.visible = false
+
+live = createObject("roSGNode", "Poster")
+live.uri = "pkg:/images/live.png"
+live.width = 8
+live.height = 8
+live.translation = "[290,15]"
+live.visible = false
+
+purple_circle = createObject("roSGNode", "Poster")
+purple_circle.uri = "pkg:/images/purple_circle.png"
+purple_circle.width = 52
+purple_circle.height = 52
+'purple_circle.translation = "[290,15]"
+purple_circle.visible = false
+
+' selected = createObject("roSGNode", "Rectangle")
+' selected.translation = "[0,-5]"
+' selected.height = 60
+' selected.width = 300
+' selected.color = "0x26262CFF"
+' selected.visible = false
+
+selected = createObject("roSGNode", "Poster")
+selected.translation = "[64,-5]"
+selected.uri = "pkg:/images/barFocusIndicator.9.png"
+selected.height = 50
+'? "WIDTHS: " stream_user.localBoundingRect().width " " stream_game.localBoundingRect().width
+if stream_user.localBoundingRect().width >= stream_game.localBoundingRect().width
+    selected.width = stream_user.localBoundingRect().width + 36
+else
+    selected.width = stream_game.localBoundingRect().width + 36
+end if
+'selected.width = 300
+selected.visible = false
+
+mask_group.appendChild(profile_image)
+
+group.appendChild(selected)
+group.appendChild(mask_group)
+group.appendChild(stream_user)
+group.appendChild(stream_game)
+group.appendChild(red_rectangle)
+group.appendChild(stream_viewers)
+group.appendChild(live)
+group.appendChild(login_name)
+group.appendChild(purple_circle)
+
+m.top.appendChild(group)
+
+translation += 60
+
+-->

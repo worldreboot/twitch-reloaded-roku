@@ -1,7 +1,9 @@
 sub init()
+     m.sidebarMarkupList = m.top.FindNode("sidebarMarkupList")
     m.top.focusable = true
     m.children = []
     for child = 2 to m.top.getChildCount() - 1
+' what does this do??'
         m.children.push(m.top.getChild(child))
     end for
     m.currentIndex = 0
@@ -18,14 +20,34 @@ sub init()
     end if
 end sub
 
+
 sub onFollowedStreamsChange()
     translation = 40
     '? "we got there"
-    m.top.removeChildren(m.children)
+ ''''''  m.top.removeChildren(m.children)
     m.currentIndex = 0
     m.min = 0
     m.max = 9
+    
+    fs = m.top.followedStreams
+    
+    For i=0 To fs.Count() - 1 Step +1 
+          s = createObject("roSGNode", "SidebarItem")
+          fs[i].yOffset = 320 + (i * 60)
+          fs[i].maskSize = m.maskSize
+          s.itemContent = fs[i]
+          m.top.appendChild(s)
+    End For
+
+     'for each stream in m.top.followedStreams
+     ''     s = createObject("roSGNode", "SidebarItem")
+     ''          s.itemContent = stream
+     ''     m.top.appendChild(s)
+    'end for
+    
+    
     for each stream in m.top.followedStreams
+
         group = createObject("roSGNode", "Group")
         group.translation = "[5," + translation.ToStr() + "]"
 
