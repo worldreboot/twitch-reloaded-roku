@@ -28,7 +28,7 @@ sub showContent()
 end sub
 
 sub showfocus()
-      'm.itemcursor.opacity = m.top.focusPercent
+      m.focusedGroup.opacity = m.top.focusPercent
       'm.itemposter.opacity = m.top.focusPercent
  end sub
 

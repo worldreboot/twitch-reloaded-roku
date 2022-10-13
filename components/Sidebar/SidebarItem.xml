@@ -9,6 +9,7 @@
    -->
       <field id="itemContent" type="roAssociativeArray" onChange="showContent" />
       <field id = "focusPercent" type = "float" onChange = "showfocus" />
+      <field id = "streamLink" type = "string" />
     </interface>
 
     <script type="text/brightscript" uri="SidebarItem.brs" />
