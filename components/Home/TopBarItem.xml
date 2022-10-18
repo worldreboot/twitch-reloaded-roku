@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="TopBarItem" extends="Group">
+
+    <interface>
+      <field id="itemContent" type="node" onChange="itemContentChanged" />
+      <field id="focusPercent" type="float" onChange="showfocus" />
+    </interface>
+
+    <script type="text/brightscript" uri="TopBarItem.brs" />
+
+    <children>
+         <Group
+              id="itemGroup">
+                 <Label 
+                      id="testlbl"
+                      text="test"/>
+          </Group>
+    </children>
+</component>

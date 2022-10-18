@@ -32,6 +32,7 @@
 
     <children>
         <Group id="browseMain" translation="[0,0]">
+             
             <Group id="browseButtons">
                 <Rectangle
                     visible="true"
@@ -187,6 +188,30 @@
                 </MaskGroup>
                 <SimpleLabel id="loggedUserName" translation="[0,20]" fontSize = "16" fontUri = "pkg:/fonts/Roobert-SemiBold.ttf" text="Login" />
             </Group>
+            
+            
+            
+            
+          <MarkupGrid
+               id="topBarButtons"
+               translation="[160, 20]"
+               itemSize="[50,50]"
+               itemSpacing="[11,0]"
+               numColumns="18"
+               numRows="1"
+               width="1100"
+               height="80"
+               itemComponentName="TopBarItem" 
+               fixedLayout="true">
+                    <ContentNode id="topBarButtonsContent" role = "content" >
+                             <ContentNode title = "Categories" x="0" y="0" w="3" h="1"/> 
+                             <ContentNode title = "Live Channels" x="3" y="0" w="3" h="1" />
+                             <ContentNode title = "Following" x="6" y="0" w="3" h="1" /> 
+                             <ContentNode title = "se" x="15" y="0" w="1" h="1"/> 
+                             <ContentNode title = "op" x="16" y="0" w="1" h="1" /> 
+                             <ContentNode title = "log" x="17" y="0" w="1" h="1" /> 
+                  </ContentNode>
+          </MarkupGrid>
         </Group>
 
         <ChannelPage
