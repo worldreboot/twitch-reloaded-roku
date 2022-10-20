@@ -5,19 +5,9 @@ sub init()
     m.browseOfflineFollowingList = m.top.findNode("browseOfflineFollowingList")
 
     m.offlineChannelList = m.top.findNode("offlineChannelList")
-
-    m.categoryButton = m.top.findNode("categoryButton")
-    m.categoryLine = m.top.findNode("categoryLine")
-    m.liveButton = m.top.findNode("liveButton")
-    m.liveLine = m.top.findNode("liveLine")
     
-'' i might start from here: low amount of mentions
-    m.followingButton = m.top.findNode("followingButton")
-    m.followingLine = m.top.findNode("followingLine")
 
-    m.searchLabel = m.top.findNode("searchLabel")
     'm.loginButton = m.top.findNode("loggedUserName")'m.top.findNode("loginButton")
-    m.optionsButton = m.top.findNode("optionsButton")
     m.offlineChannelsLabel = m.top.findNode("offlineChannelsLabel")
 
     'm.actualBrowseButtons = [ m.categoryButton, m.liveButton, m.followingButton, m.searchLabel, m.loginButton, m.optionsButton ]
@@ -31,7 +21,6 @@ sub init()
     m.profileImage = m.top.findNode("profileImage")
     m.loggedUserName = m.top.findNode("loggedUserName")
 
-    m.actualBrowseButtons = [ m.categoryButton, m.liveButton, m.followingButton, m.searchLabel, m.optionsButton, m.loggedUserName ]
 
     m.headerRect = m.top.findNode("headerRect")
 
@@ -93,7 +82,54 @@ sub init()
     end if
 
     m.browseList.setFocus(true)
+    
+    m.lastSelectedScene = 1
+    
+    m.currentSubscene = m.browseList
+    
+    m.tbb = m.top.findNode("topBarButtons")
+    m.tbb.observeField("itemSelected", "onTopBarItemSelected")
+    m.tbb.jumpToItem = m.lastSelectedScene
+   '' m.tbb.content.getChild(3).title = "test from homscene"
+    
+    
 end sub
+
+sub onSelectedSubsceneChange()
+     m.currentSubscene.setFocus(true)
+end sub
+
+sub onTopBarItemSelected()
+     i = m.tbb.itemSelected
+     
+     if i < 3
+          m.lastSelectedScene = i
+     else 
+          m.tbb.jumpToItem = m.lastSelectedScene
+     end if
+     
+     if i = 0 
+          m.browseCategoryList.setFocus(true)
+          m.currentlySelectedButton = 0
+          onCategorySelect()
+     else if i = 1
+          m.getCategories.pagination = ""
+          m.browseList.setFocus(true)
+          m.currentlySelectedButton = 1
+          onHomeLoad()
+     else if i = 2
+          m.browseFollowingList.setFocus(true)
+          m.followingListIsFocused = true
+          onFollowingSelect()
+     else if i = 3
+          m.top.buttonPressed = "search"
+     else if i = 4
+          m.top.buttonPressed = "options"
+     else if i = 5
+          m.top.buttonPressed = "login"
+     end if
+end sub
+
 
 sub onStreamerSelected()
     m.channelPage.streamerSelectedName = m.top.streamerSelectedName
@@ -431,148 +467,17 @@ sub onKeyEvent(key, press) as Boolean
     handled = false
     if m.top.visible = true and press
         if (m.browseList.hasFocus() = true or m.browseCategoryList.hasFocus() = true or m.browseFollowingList.hasFocus() = true) and key = "up"
-            ' Reset focused button when user goes on button header
-            if m.currentlyFocusedButton = 0
-                m.actualBrowseButtons[1].color = "0x00FFD1FF"
-                m.currentlyFocusedButton = 1
-            else
-                m.actualBrowseButtons[0].color = "0x00FFD1FF"
-                m.currentlyFocusedButton = 0
-            end if
+          m.tbb.setFocus(true)
 
-            m.browseButtons.setFocus(true)
             handled = true
-        else if m.browseButtons.hasFocus() = true
-            if key = "right"
-                if m.currentlyFocusedButton <> 3 and m.currentlyFocusedButton <> 4
-                    m.actualBrowseButtons[m.currentlyFocusedButton].color = "0xEFEFF1FF"
-                else
-                    m.actualBrowseButtons[m.currentlyFocusedButton].blendColor = "0xEFEFF1FF"
-                end if
-                if m.currentlyFocusedButton < 5
-                    m.currentlyFocusedButton += 1
-                    if m.currentlyFocusedButton = m.currentlySelectedButton and m.currentlyFocusedButton < 5
-                        m.currentlyFocusedButton += 1
-                    end if
-                end if
-                'm.actualBrowseButtons[m.currentlyFocusedButton].color = "0x00FFD1FF"
-                if m.currentlyFocusedButton <> 3 and m.currentlyFocusedButton <> 4
-                    m.actualBrowseButtons[m.currentlyFocusedButton].color = "0x00FFD1FF"
-                else
-                    m.actualBrowseButtons[m.currentlyFocusedButton].blendColor = "0x00FFD1FF"
-                end if
-                handled = true
-            else if key = "left"
-                'm.actualBrowseButtons[m.currentlyFocusedButton].color = "0xEFEFF1FF"
-                if m.currentlyFocusedButton <> 3 and m.currentlyFocusedButton <> 4
-                    m.actualBrowseButtons[m.currentlyFocusedButton].color = "0xEFEFF1FF"
-                else
-                    m.actualBrowseButtons[m.currentlyFocusedButton].blendColor = "0xEFEFF1FF"
-                end if
-                if m.currentlyFocusedButton > 0 and not (m.currentlyFocusedButton = 1 and m.currentlySelectedButton = 0)
-                    m.currentlyFocusedButton -= 1
-                    if m.currentlyFocusedButton = m.currentlySelectedButton and m.currentlyFocusedButton > 0
-                        m.currentlyFocusedButton -= 1
-                    end if
-                end if
-                'm.actualBrowseButtons[m.currentlyFocusedButton].color = "0x00FFD1FF"
-                if m.currentlyFocusedButton <> 3 and m.currentlyFocusedButton <> 4
-                    m.actualBrowseButtons[m.currentlyFocusedButton].color = "0x00FFD1FF"
-                else
-                    m.actualBrowseButtons[m.currentlyFocusedButton].blendColor = "0x00FFD1FF"
-                end if
-                handled = true
-            else if key = "down"
-                ' Reset button colours to unfocused colours when user focuses away from header
-                for button = 0 to 5
-                    if button <> 3 and button <> 4
-                        m.actualBrowseButtons[button].color = "0xEFEFF1FF"
-                    else
-                        m.actualBrowseButtons[button].blendColor = "0xEFEFF1FF"
-                    end if
-                end for
-
-                if m.currentlySelectedButton = 0
-                    m.categoryButton.color = "0x00FFD1FF"
-                    'm.liveButton.color = "0xEFEFF1FF"
-                    m.browseCategoryList.setFocus(true)
-                    m.currentlyFocusedButton = 0
-                    handled = true
-                else if m.currentlySelectedButton = 1
-                    m.liveButton.color = "0x00FFD1FF"
-                    'm.categoryButton.color = "0xEFEFF1FF"
-                    m.browseList.setFocus(true)
-                    m.currentlyFocusedButton = 1
-                    handled = true
-                else if m.currentlySelectedButton = 2
-                    m.followingButton.color = "0x00FFD1FF"
-                    'm.categoryButton.color = "0xEFEFF1FF"
-                    m.browseFollowingList.setFocus(true)
-                    m.followingListIsFocused = true
-                    m.currentlyFocusedButton = 2
-                    handled = true
-                end if
-
-            else if key = "OK"
-                if m.currentlyFocusedButton = 3
-                    m.top.buttonPressed = "search"
-                    m.searchLabel.blendColor = "0xEFEFF1FF"
-                    m.liveButton.color = "0x00FFD1FF"
-                    handled = true
-                else if m.currentlyFocusedButton = 5
-                    m.top.buttonPressed = "login"
-                    'm.loginButton.color = "0xEFEFF1FF"
-                    handled = true
-                else if m.currentlyFocusedButton = 4
-                    m.top.buttonPressed = "options"
-                    m.optionsButton.blendColor = "0xEFEFF1FF"
-                    handled = true
-                else if m.currentlyFocusedButton = 1
-                    m.actualBrowseButtons[m.currentlySelectedButton].color = "0xEFEFF1FF"
-                    m.searchLabel.blendColor = "0xEFEFF1FF"
-                    m.loggedUserName.color = "0xEFEFF1FF"
-                    m.liveButton.color = "0x00FFD1FF"
-                    m.liveLine.visible = true
-                    m.categoryLine.visible = false
-                    m.categoryButton.color = "0xEFEFF1FF"
-                    m.followingLine.visible = false
-                    m.getCategories.pagination = ""
-                    m.browseList.setFocus(true)
-                    m.currentlySelectedButton = 1
-                    onHomeLoad()
-                    handled = true
-                else if m.currentlyFocusedButton = 0
-                    m.actualBrowseButtons[m.currentlySelectedButton].color = "0xEFEFF1FF"
-                    m.searchLabel.blendColor = "0xEFEFF1FF"
-                    m.loggedUserName.color = "0xEFEFF1FF"
-                    m.categoryButton.color = "0x00FFD1FF"
-                    m.categoryLine.visible = true
-                    m.liveLine.visible = false
-                    m.liveButton.color = "0xEFEFF1FF"
-                    m.followingLine.visible = false
-                    m.browseCategoryList.setFocus(true)
-                    m.currentlySelectedButton = 0
-                    onCategorySelect()
-                    handled = true
-                else if m.currentlyFocusedButton = 2
-                    m.actualBrowseButtons[m.currentlyFocusedButton].color = "0x00FFD1FF"
-                    m.categoryButton.color = "0xEFEFF1FF"
-                    m.liveButton.color = "0xEFEFF1FF"
-                    m.categoryLine.visible = false
-                    m.liveLine.visible = false
-                    m.followingLine.visible = true
-                    m.currentlySelectedButton = 2
-                    m.browseFollowingList.setFocus(true)
-                    m.followingListIsFocused = true
-                    onFollowingSelect()
-                    handled = true
-                end if
-            end if 
+            else if m.tbb.hasFocus() = true and key = "down"
+          ' tofix: return focus to main'
+          
         else if (m.browseList.hasFocus() or m.browseCategoryList.hasFocus() or m.browseFollowingList.hasFocus() or m.browseOfflineFollowingList.hasFocus() or m.offlineChannelList.hasFocus() or m.channelPage.visible) and key = "left"
-            'm.browseButtons.translation = "[200, 0]"
-            'm.browseList.translation = "[300,165]"
-            'm.browseCategoryList.translation = "[300,165]"
-            'm.browseMain.translation = "[250, 0]"
+
+            
+            'tofix: followbar/sidebar is selected even if it has NO items'
+            
             m.followBar.setFocus(true)
             m.followBar.focused = true
             handled = true

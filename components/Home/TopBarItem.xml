@@ -4,7 +4,8 @@
 
     <interface>
       <field id="itemContent" type="node" onChange="itemContentChanged" />
-      <field id="focusPercent" type="float" onChange="showfocus" />
+      <field id="itemHasFocus" type="float" onChange="showFocus" />
+      <field id="width" type="float"  />
     </interface>
 
     <script type="text/brightscript" uri="TopBarItem.brs" />
@@ -12,9 +13,25 @@
     <children>
          <Group
               id="itemGroup">
-                 <Label 
-                      id="testlbl"
-                      text="test"/>
+               <SimpleLabel
+                    id="topButtonText"
+                    text=""
+                    color="0xEFEFF1FF"
+                    fontSize="24"
+
+                    fontUri="pkg:/fonts/Inter-SemiBold.ttf"/>
+               <Poster
+                    id="topButtonImage"
+                    height="32"
+                    width="32"
+                    translation="[0,0]"
+                    uri=""
+                    blendColor="0xEFEFF1FF"
+                    visible="true" />
+     <!--          <MaskGroup id="profileImageMask" maskuri = "pkg:/images/profile-mask.png" masksize = "[50,50]" visible="false" >
+                    <Poster id="profileImage" width="50" height="50" />
+               </MaskGroup>
+          -->
           </Group>
     </children>
 </component>

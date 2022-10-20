@@ -25,6 +25,7 @@
         <field id="channelUsername" type="string" alias="channelPage.channelUsername" />
         <field id="videoTitle" type="string" alias="channelPage.videoTitle" />
         <field id="streamDurationSeconds" type="Integer" alias="channelPage.streamDurationSeconds" />
+        
     </interface>
 
     <script type="text/brightscript" uri="HomeScene.brs" />
@@ -35,11 +36,11 @@
              
             <Group id="browseButtons">
                 <Rectangle
-                    visible="true"
                     id="headerRect"
                     color="0x222222FF"
                     width="1358"
                     height="78"
+                    
                     translation="[-150,0]" />
                 <Poster translation="[21,26]" uri="pkg:/images/twoku_logo.png" />
                 <!--<SimpleLabel
@@ -48,6 +49,7 @@
                     text="Browse"
                     fontSize="48"
                     fontUri="pkg:/fonts/Roobert-Bold.ttf" /> -->
+                    <!--
                 <SimpleLabel
                     id="categoryButton"
                     translation="[163,24]"
@@ -92,7 +94,7 @@
                         width="113"
                         height="3"
                         translation="[0,51]" />
-                </SimpleLabel>
+                </SimpleLabel>-->
                 <!--<SimpleLabel
                     id="searchLabel"
                     translation="[735,29]"
@@ -100,13 +102,14 @@
                     color="0xEFEFF1FF"
                     fontSize="18"
                     fontUri="pkg:/fonts/Roobert-SemiBold.ttf" /> -->
-                <Poster 
+                
+                <!--<Poster 
                     id="searchLabel"
                     height="32" 
                     width="32" 
                     translation="[1080,24]" 
                     uri="pkg:/images/search.png" 
-                    blendColor="0xEFEFF1FF" />
+                    blendColor="0xEFEFF1FF" />-->
                 <!--<SimpleLabel
                     id="loginButton"
                     translation="[845,29]"
@@ -123,13 +126,13 @@
                     fontSize="18"
                     fontUri="pkg:/fonts/Roobert-SemiBold.ttf" >
                 </SimpleLabel> -->
-                <Poster 
+               <!-- <Poster 
                     id="optionsButton"
                     height="32" 
                     width="32" 
                     translation="[1145,24]" 
                     uri="pkg:/images/options.png" 
-                    blendColor="0xEFEFF1FF" />
+                    blendColor="0xEFEFF1FF" />-->
             </Group>
             <RowList 
                 id="browseList"
@@ -194,22 +197,23 @@
             
           <MarkupGrid
                id="topBarButtons"
-               translation="[160, 20]"
-               itemSize="[50,50]"
-               itemSpacing="[11,0]"
+               translation="[120, 15]"
+               itemSize="[64,62]"
+               itemSpacing="[0,0]"
                numColumns="18"
                numRows="1"
-               width="1100"
-               height="80"
-               itemComponentName="TopBarItem" 
-               fixedLayout="true">
+               itemComponentName="TopBarItem"
+               fixedLayout="true"
+               focusBitmapUri="pkg:/images/focusindicatorline_unfocused.9.png"
+               focusFootprintBitmapUri="pkg:/images/focusindicatorline.9.png">
+
                     <ContentNode id="topBarButtonsContent" role = "content" >
-                             <ContentNode title = "Categories" x="0" y="0" w="3" h="1"/> 
-                             <ContentNode title = "Live Channels" x="3" y="0" w="3" h="1" />
-                             <ContentNode title = "Following" x="6" y="0" w="3" h="1" /> 
-                             <ContentNode title = "se" x="15" y="0" w="1" h="1"/> 
-                             <ContentNode title = "op" x="16" y="0" w="1" h="1" /> 
-                             <ContentNode title = "log" x="17" y="0" w="1" h="1" /> 
+                             <ContentNode x="0" y="0" w="3" h="1"   title = "Categories" /> 
+                             <ContentNode x="3" y="0" w="3" h="1"   title = "Live Channels" />
+                             <ContentNode x="6" y="0" w="3" h="1"   title = "Following" /> 
+                             <ContentNode x="15" y="0" w="1" h="1" title = "search" HDPosterUrl="pkg:/images/search.png" /> 
+                             <ContentNode x="16" y="0" w="1" h="1" title = "options" HDPosterUrl="pkg:/images/options.png" /> 
+                             <ContentNode x="17" y="0" w="1" h="1" title = "Login" ShortDescriptionLine1 = "pkg:/fonts/Roobert-SemiBold.ttf" ShortDescriptionLine2="16" /> 
                   </ContentNode>
           </MarkupGrid>
         </Group>
