@@ -47,6 +47,7 @@
             <BrowseLiveList />
             <BrowseCategoryList />
             <BrowseFollowingList />
+            
             <Topbar/>
         </Group>
 
@@ -54,11 +55,6 @@
             id="channelPage"
             translation="[78,78]"
             visible="false" />
-
-        <OfflineChannelList
-            id="offlineChannelList"
-            visible="false"
-            translation="[100,500]" />
 
         <FollowedStreamsBar 
             id="followBar"

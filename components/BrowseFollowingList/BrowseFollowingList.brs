@@ -4,6 +4,8 @@ sub init()
      m.b2 = m.top.findNode("offlineChannelsLabel")
      m.b3 = m.top.findNode("browseOfflineFollowingList")
      m.bfl.observeField("itemFocused", "onItemFocused")
+     'm.browseOfflineFollowingList = m.top.findNode("browseOfflineFollowingList")
+     
 end sub
 
 sub onItemFocused()

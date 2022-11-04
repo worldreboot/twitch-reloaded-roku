@@ -35,7 +35,7 @@ sub showUserLogin()
      m.topButtonImage.width = "50"
      m.topButtonText.text = ic.title
      m.topButtonText.translation = "[60,20]"
-     m.profileImageMask.masksize = "["+ic.Rating+","+ic.Rating+"]"
+     m.profileImageMask.masksize = [Val(ic.Rating), Val(ic.Rating)]
      m.profileImageMask.maskuri ="pkg:/images/profile-mask.png"
      'm.top.appendChild(m.profileImageMask)
 end sub

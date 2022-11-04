@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="BrowseOfflineChannelItem" extends="Group">
+
+    <interface>
+         <field id="itemContent" type="node" onChange="showContent" />
+        <field id="itemHasFocus" type="bool" alwaysNotify="true" onChange="itemFocusChange" />
+    </interface>
+
+    <script type="text/brightscript" uri="BrowseOfflineChannelItem.brs" />
+
+    <children>
+         <MaskGroup
+              id="itemMask"
+              maskUri="pkg:/images/profile-mask-150.png"
+              opacity="0.5">
+              <Poster 
+                    id="itemThumbnail"
+                    loadWidth = "150"
+                    loadHeight = "150"
+                    loadDisplayMode = "scaleToFit" />
+          </MaskGroup>
+          <Group
+               id="nameBox"
+               visible="false">
+               <Poster
+                    id="nameBoundingBox"
+                    uri="pkg:/images/verticalFocusIndicator.9.png"
+                    loadDisplayMode="scaleToFill"
+                    height="32">
+                    <SimpleLabel
+                         id="channelName"
+                         fontSize="18"
+                         fontUri = "pkg:/fonts/Inter-SemiBold.ttf"
+                         translation="[4,7]"/>
+               </Poster>
+          </Group>
+    </children>
+</component>
+
+<!--
+
+m.indicator = createObject("roSGNode", "Group")
+m.indicator.visible = false
+
+circle = createObject("roSGNode", "Poster")
+circle.uri = "pkg:/images/offlineChannelIndicator.png"
+circle.translation = [0, -165]
+circle.visible = false
+
+nameBox = createObject("roSGNode", "Poster")
+nameBox.uri = "pkg:/images/verticalFocusIndicator.9.png"
+nameBox.visible = true
+
+stream_user = createObject("roSGNode", "SimpleLabel")
+stream_user.translation = "[5,7]"
+stream_user.visible = true
+stream_user.fontSize = "18"
+stream_user.fontUri = "pkg:/fonts/Inter-SemiBold.ttf"
+
+nameBox.appendChild(stream_user)
+m.indicator.appendChild(circle)
+m.indicator.appendChild(nameBox)
+
+m.top.appendChild(m.indicator)
+
+-->

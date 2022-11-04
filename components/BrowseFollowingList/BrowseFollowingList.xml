@@ -8,38 +8,41 @@
     <script type="text/brightscript" uri="BrowseFollowingList.brs" />
 
     <children>
-         <Group id="browseFollowingListGroup">
-         <RowList 
-            id="browseFollowingList"
-            itemComponentName="BrowseChannelItem"
-            translation = "[120,138]"
-            numRows = "2"
-            rowItemSize = "[[320,180]]"
-            rowItemSpacing = "[[30,0]]"
-            itemSize = "[1030,275]"
-            focusBitmapUri="pkg:/images/focusIndicator.9.png"
-            rowFocusAnimationStyle = "floatingFocus"
-            visible="false"/>
-            
-            <SimpleLabel
+         <Group id="browseFollowingListGroup" 
+              translation="[120,0]">
+          <RowList 
+               id="browseFollowingList"
+               itemComponentName="BrowseChannelItem"
+               translation = "[0,138]"
+               numRows = "2"
+               rowItemSize = "[[320,180]]"
+               rowItemSpacing = "[[30,0]]"
+               itemSize = "[1030,275]"
+               focusBitmapUri="pkg:/images/focusIndicator.9.png"
+               rowFocusAnimationStyle = "floatingFocus"
+               visible="false"/>
+          <SimpleLabel
                 id="offlineChannelsLabel"
-                translation="[120,700]"
+                translation="[0,700]"
                 text="Offline Channels"
                 color="0xEFEFF1FF"
                 fontSize="18"
                 visible="false"
                 fontUri="pkg:/fonts/Roobert-SemiBold.ttf" />
-            <RowList 
+          <RowList 
                 id="browseOfflineFollowingList"
                 itemComponentName="BrowseOfflineChannelItem"
-                translation = "[120,750]"
+                translation = "[0,300]"
                 numRows = "2"
                 rowItemSize = "[[150,150]]"
-                rowItemSpacing = "[[30,0]]"
+                rowItemSpacing = "[[32,0]]"
                 itemSpacing = "[0,-70]"
-                itemSize = "[1050,300]"
+                itemSize = "[1200,250]"
+                scrollSpeed="1000"
                 focusBitmapUri="pkg:/images/focusIndicator.9.png"
-                rowFocusAnimationStyle = "floatingFocus" />
-           </Group>
+                drawFocusFeedback="false"
+                rowFocusAnimationStyle = "floatingFocus"
+                visible="false" />
+          </Group>
     </children>
 </component>

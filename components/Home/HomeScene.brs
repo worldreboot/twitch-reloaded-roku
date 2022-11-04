@@ -3,7 +3,6 @@ sub init()
     m.browseCategoryList = m.top.findNode("browseCategoryList")
     m.browseFollowingList = m.top.findNode("browseFollowingList")
     m.browseOfflineFollowingList = m.top.findNode("browseOfflineFollowingList")
-    m.offlineChannelList = m.top.findNode("offlineChannelList")
     m.offlineChannelsLabel = m.top.findNode("offlineChannelsLabel")
 
     m.channelPage = m.top.findNode("channelPage")
@@ -23,7 +22,7 @@ sub init()
     m.browseFollowingList.observeField("itemFocused", "onBrowseFollowing")
 
     'm.browseOfflineFollowingList.observeField("itemSelected", "onBrowseItemSelect")
-    m.offlineChannelList.observeField("channelSelected", "openItemChannelPage")
+    m.browseOfflineFollowingList.observeField("itemSelected", "openItemChannelPage")
     m.followBar.observeField("streamerSelected", "openItemChannelPage")
 
     'm.channelPage.observeField("videoUrl", "onVideoSelectedFromChannel")
@@ -78,7 +77,6 @@ sub refreshHomeSubscenes()
      m.browseList.visible = false
      m.browseFollowingList.visible = false
      m.browseOfflineFollowingList.visible = false
-     m.offlineChannelList.visible = false
      m.offlineChannelsLabel.visible = false
 end sub
 
@@ -177,16 +175,6 @@ sub onStreamUrlChange()
     m.top.streamUrl = m.getStuff.streamUrl
 end sub
 
-'tofix: unused. It seems browseOfflineFollowingList is unused too. See if it can be deleted'
-sub onBrowseItemSelect()
-     
-     if m.browseOfflineFollowingList.hasFocus()
-        m.top.streamerSelectedName =  m.browseOfflineFollowingList.content.getChild(m.browseOfflineFollowingList.rowItemSelected[0]).getChild(m.browseOfflineFollowingList.rowItemSelected[1]).ShortDescriptionLine1
-        m.top.streamerSelectedThumbnail =  m.browseOfflineFollowingList.content.getChild(m.browseOfflineFollowingList.rowItemSelected[0]).getChild(m.browseOfflineFollowingList.rowItemSelected[1]).HDPosterUrl
-        
-    end if
-end sub
-
 sub onBrowseCategoryItemSelect()
      list = m.browseCategoryList
      item = list.content.getChild(list.rowItemSelected[0]).getChild(list.rowItemSelected[1])
@@ -204,10 +192,8 @@ sub openItemChannelPage()
           list = m.browseFollowingList
      else  if m.followBar.hasFocus()
           itemName = m.followBar.streamerSelected
-     else if m.offlineChannelList.hasFocus()
-          itemName = m.offlineChannelList.channelSelected
-     'else if m.browseOfflineFollowingList.hasFocus()
-     ''     list = m.browseOfflineFollowingList
+     else if m.browseOfflineFollowingList.hasFocus()
+          list = m.browseOfflineFollowingList
      end if
 
      refreshHomeSubscenes()
@@ -278,7 +264,6 @@ sub onSearchResultChange()
         m.appLaunchComplete = true
     end if
 end sub
-
 
 sub onCategoryResultChange()
     lastFocusedRow = 0
@@ -397,18 +382,17 @@ end sub
 
 sub onBrowseFollowing()
     if m.browseFollowingList.itemFocused = m.numRowsInFollowingList
-        m.offlineChannelsLabel.translation = [100,465]
+        m.offlineChannelsLabel.translation = [0,465]
         'm.browseOfflineFollowingList.translation = [100,500]
-        m.offlineChannelList.visible = true
+        m.browseOfflineFollowingList.visible = true
     else
-        m.offlineChannelsLabel.translation = [100,700]
-        m.browseOfflineFollowingList.translation = [100,750]
-        m.offlineChannelList.visible = false
+        m.offlineChannelsLabel.translation = [0,700]
+        m.browseOfflineFollowingList.translation = [0,500]
+        m.browseOfflineFollowingList.visible = false
     end if
 end sub
 
 sub onGetOfflineFollowed()
-    m.offlineChannelList.offlineChannels = m.getOfflineFollowed.offlineFollowedUsers
     lastFocusedRow = 0
     if m.browseOfflineFollowingList.rowItemFocused[0] <> invalid
         lastFocusedRow = m.browseOfflineFollowingList.rowItemFocused[0]
@@ -458,7 +442,7 @@ sub onKeyEvent(key, press) as Boolean
        handled = true
           
           'tofix: knowledge: This works because the lists don't handle it first
-        else if (m.browseList.hasFocus() or m.browseCategoryList.hasFocus() or m.browseFollowingList.hasFocus() or m.browseOfflineFollowingList.hasFocus() or m.offlineChannelList.hasFocus() or m.channelPage.visible) and key = "left"
+        else if (m.browseList.hasFocus() or m.browseCategoryList.hasFocus() or m.browseFollowingList.hasFocus() or m.browseOfflineFollowingList.hasFocus() or m.channelPage.visible) and key = "left"
             'tofix: followbar/sidebar is selected even if it has NO items'
             
             m.followBar.setFocus(true)
@@ -482,14 +466,11 @@ sub onKeyEvent(key, press) as Boolean
             getMoreCategories()
             handled = true
         else if m.browseFollowingList.hasFocus() = true and key = "down"
-            m.offlineChannelsLabel.translation = [100,465]
+            m.offlineChannelsLabel.translation = [0,465]
             'm.browseOfflineFollowingList.translation = [100,500]
-            'm.browseOfflineFollowingList.setFocus(true)
-            m.offlineChannelList.visible = true
-            m.offlineChannelList.setFocus(true)
+            m.browseOfflineFollowingList.setFocus(true)
             handled = true
-        'else if m.browseOfflineFollowingList.hasFocus() = true and key = "up"
-        else if m.offlineChannelList.hasFocus() and key = "up"
+        else if m.browseOfflineFollowingList.hasFocus() and key = "up"
             m.browseFollowingList.setFocus(true)
             handled = true
         'end if
