@@ -24,18 +24,17 @@ sub init()
 
     m.headerRect = m.top.findNode("headerRect")
 
-    m.browseList.observeField("itemSelected", "onBrowseItemSelect")
-    m.browseCategoryList.observeField("itemSelected", "onBrowseItemSelect")
-    m.browseFollowingList.observeField("itemSelected", "onBrowseItemSelect")
+    m.browseList.observeField("itemSelected", "openItemChannelPage")
+    m.browseCategoryList.observeField("itemSelected", "onBrowseCategoryItemSelect")
+    m.browseFollowingList.observeField("itemSelected", "openItemChannelPage")
     m.browseFollowingList.observeField("itemFocused", "onBrowseFollowing")
 
     'm.browseOfflineFollowingList.observeField("itemSelected", "onBrowseItemSelect")
-    m.offlineChannelList.observeField("channelSelected", "onBrowseItemSelect")
+    m.offlineChannelList.observeField("channelSelected", "openItemChannelPage")
+    m.followBar.observeField("streamerSelected", "openItemChannelPage")
 
     'm.channelPage.observeField("videoUrl", "onVideoSelectedFromChannel")
     m.channelPage.observeField("streamUrl", "onLiveStreamSelectedFromChannel")
-
-    m.followBar.observeField("streamerSelected", "onBrowseItemSelect")
 
     m.getStreams = createObject("roSGNode", "GetStreams")
     m.getStreams.observeField("searchResults", "onSearchResultChange")
@@ -53,14 +52,16 @@ sub init()
 
     m.top.observeField("visible", "onGetFocus")
     m.top.observeField("currentlyLiveStreamerIds", "onGetFollowedStreams")
+   
+   'tofix: currently required in the process to load a channel'
     m.top.observeField("streamerSelectedName", "onStreamerSelected")
 
     deviceInfo = CreateObject("roDeviceInfo")
-    uiResolutionWidth = deviceInfo.GetUIResolution().width
+    m.uiResolutionWidth = deviceInfo.GetUIResolution().width
 
-    if uiResolutionWidth = 1920
-        m.top.findNode("profileImageMask").maskSize = [75, 75]
-    end if
+    'if uiResolutionWidth = 1920
+     ''   m.top.findNode("profileImageMask").maskSize = [75, 75]
+    'end if
 
     m.offset = 0
     m.append = false
@@ -73,19 +74,15 @@ sub init()
     m.currentlySelectedButton = 1
     m.currentlyFocusedButton = 1
 
-    m.followingListIsFocused = true
-
-    m.wasLastScene = false
+    'm.wasLastScene = false
 
     if m.top.visible = true
         onHomeLoad()
     end if
 
     m.browseList.setFocus(true)
-    
-    m.lastSelectedScene = 1
-    
     m.currentSubscene = m.browseList
+    m.lastSelectedScene = 1
     
     m.tbb = m.top.findNode("topBarButtons")
     m.tbb.observeField("itemSelected", "onTopBarItemSelected")
@@ -93,34 +90,38 @@ sub init()
    '' m.tbb.content.getChild(3).title = "test from homscene"
     
     
+    
+    
+end sub
+
+
+sub refreshHomeSubscenes()
+     m.browseCategoryList.visible = false
+     m.browseList.visible = false
+     m.browseFollowingList.visible = false
+     m.browseOfflineFollowingList.visible = false
+     m.offlineChannelList.visible = false
+     m.offlineChannelsLabel.visible = false
 end sub
 
 sub onSelectedSubsceneChange()
-     m.currentSubscene.setFocus(true)
+     m.top.currentSubscene.setFocus(true)
 end sub
+
 
 sub onTopBarItemSelected()
      i = m.tbb.itemSelected
      
-     if i < 3
-          m.lastSelectedScene = i
-     else 
-          m.tbb.jumpToItem = m.lastSelectedScene
-     end if
-     
+     refreshHomeSubscenes()
      if i = 0 
-          m.browseCategoryList.setFocus(true)
-          m.currentlySelectedButton = 0
+          m.currentSubscene = m.browseCategoryList
           onCategorySelect()
      else if i = 1
           m.getCategories.pagination = ""
-          m.browseList.setFocus(true)
-          m.currentlySelectedButton = 1
+          m.currentSubscene = m.browseList
           onHomeLoad()
      else if i = 2
-          m.browseFollowingList.setFocus(true)
-          m.followingListIsFocused = true
-          onFollowingSelect()
+          m.currentSubscene = m.browseFollowingList
      else if i = 3
           m.top.buttonPressed = "search"
      else if i = 4
@@ -128,24 +129,24 @@ sub onTopBarItemSelected()
      else if i = 5
           m.top.buttonPressed = "login"
      end if
+     
+     if i < 3
+          m.lastSelectedScene = i
+          m.currentSubscene.setFocus(true)
+     else 
+          m.tbb.jumpToItem = m.lastSelectedScene
+     end if
+     
 end sub
 
 
+
+'tofix: should be out of use already, but a check is needed. It seems its called in categoryscene'
 sub onStreamerSelected()
+     refreshHomeSubscenes()
     m.channelPage.streamerSelectedName = m.top.streamerSelectedName
     m.channelPage.streamerSelectedThumbnail = m.top.streamerSelectedThumbnail
-
-    if m.currentlySelectedButton = 0
-        m.browseCategoryList.visible = false
-    else if m.currentlySelectedButton = 1
-        m.browseList.visible = false
-    else if m.currentlySelectedButton = 2
-        m.browseFollowingList.visible = false
-        m.offlineChannelsLabel.visible = false
-        m.offlineChannelList.visible = false
-        m.browseOfflineFollowingList.visible = false
-    end if
-    m.wasLastScene = true
+    'm.wasLastScene = true
     m.channelPage.visible = true
 end sub
 
@@ -154,34 +155,42 @@ sub onLiveStreamSelectedFromChannel()
 end sub
 
 sub onNewUser()
-    ? "HomeScene > loggedInUserProfileImage > " m.top.loggedInUserProfileImage
-    m.loggedUserName.text = m.top.loggedInUserName
-    m.loggedUserName.color = "0xEFEFF1FF"
-    m.loggedUserName.translation = [60, 20]
-    m.profileImage.uri = m.top.loggedInUserProfileImage
-    width = m.loggedUserName.localBoundingRect().width + 10
-    m.searchLabel.translation = [1080 - width, 24]
-    m.optionsButton.translation = [1145 - width, 24]
-    m.headerRect.translation = [-150 - width, 0]
-    m.loggedUserGroup.translation = [1220 - width, 15]
-    m.loggedUserGroup.visible = true
+     x = 13
+     w = 3
+     if len(m.top.loggedInUserName) > 15
+          x = 12
+          w = 4
+     end if
+     for i = 3 to 5
+          updateX = {"x":x.toStr()}
+          m.tbb.content.getChild(i).update(updateX)
+          x++
+     end for
+     
+     maskSize = "50"
+     if m.uiResolutionWidth >= 1920
+          maskSize = "75"
+     end if
+     uLogin = {"w":w.toStr(), "title":m.top.loggedInUserName, "HDPosterUrl":m.top.loggedInUserProfileImage, "Rating":maskSize}
+     m.tbb.content.getChild(5).update(uLogin)
+     
+     m.tbb.fixedLayout = false
+     m.tbb.fixedLayout = true
+     
+     width = w*64
+     m.headerRect.translation = [-90 - width, 0]
 end sub
 
 sub onGetFocus()
+     print "got visible true at Home"
     if m.top.visible = true
-        if m.followBar.focused
-            m.followBar.setFocus(true)
-        else if m.browseCategoryList.visible = true
-            m.browseCategoryList.setFocus(true)
-        else if m.browseList.visible = true
-            m.browseList.setFocus(true)
-        else if m.browseFollowingList.visible = true
-            m.browseFollowingList.setFocus(true)
-            m.followingListIsFocused = true
-        else if m.channelPage.visible
+        if m.channelPage.visible
             'm.channelPage.setFocus(true)
             m.channelPage.visible = false
             m.channelPage.visible = true
+        else
+          m.currentSubscene.setFocus(true)
+        
         end if
     end if
 end sub
@@ -192,43 +201,60 @@ sub onStreamUrlChange()
     m.top.streamUrl = m.getStuff.streamUrl
 end sub
 
-'tofix: what is this?
+'tofix: unused. It seems browseOfflineFollowingList is unused too.'
 sub onBrowseItemSelect()
-    if m.followBar.hasFocus()
-        'm.getStuff.streamerRequested = m.followBar.streamerSelected
-        'm.getStuff.control = "RUN"
-        m.top.streamerSelectedThumbnail = ""
-        m.top.streamerSelectedName = m.followBar.streamerSelected
-        ? "selected: "; m.top.streamerSelectedName
-    else if m.browseList.visible = true
-        'm.getStuff.streamerRequested = m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).ShortDescriptionLine1
-        'm.getStuff.control = "RUN"
-        m.top.streamerSelectedName =  m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).ShortDescriptionLine1
-        m.top.streamerSelectedThumbnail =  m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).HDPosterUrl
-        'm.top.streamerSelectedThumbnail =  m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).HDPosterUrl
-        m.wasLastScene = true
-    else if m.browseCategoryList.visible = true
-        m.top.categorySelected = m.browseCategoryList.content.getChild(m.browseCategoryList.rowItemSelected[0]).getChild(m.browseCategoryList.rowItemSelected[1]).ShortDescriptionLine1
-    else if m.browseFollowingList.hasFocus()
-        m.top.streamerSelectedName =  m.browseFollowingList.content.getChild(m.browseFollowingList.rowItemSelected[0]).getChild(m.browseFollowingList.rowItemSelected[1]).ShortDescriptionLine1
-        m.top.streamerSelectedThumbnail =  m.browseFollowingList.content.getChild(m.browseFollowingList.rowItemSelected[0]).getChild(m.browseFollowingList.rowItemSelected[1]).HDPosterUrl
-    else if m.browseOfflineFollowingList.hasFocus()
+     
+     if m.browseOfflineFollowingList.hasFocus()
         m.top.streamerSelectedName =  m.browseOfflineFollowingList.content.getChild(m.browseOfflineFollowingList.rowItemSelected[0]).getChild(m.browseOfflineFollowingList.rowItemSelected[1]).ShortDescriptionLine1
         m.top.streamerSelectedThumbnail =  m.browseOfflineFollowingList.content.getChild(m.browseOfflineFollowingList.rowItemSelected[0]).getChild(m.browseOfflineFollowingList.rowItemSelected[1]).HDPosterUrl
-    else if m.offlineChannelList.hasFocus()
-
-        m.top.streamerSelectedName = m.offlineChannelList.channelSelected
-        m.top.streamerSelectedThumbnail = ""
+        
     end if
 end sub
 
+sub onBrowseCategoryItemSelect()
+     list = m.browseCategoryList
+     item = list.content.getChild(list.rowItemSelected[0]).getChild(list.rowItemSelected[1])
+     m.top.categorySelected = item.ShortDescriptionLine1
+end sub
+
+'tofix: this should be handled by the row lists, but the attributes seem to be being wached'
+sub openItemChannelPage()
+     list = invalid
+     itemName = invalid
+     
+     if m.browseList.hasFocus()
+          list = m.browseList
+     else if m.browseFollowingList.hasFocus()
+          list = m.browseFollowingList
+     else  if m.followBar.hasFocus()
+          itemName = m.followBar.streamerSelected
+     else if m.offlineChannelList.hasFocus()
+          itemName = m.offlineChannelList.channelSelected
+     'else if m.browseOfflineFollowingList.hasFocus()
+     ''     list = m.browseOfflineFollowingList
+     end if
+
+     refreshHomeSubscenes()
+     
+     if itemName = invalid
+          item = list.content.getChild(list.rowItemSelected[0]).getChild(list.rowItemSelected[1])
+          m.channelPage.streamerSelectedName = item.ShortDescriptionLine1
+          m.channelPage.streamerSelectedThumbnail = item.HDPosterUrl
+     else
+          m.channelPage.streamerSelectedName = itemName
+          'm.channelPage.streamerSelectedThumbnail = ""
+     end if
+
+     m.channelPage.visible = true
+end sub
+
 sub onHomeLoad()
-    m.browseCategoryList.visible = false
-    m.browseFollowingList.visible = false
-    m.browseOfflineFollowingList.visible = false
-    m.offlineChannelList.visible = false
-    m.offlineChannelsLabel.visible = false
-    m.browseList.visible = true
+    'm.browseCategoryList.visible = false
+    'm.browseFollowingList.visible = false
+    'm.browseOfflineFollowingList.visible = false
+    'm.offlineChannelList.visible = false
+    'm.offlineChannelsLabel.visible = false
+    'm.browseList.visible = true
     m.getStreams.gameRequested = ""
     m.getStreams.offset = "0"
     m.getStreams.pagination = ""
@@ -323,25 +349,18 @@ sub onCategoryResultChange()
 end sub
 
 sub onCategorySelect()
-    m.browseList.visible = false
-    m.browseFollowingList.visible = false
-    m.browseOfflineFollowingList.visible = false
-    m.offlineChannelList.visible = false
-    m.offlineChannelsLabel.visible = false
-    m.browseCategoryList.visible = true
+    'm.browseList.visible = false
+    'm.browseFollowingList.visible = false
+    'm.browseOfflineFollowingList.visible = false
+    'm.offlineChannelList.visible = false
+    'm.offlineChannelsLabel.visible = false
+    'm.browseCategoryList.visible = true
     m.getCategories.searchText = ""
     m.getCategories.offset = "0"
     m.offsetCategory = 0
     m.getCategories.control = "RUN"
 end sub
 
-sub onFollowingSelect()
-    m.browseList.visible = false
-    m.browseCategoryList.visible = false
-    m.browseFollowingList.visible = true
-    'm.browseOfflineFollowingList.visible = true
-    m.offlineChannelsLabel.visible = true
-end sub
 
 sub getMoreChannels()
     m.offset += 25
@@ -469,35 +488,28 @@ sub onKeyEvent(key, press) as Boolean
         if (m.browseList.hasFocus() = true or m.browseCategoryList.hasFocus() = true or m.browseFollowingList.hasFocus() = true) and key = "up"
           m.tbb.setFocus(true)
 
-            handled = true
-            else if m.tbb.hasFocus() = true and key = "down"
-          ' tofix: return focus to main'
+          handled = true
+       else if m.tbb.hasFocus() = true and key = "down"
+       m.currentSubscene.setFocus(true)
+       handled = true
           
+          'tofix: knowledge: This works because the lists don't handle it first
         else if (m.browseList.hasFocus() or m.browseCategoryList.hasFocus() or m.browseFollowingList.hasFocus() or m.browseOfflineFollowingList.hasFocus() or m.offlineChannelList.hasFocus() or m.channelPage.visible) and key = "left"
-
-            
             'tofix: followbar/sidebar is selected even if it has NO items'
             
             m.followBar.setFocus(true)
             m.followBar.focused = true
             handled = true
         else if m.followBar.hasFocus() = true and key = "right"
-            'm.browseButtons.translation = "[0, 0]"
-            'm.browseList.translation = "[100,165]"
-            'm.browseCategoryList.translation = "[100,165]"
-            m.browseMain.translation = "[0, 0]"
-            if m.browseList.visible = true
-                m.browseList.setFocus(true)
-            else if m.browseCategoryList.visible = true
-                m.browseCategoryList.setFocus(true)
-            else if m.browseFollowingList.visible = true
-                m.browseFollowingList.setFocus(true)
-                m.followingListIsFocused = true
-            else if m.channelPage.visible
-                m.channelPage.visible = false
-                m.channelPage.visible = true
-            end if
-            m.followBar.focused = false
+                  if m.currentSubscene.visible
+                      m.currentSubscene.setFocus(true) 
+                      m.followBar.focused = false
+                 else if m.channelPage.visible
+                 'tofix: should gain visibility on focus, not focus on visibility
+                      m.channelPage.visible = false
+                      m.channelPage.visible = true
+                    m.followBar.focused = false
+               end if
             handled = true
         else if m.browseList.hasFocus() = true and key = "down"
             getMoreChannels()
@@ -511,58 +523,23 @@ sub onKeyEvent(key, press) as Boolean
             'm.browseOfflineFollowingList.setFocus(true)
             m.offlineChannelList.visible = true
             m.offlineChannelList.setFocus(true)
-            m.followingListIsFocused = false
             handled = true
         'else if m.browseOfflineFollowingList.hasFocus() = true and key = "up"
         else if m.offlineChannelList.hasFocus() and key = "up"
             m.browseFollowingList.setFocus(true)
-            m.followingListIsFocused = true
             handled = true
         'end if
     'else if press = false
-        else if key = "back" 'and m.wasLastScene = true
+        else if key = "back" 'and 'm.wasLastScene = true
             if m.channelPage.visible
                 m.channelPage.visible = false
-                'm.channelPage.visible = true
-                if m.currentlySelectedButton = 0 'm.categoryLine.visible = true
-                    m.browseCategoryList.visible = true
-                    m.browseCategoryList.setFocus(true)
-                    'handled = true
-                else if m.currentlySelectedButton = 1 'm.liveLine.visible = true
-                    m.browseList.visible = true
-                    m.browseList.setFocus(true)
-                    handled = true
-                else if m.currentlySelectedButton = 2
-                    m.browseFollowingList.visible = true
-                    m.offlineChannelsLabel.visible = true
-                    
-                    if m.followingListIsFocused = true
-                        m.browseFollowingList.setFocus(true)
-                    else
-                        m.offlineChannelList.visible = true
-                        m.offlineChannelList.setFocus(true)
-                    end if
-
-                    handled = true
-                end if
-            else if m.currentlySelectedButton = 0 and m.channelPage.visible'm.top.lastScene = "category"
-                'm.top.lastScene = ""
-            else if m.currentlySelectedButton = 0 'm.categoryLine.visible = true
-                m.browseCategoryList.visible = true
-                m.browseCategoryList.setFocus(true)
-                'handled = true
-            else if m.currentlySelectedButton = 1 'm.liveLine.visible = true
-                m.browseList.visible = true
-                m.browseList.setFocus(true)
-                'handled = true
-            else if m.currentlySelectedButton = 2
-                m.browseFollowingList.visible = true
-                m.offlineChannelsLabel.visible = true
-                m.browseFollowingList.setFocus(true)
-                m.followingListIsFocused = true
+                m.currentSubscene.setFocus(true)
+               handled = true
             end if
-            'm.channelPage.visible = false
-            m.wasLastScene = false
+            'm.followBar.setFocus(false)
+            m.followBar.focused = false
+            'tofix: options and buttons id:3+  don't load back on currentSubscene
+            ''m.wasLastScene = false
         end if
     end if
 

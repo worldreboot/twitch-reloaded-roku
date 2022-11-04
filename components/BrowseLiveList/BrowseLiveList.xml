@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="BrowseLiveList" extends="Group">
+
+    <interface>
+    </interface>
+
+    <script type="text/brightscript" uri="BrowseLiveList.brs" />
+
+    <children>
+         
+         <RowList 
+             id="browseList"
+             itemComponentName="BrowseChannelItem"
+             translation = "[120,138]"
+             numRows = "2"
+             rowItemSize = "[[320,180]]"
+             rowItemSpacing = "[[30,0]]"
+             itemSize = "[1030,275]"
+             focusBitmapUri="pkg:/images/focusIndicator.9.png"
+             rowFocusAnimationStyle = "floatingFocus" />
+    </children>
+</component>

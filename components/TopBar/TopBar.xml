@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="TopBar" extends="Group">
+
+    <interface>
+         <field id="focused" type="bool" value="false" onChange="onGetFocus" />
+         <field id="loggedInUserProfileImage" type="uri" onChange="onNewUser" />
+         <field id="loggedInUserName" type="uri" />
+         
+         
+         
+         <!--<field id="itemSelected" type="int" onChange="onTopBarItemSelected">-->
+    </interface>
+
+    <script type="text/brightscript" uri="TopBar.brs" />
+
+    <children>
+         
+       <MarkupGrid
+            id="topBarButtons"
+            translation="[120, 15]"
+            itemSize="[64,62]"
+            itemSpacing="[0,0]"
+            numColumns="18"
+            numRows="1"
+            itemComponentName="TopBarItem"
+            fixedLayout="true"
+            focusBitmapUri="pkg:/images/focusindicatorline_unfocused.9.png"
+            focusFootprintBitmapUri="pkg:/images/focusindicatorline.9.png">
+
+                 <ContentNode id="topBarButtonsContent" role = "content" >
+                          <ContentNode x="0" y="0" w="3" h="1"   title = "Categories" /> 
+                          <ContentNode x="3" y="0" w="3" h="1"   title = "Live Channels" />
+                          <ContentNode x="6" y="0" w="3" h="1"   title = "Following" /> 
+                          <ContentNode x="15" y="0" w="1" h="1" title = "search" HDPosterUrl="pkg:/images/search.png" /> 
+                          <ContentNode x="16" y="0" w="1" h="1" title = "options" HDPosterUrl="pkg:/images/options.png" /> 
+                          <ContentNode x="17" y="0" w="1" h="1" title = "Login" ShortDescriptionLine1 = "pkg:/fonts/Roobert-SemiBold.ttf" ShortDescriptionLine2="16" /> 
+               </ContentNode>
+       </MarkupGrid>
+    </children>
+</component>

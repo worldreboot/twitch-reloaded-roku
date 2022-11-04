@@ -10,7 +10,6 @@
         <field id="streamerRequested" type="string" />
         <field id="categorySelected" type="string" alwaysNotify="true" />
         <field id="followedStreams" type="array" alias="followBar.followedStreams"/>
-        <field id="followBarFocused" type="bool" alias="followBar.focused"/>
         <field id="loggedInUserName" type="string" />
         <field id="loggedInUserProfileImage" type="uri" onChange="onNewUser" />
         <field id="buttonPressed" type="string" alwaysNotify="true" value="" />
@@ -26,6 +25,7 @@
         <field id="videoTitle" type="string" alias="channelPage.videoTitle" />
         <field id="streamDurationSeconds" type="Integer" alias="channelPage.streamDurationSeconds" />
         
+        <field id="currentSubscene" type="node" onChange="onSelectedSubsceneChange" />
     </interface>
 
     <script type="text/brightscript" uri="HomeScene.brs" />
@@ -134,88 +134,22 @@
                     uri="pkg:/images/options.png" 
                     blendColor="0xEFEFF1FF" />-->
             </Group>
-            <RowList 
-                id="browseList"
-                itemComponentName="BrowseChannelItem"
-                translation = "[120,138]"
-                numRows = "2"
-                rowItemSize = "[[320,180]]"
-                rowItemSpacing = "[[30,0]]"
-                itemSize = "[1030,275]"
-                focusBitmapUri="pkg:/images/focusIndicator.9.png"
-                rowFocusAnimationStyle = "floatingFocus" />
-            <RowList 
-                id="browseCategoryList"
-                itemComponentName="BrowseCategoryItem"
-                translation = "[120,138]"
-                numRows = "2"
-                rowItemSize = "[[136,190]]"
-                rowItemSpacing = "[[20,0]]"
-                itemSize = "[1080,265]"
-                focusBitmapUri="pkg:/images/focusIndicator.9.png"
-                rowFocusAnimationStyle = "floatingFocus"
-                wrapDividerBitmapUri = "" />
-            <RowList 
-                id="browseFollowingList"
-                itemComponentName="BrowseChannelItem"
-                translation = "[120,138]"
-                numRows = "2"
-                rowItemSize = "[[320,180]]"
-                rowItemSpacing = "[[30,0]]"
-                itemSize = "[1030,275]"
-                focusBitmapUri="pkg:/images/focusIndicator.9.png"
-                rowFocusAnimationStyle = "floatingFocus" />
-            <SimpleLabel
-                id="offlineChannelsLabel"
-                translation="[120,700]"
-                text="Offline Channels"
-                color="0xEFEFF1FF"
-                fontSize="18"
-                visible="false"
-                fontUri="pkg:/fonts/Roobert-SemiBold.ttf" />
-            <RowList 
-                id="browseOfflineFollowingList"
-                itemComponentName="BrowseOfflineChannelItem"
-                translation = "[120,750]"
-                numRows = "2"
-                rowItemSize = "[[150,150]]"
-                rowItemSpacing = "[[30,0]]"
-                itemSpacing = "[0,-70]"
-                itemSize = "[1050,300]"
-                focusBitmapUri="pkg:/images/focusIndicator.9.png"
-                rowFocusAnimationStyle = "floatingFocus" />
-
+            <BrowseLiveList />
+            <BrowseCategoryList />
+            <BrowseFollowingList />
+            
+<!--
             <Group id="loggedUserGroup" translation="[1220,15]" visible="true">
                 <MaskGroup id="profileImageMask" maskuri = "pkg:/images/profile-mask.png" masksize = "[50,50]" >
                     <Poster id="profileImage" width="50" height="50" />
                 </MaskGroup>
                 <SimpleLabel id="loggedUserName" translation="[0,20]" fontSize = "16" fontUri = "pkg:/fonts/Roobert-SemiBold.ttf" text="Login" />
             </Group>
+     -->       
             
             
             
-            
-          <MarkupGrid
-               id="topBarButtons"
-               translation="[120, 15]"
-               itemSize="[64,62]"
-               itemSpacing="[0,0]"
-               numColumns="18"
-               numRows="1"
-               itemComponentName="TopBarItem"
-               fixedLayout="true"
-               focusBitmapUri="pkg:/images/focusindicatorline_unfocused.9.png"
-               focusFootprintBitmapUri="pkg:/images/focusindicatorline.9.png">
-
-                    <ContentNode id="topBarButtonsContent" role = "content" >
-                             <ContentNode x="0" y="0" w="3" h="1"   title = "Categories" /> 
-                             <ContentNode x="3" y="0" w="3" h="1"   title = "Live Channels" />
-                             <ContentNode x="6" y="0" w="3" h="1"   title = "Following" /> 
-                             <ContentNode x="15" y="0" w="1" h="1" title = "search" HDPosterUrl="pkg:/images/search.png" /> 
-                             <ContentNode x="16" y="0" w="1" h="1" title = "options" HDPosterUrl="pkg:/images/options.png" /> 
-                             <ContentNode x="17" y="0" w="1" h="1" title = "Login" ShortDescriptionLine1 = "pkg:/fonts/Roobert-SemiBold.ttf" ShortDescriptionLine2="16" /> 
-                  </ContentNode>
-          </MarkupGrid>
+<Topbar/>
         </Group>
 
         <ChannelPage

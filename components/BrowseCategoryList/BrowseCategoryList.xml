@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="BrowseCategoryList" extends="Group">
+
+    <interface>
+    </interface>
+
+    <script type="text/brightscript" uri="BrowseCategoryList.brs" />
+
+    <children>
+         
+         <RowList 
+             id="browseCategoryList"
+             itemComponentName="BrowseCategoryItem"
+             translation = "[120,138]"
+             numRows = "2"
+             rowItemSize = "[[136,190]]"
+             rowItemSpacing = "[[20,0]]"
+             itemSize = "[1080,265]"
+             focusBitmapUri="pkg:/images/focusIndicator.9.png"
+             rowFocusAnimationStyle = "floatingFocus"
+             wrapDividerBitmapUri = "" />
+    </children>
+</component>
