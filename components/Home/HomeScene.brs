@@ -3,14 +3,8 @@ sub init()
     m.browseCategoryList = m.top.findNode("browseCategoryList")
     m.browseFollowingList = m.top.findNode("browseFollowingList")
     m.browseOfflineFollowingList = m.top.findNode("browseOfflineFollowingList")
-
     m.offlineChannelList = m.top.findNode("offlineChannelList")
-    
-
-    'm.loginButton = m.top.findNode("loggedUserName")'m.top.findNode("loginButton")
     m.offlineChannelsLabel = m.top.findNode("offlineChannelsLabel")
-
-    'm.actualBrowseButtons = [ m.categoryButton, m.liveButton, m.followingButton, m.searchLabel, m.loginButton, m.optionsButton ]
 
     m.channelPage = m.top.findNode("channelPage")
     m.followBar = m.top.findNode("followBar")
@@ -20,7 +14,6 @@ sub init()
     m.loggedUserGroup = m.top.findNode("loggedUserGroup")
     m.profileImage = m.top.findNode("profileImage")
     m.loggedUserName = m.top.findNode("loggedUserName")
-
 
     m.headerRect = m.top.findNode("headerRect")
 
@@ -44,8 +37,6 @@ sub init()
 
     m.getCategories = createObject("roSGNode", "GetCategories")
     m.getCategories.observeField("searchResults", "onCategoryResultChange")
-    'm.getCategories = createObject("roSGNode", "GetCategories2")
-    'm.getCategories.observeField("searchResults", "onCategoryResultChange")
 
     m.getOfflineFollowed = createObject("roSGNode", "GetOfflineFollowedChannels")
     m.getOfflineFollowed.observeField("offlineFollowedUsers", "onGetOfflineFollowed")
@@ -59,10 +50,6 @@ sub init()
     deviceInfo = CreateObject("roDeviceInfo")
     m.uiResolutionWidth = deviceInfo.GetUIResolution().width
 
-    'if uiResolutionWidth = 1920
-     ''   m.top.findNode("profileImageMask").maskSize = [75, 75]
-    'end if
-
     m.offset = 0
     m.append = false
     m.offsetCategory = 0
@@ -70,11 +57,8 @@ sub init()
     m.appLaunchComplete = false
 
     m.numRowsInFollowingList = 0
-
     m.currentlySelectedButton = 1
     m.currentlyFocusedButton = 1
-
-    'm.wasLastScene = false
 
     if m.top.visible = true
         onHomeLoad()
@@ -84,16 +68,10 @@ sub init()
     m.currentSubscene = m.browseList
     m.lastSelectedScene = 1
     
-    m.tbb = m.top.findNode("topBarButtons")
-    m.tbb.observeField("itemSelected", "onTopBarItemSelected")
-    m.tbb.jumpToItem = m.lastSelectedScene
-   '' m.tbb.content.getChild(3).title = "test from homscene"
-    
-    
-    
-    
+    m.topBarButtons = m.top.findNode("topBarButtons")
+    m.topBarButtons.observeField("itemSelected", "onTopBarItemSelected")
+    m.topBarButtons.jumpToItem = m.lastSelectedScene
 end sub
-
 
 sub refreshHomeSubscenes()
      m.browseCategoryList.visible = false
@@ -110,8 +88,7 @@ end sub
 
 
 sub onTopBarItemSelected()
-     i = m.tbb.itemSelected
-     
+     i = m.topBarButtons.itemSelected
      refreshHomeSubscenes()
      if i = 0 
           m.currentSubscene = m.browseCategoryList
@@ -134,11 +111,10 @@ sub onTopBarItemSelected()
           m.lastSelectedScene = i
           m.currentSubscene.setFocus(true)
      else 
-          m.tbb.jumpToItem = m.lastSelectedScene
+          m.topBarButtons.jumpToItem = m.lastSelectedScene
      end if
      
 end sub
-
 
 
 'tofix: should be out of use already, but a check is needed. It seems its called in categoryscene'
@@ -163,7 +139,7 @@ sub onNewUser()
      end if
      for i = 3 to 5
           updateX = {"x":x.toStr()}
-          m.tbb.content.getChild(i).update(updateX)
+          m.topBarButtons.content.getChild(i).update(updateX)
           x++
      end for
      
@@ -172,13 +148,13 @@ sub onNewUser()
           maskSize = "75"
      end if
      uLogin = {"w":w.toStr(), "title":m.top.loggedInUserName, "HDPosterUrl":m.top.loggedInUserProfileImage, "Rating":maskSize}
-     m.tbb.content.getChild(5).update(uLogin)
+     m.topBarButtons.content.getChild(5).update(uLogin)
      
-     m.tbb.fixedLayout = false
-     m.tbb.fixedLayout = true
+     m.topBarButtons.fixedLayout = false
+     m.topBarButtons.fixedLayout = true
      
      width = w*64
-     m.headerRect.translation = [-90 - width, 0]
+     m.headerRect.width = 1352 + 64 - width
 end sub
 
 sub onGetFocus()
@@ -201,7 +177,7 @@ sub onStreamUrlChange()
     m.top.streamUrl = m.getStuff.streamUrl
 end sub
 
-'tofix: unused. It seems browseOfflineFollowingList is unused too.'
+'tofix: unused. It seems browseOfflineFollowingList is unused too. See if it can be deleted'
 sub onBrowseItemSelect()
      
      if m.browseOfflineFollowingList.hasFocus()
@@ -249,12 +225,6 @@ sub openItemChannelPage()
 end sub
 
 sub onHomeLoad()
-    'm.browseCategoryList.visible = false
-    'm.browseFollowingList.visible = false
-    'm.browseOfflineFollowingList.visible = false
-    'm.offlineChannelList.visible = false
-    'm.offlineChannelsLabel.visible = false
-    'm.browseList.visible = true
     m.getStreams.gameRequested = ""
     m.getStreams.offset = "0"
     m.getStreams.pagination = ""
@@ -349,12 +319,6 @@ sub onCategoryResultChange()
 end sub
 
 sub onCategorySelect()
-    'm.browseList.visible = false
-    'm.browseFollowingList.visible = false
-    'm.browseOfflineFollowingList.visible = false
-    'm.offlineChannelList.visible = false
-    'm.offlineChannelsLabel.visible = false
-    'm.browseCategoryList.visible = true
     m.getCategories.searchText = ""
     m.getCategories.offset = "0"
     m.offsetCategory = 0
@@ -486,10 +450,10 @@ sub onKeyEvent(key, press) as Boolean
     handled = false
     if m.top.visible = true and press
         if (m.browseList.hasFocus() = true or m.browseCategoryList.hasFocus() = true or m.browseFollowingList.hasFocus() = true) and key = "up"
-          m.tbb.setFocus(true)
+          m.topBarButtons.setFocus(true)
 
           handled = true
-       else if m.tbb.hasFocus() = true and key = "down"
+       else if m.topBarButtons.hasFocus() = true and key = "down"
        m.currentSubscene.setFocus(true)
        handled = true
           
@@ -529,17 +493,13 @@ sub onKeyEvent(key, press) as Boolean
             m.browseFollowingList.setFocus(true)
             handled = true
         'end if
-    'else if press = false
-        else if key = "back" 'and 'm.wasLastScene = true
+        else if key = "back"
             if m.channelPage.visible
                 m.channelPage.visible = false
                 m.currentSubscene.setFocus(true)
                handled = true
             end if
-            'm.followBar.setFocus(false)
             m.followBar.focused = false
-            'tofix: options and buttons id:3+  don't load back on currentSubscene
-            ''m.wasLastScene = false
         end if
     end if
 

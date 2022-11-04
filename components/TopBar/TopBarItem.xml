@@ -4,7 +4,6 @@
 
     <interface>
       <field id="itemContent" type="node" onChange="itemContentChanged" />
-      <field id="itemHasFocus" type="float" onChange="showFocus" />
       <field id="width" type="float"  />
     </interface>
 
@@ -30,10 +29,6 @@
                          color="0xEFEFF1FF"
                          fontSize="24"
                          fontUri="pkg:/fonts/Inter-SemiBold.ttf"/>
-     <!--          <MaskGroup id="profileImageMask" maskuri = "pkg:/images/profile-mask.png" masksize = "[50,50]" visible="false" >
-                    <Poster id="profileImage" width="50" height="50" />
-               
-          -->
           </Group>
     </children>
 </component>

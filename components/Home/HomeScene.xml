@@ -38,118 +38,16 @@
                 <Rectangle
                     id="headerRect"
                     color="0x222222FF"
-                    width="1358"
+                    width="1352"
                     height="78"
                     
                     translation="[-150,0]" />
                 <Poster translation="[21,26]" uri="pkg:/images/twoku_logo.png" />
-                <!--<SimpleLabel
-                    id="searchHeader"
-                    translation="[100,50]"
-                    text="Browse"
-                    fontSize="48"
-                    fontUri="pkg:/fonts/Roobert-Bold.ttf" /> -->
-                    <!--
-                <SimpleLabel
-                    id="categoryButton"
-                    translation="[163,24]"
-                    text="Categories"
-                    color="0xEFEFF1FF"
-                    fontSize="24"
-                    fontUri="pkg:/fonts/Inter-SemiBold.ttf" >
-                    <Rectangle
-                        id="categoryLine"
-                        visible="false"
-                        color="0x00FFD1FF"
-                        width="130"
-                        height="3"
-                        translation="[0,51]" />
-                </SimpleLabel> 
-                <SimpleLabel
-                    id="liveButton"
-                    translation="[313,24]"
-                    text="Live Channels"
-                    color="0x00FFD1FF"
-                    fontSize="24"
-                    fontUri="pkg:/fonts/Inter-SemiBold.ttf" >
-                    <Rectangle
-                        id="liveLine"
-                        visible="true"
-                        color="0x00FFD1FF"
-                        width="165"
-                        height="3"
-                        translation="[0,51]" />
-                </SimpleLabel>
-                <SimpleLabel
-                    id="followingButton"
-                    translation="[498,24]"
-                    text="Following"
-                    color="0xEFEFF1FF"
-                    fontSize="24"
-                    fontUri="pkg:/fonts/Inter-SemiBold.ttf" >
-                    <Rectangle
-                        id="followingLine"
-                        visible="false"
-                        color="0x00FFD1FF"
-                        width="113"
-                        height="3"
-                        translation="[0,51]" />
-                </SimpleLabel>-->
-                <!--<SimpleLabel
-                    id="searchLabel"
-                    translation="[735,29]"
-                    text="Search *"
-                    color="0xEFEFF1FF"
-                    fontSize="18"
-                    fontUri="pkg:/fonts/Roobert-SemiBold.ttf" /> -->
-                
-                <!--<Poster 
-                    id="searchLabel"
-                    height="32" 
-                    width="32" 
-                    translation="[1080,24]" 
-                    uri="pkg:/images/search.png" 
-                    blendColor="0xEFEFF1FF" />-->
-                <!--<SimpleLabel
-                    id="loginButton"
-                    translation="[845,29]"
-                    text="Login"
-                    color="0xEFEFF1FF"
-                    fontSize="18"
-                    fontUri="pkg:/fonts/Roobert-SemiBold.ttf" >
-                </SimpleLabel> -->
-                <!--<SimpleLabel
-                    id="optionsButton"
-                    translation="[940,29]"
-                    text="Options"
-                    color="0xEFEFF1FF"
-                    fontSize="18"
-                    fontUri="pkg:/fonts/Roobert-SemiBold.ttf" >
-                </SimpleLabel> -->
-               <!-- <Poster 
-                    id="optionsButton"
-                    height="32" 
-                    width="32" 
-                    translation="[1145,24]" 
-                    uri="pkg:/images/options.png" 
-                    blendColor="0xEFEFF1FF" />-->
             </Group>
             <BrowseLiveList />
             <BrowseCategoryList />
             <BrowseFollowingList />
-            
-<!--
-            <Group id="loggedUserGroup" translation="[1220,15]" visible="true">
-                <MaskGroup id="profileImageMask" maskuri = "pkg:/images/profile-mask.png" masksize = "[50,50]" >
-                    <Poster id="profileImage" width="50" height="50" />
-                </MaskGroup>
-                <SimpleLabel id="loggedUserName" translation="[0,20]" fontSize = "16" fontUri = "pkg:/fonts/Roobert-SemiBold.ttf" text="Login" />
-            </Group>
-     -->       
-            
-            
-            
-<Topbar/>
+            <Topbar/>
         </Group>
 
         <ChannelPage

@@ -3,13 +3,8 @@
 <component name="TopBar" extends="Group">
 
     <interface>
-         <field id="focused" type="bool" value="false" onChange="onGetFocus" />
          <field id="loggedInUserProfileImage" type="uri" onChange="onNewUser" />
          <field id="loggedInUserName" type="uri" />
-         
-         
-         
-         <!--<field id="itemSelected" type="int" onChange="onTopBarItemSelected">-->
     </interface>
 
     <script type="text/brightscript" uri="TopBar.brs" />
