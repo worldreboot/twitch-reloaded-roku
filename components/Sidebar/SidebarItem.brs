@@ -8,7 +8,7 @@ sub init()
     
      deviceInfo = CreateObject("roDeviceInfo")
      uiResolutionWidth = deviceInfo.GetUIResolution().width
-     if uiResolutionWidth = 1920
+     if uiResolutionWidth >= 1920
           m.maskSize = [75, 75]
      else
           m.maskSize = [50, 50]

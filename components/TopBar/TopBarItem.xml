@@ -12,7 +12,6 @@
     <children>
          <Group
               id="itemGroup">
-          
                     <MaskGroup id="profileImageMask" maskuri = "" masksize = "[60,60]" visible="true" >
                          <Poster
                               id="topButtonImage"

@@ -5,11 +5,6 @@ sub init()
     m.browseOfflineFollowingList = m.top.findNode("browseOfflineFollowingList")
     m.offlineChannelsLabel = m.top.findNode("offlineChannelsLabel")
 
-
-    m.sideBarButtons = m.top.findNode("sideBarButtons")
-
-
-
     m.channelPage = m.top.findNode("channelPage")
     m.followBar = m.top.findNode("followBar")
     m.browseButtons = m.top.findNode("browseButtons")
@@ -51,8 +46,10 @@ sub init()
    'tofix: currently required in the process to load a channel'
     m.top.observeField("streamerSelectedName", "onStreamerSelected")
 
-    deviceInfo = CreateObject("roDeviceInfo")
-    m.uiResolutionWidth = deviceInfo.GetUIResolution().width
+    m.sideBarButtons = m.top.findNode("sideBarButtons")
+    m.topBarButtons = m.top.findNode("topBarButtons")
+    m.topBarButtons.observeField("itemSelected", "onTopBarItemSelected")
+    m.topBarButtons.jumpToItem = m.lastSelectedScene
 
     m.offset = 0
     m.append = false
@@ -61,8 +58,6 @@ sub init()
     m.appLaunchComplete = false
 
     m.numRowsInFollowingList = 0
-    m.currentlySelectedButton = 1
-    m.currentlyFocusedButton = 1
 
     if m.top.visible = true
         onHomeLoad()
@@ -71,10 +66,6 @@ sub init()
     m.browseList.setFocus(true)
     m.currentSubscene = m.browseList
     m.lastSelectedScene = 1
-    
-    m.topBarButtons = m.top.findNode("topBarButtons")
-    m.topBarButtons.observeField("itemSelected", "onTopBarItemSelected")
-    m.topBarButtons.jumpToItem = m.lastSelectedScene
 end sub
 
 sub refreshHomeSubscenes()
@@ -89,7 +80,6 @@ end sub
 sub onSelectedSubsceneChange()
      m.top.currentSubscene.setFocus(true)
 end sub
-
 
 sub onTopBarItemSelected()
      i = m.topBarButtons.itemSelected
@@ -117,9 +107,7 @@ sub onTopBarItemSelected()
      else 
           m.topBarButtons.jumpToItem = m.lastSelectedScene
      end if
-     
 end sub
-
 
 'tofix: should be out of use already, but a check is needed. It seems its called in categoryscene'
 sub onStreamerSelected()
@@ -147,11 +135,7 @@ sub onNewUser()
           x++
      end for
      
-     maskSize = "50"
-     if m.uiResolutionWidth >= 1920
-          maskSize = "75"
-     end if
-     uLogin = {"w":w.toStr(), "title":m.top.loggedInUserName, "HDPosterUrl":m.top.loggedInUserProfileImage, "Rating":maskSize}
+     uLogin = {"w":w.toStr(), "title":m.top.loggedInUserName, "HDPosterUrl":m.top.loggedInUserProfileImage}
      m.topBarButtons.content.getChild(5).update(uLogin)
      
      m.topBarButtons.fixedLayout = false
@@ -162,7 +146,6 @@ sub onNewUser()
 end sub
 
 sub onGetFocus()
-     print "got visible true at Home"
     if m.top.visible = true
         if m.channelPage.visible
             'm.channelPage.setFocus(true)
@@ -170,7 +153,6 @@ sub onGetFocus()
             m.channelPage.visible = true
         else
           m.currentSubscene.setFocus(true)
-        
         end if
     end if
 end sub
@@ -204,8 +186,6 @@ sub openItemChannelPage()
 
      refreshHomeSubscenes()
      
-     print itemName
-     
      if itemName = invalid
           item = list.content.getChild(list.rowItemSelected[0]).getChild(list.rowItemSelected[1])
           m.channelPage.streamerSelectedName = item.ShortDescriptionLine1
@@ -214,7 +194,6 @@ sub openItemChannelPage()
           m.channelPage.streamerSelectedName = itemName
           'm.channelPage.streamerSelectedThumbnail = ""
      end if
-
      m.channelPage.visible = true
 end sub
 
@@ -317,7 +296,6 @@ sub onCategorySelect()
     m.offsetCategory = 0
     m.getCategories.control = "RUN"
 end sub
-
 
 sub getMoreChannels()
     m.offset += 25
@@ -455,6 +433,9 @@ sub onKeyEvent(key, press) as Boolean
           
           else if key = "down"
                 if m.topBarButtons.hasFocus()
+                    if m.browseFollowingList.visible AND m.browseFollowingList.content = invalid
+                         return false
+                    end if
                     if m.channelPage.visible
                          m.channelPage.visible = false
                          m.channelPage.visible = true
@@ -473,15 +454,13 @@ sub onKeyEvent(key, press) as Boolean
                     m.browseOfflineFollowingList.setFocus(true)
                     handled = true
                end if
-          
+               
           else if key = "left" and not m.sideBarButtons.hasFocus()
+               if m.sideBarButtons.content.getChildCount() = 0
+                    return false
+               end if
                m.sideBarButtons.setFocus(true)
                handled = true
-          
-          'else if (m.browseList.hasFocus() or m.browseCategoryList.hasFocus() or m.browseFollowingList.hasFocus() or m.browseOfflineFollowingList.hasFocus() or m.channelPage.visible) and key = "left"
-               'tofix: followbar/sidebar is selected even if it has NO items'
-
-               
           else if m.sideBarButtons.hasFocus() = true and key = "right"
                if m.currentSubscene.visible
                     m.currentSubscene.setFocus(true) 
@@ -491,7 +470,6 @@ sub onKeyEvent(key, press) as Boolean
                     m.channelPage.visible = true
                end if
                handled = true
-          
 
           else if key = "back"
                if m.channelPage.visible
@@ -500,8 +478,6 @@ sub onKeyEvent(key, press) as Boolean
                     handled = true
                end if
           end if
-        
-        
      end if
 
     ? "HOMESCENE > key " key " " handled

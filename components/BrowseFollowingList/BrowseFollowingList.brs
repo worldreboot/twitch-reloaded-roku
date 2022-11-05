@@ -1,15 +1,13 @@
 sub init()
-     'item found is the rowlist by id
-     m.bfl = m.top.findNode("browseFollowingList")
-     m.b2 = m.top.findNode("offlineChannelsLabel")
-     m.b3 = m.top.findNode("browseOfflineFollowingList")
-     m.bfl.observeField("itemFocused", "onItemFocused")
-     'm.browseOfflineFollowingList = m.top.findNode("browseOfflineFollowingList")
+     m.browseFollowingList = m.top.findNode("browseFollowingList")
+     m.offlineChannelsLabel = m.top.findNode("offlineChannelsLabel")
+     m.browseOfflineFollowingList = m.top.findNode("browseOfflineFollowingList")
+     m.browseFollowingList.observeField("itemFocused", "onItemFocused")
      
 end sub
 
 sub onItemFocused()
-     m.bfl.visible = m.bfl.isInFocusChain()
-     m.b2.visible = m.bfl.isInFocusChain()
-     m.b3.visible = m.bfl.isInFocusChain()
+     m.browseFollowingList.visible = m.top.isInFocusChain()
+     m.offlineChannelsLabel.visible = m.top.isInFocusChain()
+     m.browseOfflineFollowingList.visible = m.top.isInFocusChain()
 end sub

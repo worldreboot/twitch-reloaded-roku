@@ -1,4 +1,4 @@
-sub numberToText(number as Object) as Object
+function numberToText(number as Object) as Object
     result = ""
     if number < 1000
           result = number.toStr()
@@ -13,4 +13,4 @@ sub numberToText(number as Object) as Object
           result = r.Match(n)[0] + "M"
     end if
     return result
-end sub
+end function

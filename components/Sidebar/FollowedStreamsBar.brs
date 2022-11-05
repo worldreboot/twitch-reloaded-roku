@@ -28,9 +28,3 @@ end sub
 sub sideBarButtonSelected()
      m.top.streamerSelected = m.sideBarButtons.content.getChild(m.sideBarButtons.itemSelected).ShortDescriptionLine1
 end sub
-
-''    else if key = "OK"
-''        if m.top.getChild(m.focusedItem) <> invalid
-''            m.top.streamerSelected = m.top.getChild(m.focusedItem).streamLink
-''            handled = true
-''        end if

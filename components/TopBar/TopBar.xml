@@ -22,7 +22,6 @@
             fixedLayout="true"
             focusBitmapUri="pkg:/images/focusindicatorline_unfocused.9.png"
             focusFootprintBitmapUri="pkg:/images/focusindicatorline.9.png">
-
                  <ContentNode id="topBarButtonsContent" role = "content" >
                           <ContentNode x="0" y="0" w="3" h="1"   title = "Categories" /> 
                           <ContentNode x="3" y="0" w="3" h="1"   title = "Live Channels" />

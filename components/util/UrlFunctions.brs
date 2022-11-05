@@ -10,10 +10,10 @@ function createUrl()
     userToken = m.global.userToken
     '? "(userToken) " userToken
     if userToken <> invalid and userToken <> ""
-        ? "we usin " userToken
+      ''  ? "we usin " userToken
         url.AddHeader("Authorization", "Bearer " + m.global.userToken)
     else
-        ? "we using global"
+      ''  ? "we using global"
         url.AddHeader("Authorization", m.global.appBearerToken)
     end if
     return url

@@ -32,11 +32,11 @@
                         uri="pkg:/images/barFocusIndicator.9.png"
                         width="240"
                         height="50"
-                        translation="[64,-5]" />
+                        translation="[60,-5]" />
                    <Label
                         id="streamerName"
                         text=""
-                        translation="[90,0]">
+                        translation="[80,0]">
                         <Font role = "font" uri = "pkg:/fonts/Inter-SemiBold.ttf" size = "18" />
                    </Label>
                    <Label
@@ -44,7 +44,7 @@
                         height="20"
                         text=""
                         color="0xC26BE1FF"
-                        translation="[90,20]">
+                        translation="[80,20]">
                         <Font role = "font" uri = "pkg:/fonts/Inter-Regular.ttf" size = "14" />
                    </Label>
                </Group>

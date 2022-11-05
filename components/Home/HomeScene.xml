@@ -47,7 +47,6 @@
             <BrowseLiveList />
             <BrowseCategoryList />
             <BrowseFollowingList />
-            
             <Topbar/>
         </Group>
 

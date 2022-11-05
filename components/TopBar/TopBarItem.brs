@@ -4,9 +4,16 @@ sub init()
      m.topButtonImage = m.top.findNode("topButtonImage")
      m.profileImageMask = m.top.findNode("profileImageMask")
      
+     deviceInfo = CreateObject("roDeviceInfo")
+     uiResolutionWidth = deviceInfo.GetUIResolution().width
+     if uiResolutionWidth >= 1920
+          m.maskSize = [75, 75]
+     else
+          m.maskSize = [50, 50]
+     end if
 end sub
 
-'descriptionLines and Rating are used for other data!
+'shortDescriptionLines are used for other data!
 
 sub itemContentChanged() 
      ic = m.top.itemContent
@@ -35,8 +42,7 @@ sub showUserLogin()
      m.topButtonImage.width = "50"
      m.topButtonText.text = ic.title
      m.topButtonText.translation = "[60,20]"
-     m.profileImageMask.masksize = [Val(ic.Rating), Val(ic.Rating)]
+     m.profileImageMask.masksize = m.maskSize
      m.profileImageMask.maskuri ="pkg:/images/profile-mask.png"
-     'm.top.appendChild(m.profileImageMask)
 end sub
 
