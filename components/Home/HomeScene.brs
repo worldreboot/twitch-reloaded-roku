@@ -415,7 +415,7 @@ sub onGetOfflineFollowed()
             rowItem.HDPosterUrl = stream.profile_image_url
             row.appendChild(rowItem)
             cnt += 1
-            if cnt <> 0 and cnt MOD 6 = 0
+            if cnt <> 0 and cnt MOD 7 = 0
                 content.appendChild(row)
                 row = createObject("RoSGNode", "ContentNode")
                 alreadyAppended = true

@@ -32,10 +32,10 @@
           <RowList 
                 id="browseOfflineFollowingList"
                 itemComponentName="BrowseOfflineChannelItem"
-                translation = "[0,300]"
+                translation = "[0,500]"
                 numRows = "2"
                 rowItemSize = "[[150,150]]"
-                rowItemSpacing = "[[32,0]]"
+                rowItemSpacing = "[[10,0]]"
                 itemSpacing = "[0,-70]"
                 itemSize = "[1200,250]"
                 scrollSpeed="1000"
