@@ -3,7 +3,6 @@
 <component name="FollowedStreamsBar" extends="Group">
 
     <interface>
-        <field id="focused" type="bool" value="false" onChange="onGetFocus" />
         <field id="streamerSelected" type="string" alwaysNotify="true" />
         <field id="followedStreams" type="array" onChange="onFollowedStreamsChange" />
     </interface>
@@ -35,6 +34,21 @@
                 uri="pkg:/images/live.png"
                 translation="[5,5]" />
         </Poster>
+        <MarkupGrid
+             id="sideBarButtons"
+             itemComponentName="SidebarItem"
+             translation="[10, 40]"
+             itemSize="[50, 50]"
+             itemSpacing="[0,10]"
+             numColumns="1"
+             numRows="11"
+             itemClippingRect="[0.0, 0.0, 500.0, 800.0]"
+             skipFocusAnimations="true"
+             vertFocusAnimationStyle="floatingFocus"
+             focusBitmapUri="pkg:/images/purple_circle.png">
+             <ContentNode id="sideBarButtonsContent" role = "content" >
+           </ContentNode>
+        </MarkupGrid>
 
 
     </children>

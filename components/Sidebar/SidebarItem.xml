@@ -3,8 +3,8 @@
 <component name="SidebarItem" extends="Group">
 
     <interface>
-      <field id="itemContent" type="roAssociativeArray" onChange="showContent" />
-      <field id = "focusPercent" type = "float" onChange = "showfocus" />
+      <field id="itemContent" type="node" onChange="showContent" />
+      <field id = "itemHasFocus" type = "bool" onChange = "showfocus" />
       <field id = "streamLink" type = "string" />
     </interface>
 
@@ -25,8 +25,8 @@
                </MaskGroup>
                <Group
                     id="focusedGroup"
-                    translation="[0,0]"
-                    opacity="0.0">
+                    translation="[0,5]"
+                    visible="false">
                    <Poster
                         id="boundingBox"
                         uri="pkg:/images/barFocusIndicator.9.png"
@@ -47,12 +47,6 @@
                         translation="[90,20]">
                         <Font role = "font" uri = "pkg:/fonts/Inter-Regular.ttf" size = "14" />
                    </Label>
-                    <Poster
-                      id="selectionIndicator"
-                      uri="pkg:/images/purple_circle.png"
-                      width="51"
-                      height="51"
-                      translation="[0,0]" />
                </Group>
           </Group>
     </children>

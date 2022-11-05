@@ -5,6 +5,11 @@ sub init()
     m.browseOfflineFollowingList = m.top.findNode("browseOfflineFollowingList")
     m.offlineChannelsLabel = m.top.findNode("offlineChannelsLabel")
 
+
+    m.sideBarButtons = m.top.findNode("sideBarButtons")
+
+
+
     m.channelPage = m.top.findNode("channelPage")
     m.followBar = m.top.findNode("followBar")
     m.browseButtons = m.top.findNode("browseButtons")
@@ -78,6 +83,7 @@ sub refreshHomeSubscenes()
      m.browseFollowingList.visible = false
      m.browseOfflineFollowingList.visible = false
      m.offlineChannelsLabel.visible = false
+     m.channelPage.visible = false
 end sub
 
 sub onSelectedSubsceneChange()
@@ -190,13 +196,15 @@ sub openItemChannelPage()
           list = m.browseList
      else if m.browseFollowingList.hasFocus()
           list = m.browseFollowingList
-     else  if m.followBar.hasFocus()
+     else  if m.sideBarButtons.hasFocus()
           itemName = m.followBar.streamerSelected
      else if m.browseOfflineFollowingList.hasFocus()
           list = m.browseOfflineFollowingList
      end if
 
      refreshHomeSubscenes()
+     
+     print itemName
      
      if itemName = invalid
           item = list.content.getChild(list.rowItemSelected[0]).getChild(list.rowItemSelected[1])
@@ -430,59 +438,71 @@ sub onGetOfflineFollowed()
     m.append = false
 end sub
 
+sub screenGraphNavigation(key, success)
+end sub
+
 sub onKeyEvent(key, press) as Boolean
     handled = false
-    if m.top.visible = true and press
-        if (m.browseList.hasFocus() = true or m.browseCategoryList.hasFocus() = true or m.browseFollowingList.hasFocus() = true) and key = "up"
-          m.topBarButtons.setFocus(true)
-
-          handled = true
-       else if m.topBarButtons.hasFocus() = true and key = "down"
-       m.currentSubscene.setFocus(true)
-       handled = true
-          
-          'tofix: knowledge: This works because the lists don't handle it first
-        else if (m.browseList.hasFocus() or m.browseCategoryList.hasFocus() or m.browseFollowingList.hasFocus() or m.browseOfflineFollowingList.hasFocus() or m.channelPage.visible) and key = "left"
-            'tofix: followbar/sidebar is selected even if it has NO items'
-            
-            m.followBar.setFocus(true)
-            m.followBar.focused = true
-            handled = true
-        else if m.followBar.hasFocus() = true and key = "right"
-                  if m.currentSubscene.visible
-                      m.currentSubscene.setFocus(true) 
-                      m.followBar.focused = false
-                 else if m.channelPage.visible
-                 'tofix: should gain visibility on focus, not focus on visibility
-                      m.channelPage.visible = false
-                      m.channelPage.visible = true
-                    m.followBar.focused = false
+     if m.top.visible = true and press
+     
+          if key = "up" and not m.topBarButtons.hasFocus()
+               if m.browseOfflineFollowingList.hasFocus()
+                    m.browseFollowingList.setFocus(true)
+               else 
+                    m.topBarButtons.setFocus(true)
                end if
-            handled = true
-        else if m.browseList.hasFocus() = true and key = "down"
-            getMoreChannels()
-            handled = true
-        else if m.browseCategoryList.hasFocus() = true and key = "down"
-            getMoreCategories()
-            handled = true
-        else if m.browseFollowingList.hasFocus() = true and key = "down"
-            m.offlineChannelsLabel.translation = [0,465]
-            'm.browseOfflineFollowingList.translation = [100,500]
-            m.browseOfflineFollowingList.setFocus(true)
-            handled = true
-        else if m.browseOfflineFollowingList.hasFocus() and key = "up"
-            m.browseFollowingList.setFocus(true)
-            handled = true
-        'end if
-        else if key = "back"
-            if m.channelPage.visible
-                m.channelPage.visible = false
-                m.currentSubscene.setFocus(true)
                handled = true
-            end if
-            m.followBar.focused = false
-        end if
-    end if
+          
+          else if key = "down"
+                if m.topBarButtons.hasFocus()
+                    if m.channelPage.visible
+                         m.channelPage.visible = false
+                         m.channelPage.visible = true
+                    else
+                         m.currentSubscene.setFocus(true)
+                    end if
+                    handled = true
+               else if m.browseList.hasFocus()
+                    getMoreChannels()
+                    handled = true
+               else if m.browseCategoryList.hasFocus() 
+                    getMoreCategories()
+                    handled = true
+               else if m.browseFollowingList.hasFocus() 
+                    m.offlineChannelsLabel.translation = [0,465]
+                    m.browseOfflineFollowingList.setFocus(true)
+                    handled = true
+               end if
+          
+          else if key = "left" and not m.sideBarButtons.hasFocus()
+               m.sideBarButtons.setFocus(true)
+               handled = true
+          
+          'else if (m.browseList.hasFocus() or m.browseCategoryList.hasFocus() or m.browseFollowingList.hasFocus() or m.browseOfflineFollowingList.hasFocus() or m.channelPage.visible) and key = "left"
+               'tofix: followbar/sidebar is selected even if it has NO items'
+
+               
+          else if m.sideBarButtons.hasFocus() = true and key = "right"
+               if m.currentSubscene.visible
+                    m.currentSubscene.setFocus(true) 
+               else if m.channelPage.visible
+               'tofix: should gain visibility on focus, not focus on visibility
+                    m.channelPage.visible = false
+                    m.channelPage.visible = true
+               end if
+               handled = true
+          
+
+          else if key = "back"
+               if m.channelPage.visible
+                    m.channelPage.visible = false
+                    m.currentSubscene.setFocus(true)
+                    handled = true
+               end if
+          end if
+        
+        
+     end if
 
     ? "HOMESCENE > key " key " " handled
     return handled
