@@ -39,9 +39,8 @@
                 itemSpacing = "[0,-70]"
                 itemSize = "[1200,250]"
                 scrollSpeed="1000"
-                focusBitmapUri="pkg:/images/focusIndicator.9.png"
+                focusBitmapUri="pkg:/images/purple_circle.png"
                 drawFocusFeedback="false"
-                rowFocusAnimationStyle = "floatingFocus"
                 visible="false" />
           </Group>
     </children>
