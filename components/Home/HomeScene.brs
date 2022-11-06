@@ -189,8 +189,10 @@ sub openItemChannelPage()
      if itemName = invalid
           item = list.content.getChild(list.rowItemSelected[0]).getChild(list.rowItemSelected[1])
           m.channelPage.streamerSelectedName = item.ShortDescriptionLine1
+          m.top.streamerSelectedName = item.ShortDescriptionLine1
           m.channelPage.streamerSelectedThumbnail = item.HDPosterUrl
      else
+          m.top.streamerSelectedName = itemName
           m.channelPage.streamerSelectedName = itemName
           'm.channelPage.streamerSelectedThumbnail = ""
      end if
