@@ -11,6 +11,7 @@ sub onFollowedStreamsChange()
          items = m.max
      end if
     counter = 0
+    content = createObject("roSGNode", "ContentNode")
      for each stream in m.top.followedStreams
           if counter > m.max
                exit for
@@ -20,9 +21,10 @@ sub onFollowedStreamsChange()
           s.Title = stream.user_name
           s.ShortDescriptionLine1 = stream.login
           s.ShortDescriptionLine2 = stream.game_id
-          m.sideBarButtons.content.appendChild(s)
+          content.appendChild(s)
           counter++
     end for
+    m.sideBarButtons.content = content
 end sub
 
 sub sideBarButtonSelected()
