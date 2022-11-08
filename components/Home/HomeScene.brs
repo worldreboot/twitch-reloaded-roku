@@ -1,12 +1,12 @@
 sub init()
     m.browseList = m.top.findNode("browseList")
-    m.browseCategoryList = m.top.findNode("browseCategoryList")
-    m.browseFollowingList = m.top.findNode("browseFollowingList")
-    m.browseOfflineFollowingList = m.top.findNode("browseOfflineFollowingList")
+    m.categoryRowList = m.top.findNode("categoryRowList")
+    m.followingRowList = m.top.findNode("followingRowList")
+    m.offlineFollowingRowList = m.top.findNode("offlineFollowingRowList")
     m.offlineChannelsLabel = m.top.findNode("offlineChannelsLabel")
 
     m.channelPage = m.top.findNode("channelPage")
-    m.followBar = m.top.findNode("followBar")
+    m.sidebar = m.top.findNode("sidebar")
     m.browseButtons = m.top.findNode("browseButtons")
     m.browseMain = m.top.findNode("browseMain")
 
@@ -17,13 +17,13 @@ sub init()
     m.headerRect = m.top.findNode("headerRect")
 
     m.browseList.observeField("itemSelected", "openItemChannelPage")
-    m.browseCategoryList.observeField("itemSelected", "onBrowseCategoryItemSelect")
-    m.browseFollowingList.observeField("itemSelected", "openItemChannelPage")
-    m.browseFollowingList.observeField("itemFocused", "onBrowseFollowing")
+    m.categoryRowList.observeField("itemSelected", "onCategoryItemSelect")
+    m.followingRowList.observeField("itemSelected", "openItemChannelPage")
+    m.followingRowList.observeField("itemFocused", "onBrowseFollowing")
 
-    'm.browseOfflineFollowingList.observeField("itemSelected", "onBrowseItemSelect")
-    m.browseOfflineFollowingList.observeField("itemSelected", "openItemChannelPage")
-    m.followBar.observeField("streamerSelected", "openItemChannelPage")
+    'm.offlineFollowingRowList.observeField("itemSelected", "onBrowseItemSelect")
+    m.offlineFollowingRowList.observeField("itemSelected", "openItemChannelPage")
+    m.sidebar.observeField("streamerSelected", "openItemChannelPage")
 
     'm.channelPage.observeField("videoUrl", "onVideoSelectedFromChannel")
     m.channelPage.observeField("streamUrl", "onLiveStreamSelectedFromChannel")
@@ -69,10 +69,10 @@ sub init()
 end sub
 
 sub refreshHomeSubscenes()
-     m.browseCategoryList.visible = false
+     m.categoryRowList.visible = false
      m.browseList.visible = false
-     m.browseFollowingList.visible = false
-     m.browseOfflineFollowingList.visible = false
+     m.followingRowList.visible = false
+     m.offlineFollowingRowList.visible = false
      m.offlineChannelsLabel.visible = false
      m.channelPage.visible = false
 end sub
@@ -85,14 +85,14 @@ sub onTopBarItemSelected()
      i = m.topBarButtons.itemSelected
      refreshHomeSubscenes()
      if i = 0 
-          m.currentSubscene = m.browseCategoryList
+          m.currentSubscene = m.categoryRowList
           onCategorySelect()
      else if i = 1
           m.getCategories.pagination = ""
           m.currentSubscene = m.browseList
           onHomeLoad()
      else if i = 2
-          m.currentSubscene = m.browseFollowingList
+          m.currentSubscene = m.followingRowList
      else if i = 3
           m.top.buttonPressed = "search"
      else if i = 4
@@ -163,8 +163,8 @@ sub onStreamUrlChange()
     m.top.streamUrl = m.getStuff.streamUrl
 end sub
 
-sub onBrowseCategoryItemSelect()
-     list = m.browseCategoryList
+sub onCategoryItemSelect()
+     list = m.categoryRowList
      item = list.content.getChild(list.rowItemSelected[0]).getChild(list.rowItemSelected[1])
      m.top.categorySelected = item.ShortDescriptionLine1
 end sub
@@ -176,12 +176,12 @@ sub openItemChannelPage()
      
      if m.browseList.hasFocus()
           list = m.browseList
-     else if m.browseFollowingList.hasFocus()
-          list = m.browseFollowingList
+     else if m.followingRowList.hasFocus()
+          list = m.followingRowList
      else  if m.sideBarButtons.hasFocus()
-          itemName = m.followBar.streamerSelected
-     else if m.browseOfflineFollowingList.hasFocus()
-          list = m.browseOfflineFollowingList
+          itemName = m.sidebar.streamerSelected
+     else if m.offlineFollowingRowList.hasFocus()
+          list = m.offlineFollowingRowList
      end if
 
      refreshHomeSubscenes()
@@ -256,11 +256,11 @@ end sub
 
 sub onCategoryResultChange()
     lastFocusedRow = 0
-    if m.browseCategoryList.rowItemFocused[0] <> invalid
-        lastFocusedRow = m.browseCategoryList.rowItemFocused[0]
+    if m.categoryRowList.rowItemFocused[0] <> invalid
+        lastFocusedRow = m.categoryRowList.rowItemFocused[0]
     end if
     if m.appendCategory = true
-        content = m.browseCategoryList.content
+        content = m.categoryRowList.content
     else if m.appendCategory = false
         content = createObject("roSGNode", "ContentNode")
     end if 
@@ -287,8 +287,8 @@ sub onCategoryResultChange()
             'row.appendChild(rowItem)
         'end if
     end if
-    m.browseCategoryList.content = content
-    m.browseCategoryList.jumpToItem = lastFocusedRow
+    m.categoryRowList.content = content
+    m.categoryRowList.jumpToItem = lastFocusedRow
     m.appendCategory = false
 end sub
 
@@ -326,11 +326,11 @@ sub onGetFollowedStreams()
 
     m.numRowsInFollowingList = 0
     lastFocusedRow = 0
-    if m.browseFollowingList.rowItemFocused[0] <> invalid
-        lastFocusedRow = m.browseFollowingList.rowItemFocused[0]
+    if m.followingRowList.rowItemFocused[0] <> invalid
+        lastFocusedRow = m.followingRowList.rowItemFocused[0]
     end if
     if m.append = true
-        content = m.browseFollowingList.content
+        content = m.followingRowList.content
     else if m.append = false
         content = createObject("roSGNode", "ContentNode")
     end if 
@@ -362,31 +362,32 @@ sub onGetFollowedStreams()
             m.numRowsInFollowingList += 1
         end if
     end if
-    m.browseFollowingList.content = content
-    m.browseFollowingList.jumpToItem = lastFocusedRow
+    m.followingRowList.content = content
+    m.followingRowList.jumpToItem = lastFocusedRow
     m.append = false
     m.numRowsInFollowingList -= 1
 end sub
 
 sub onBrowseFollowing()
-    if m.browseFollowingList.itemFocused = m.numRowsInFollowingList
-        m.offlineChannelsLabel.translation = [0,465]
-        'm.browseOfflineFollowingList.translation = [100,500]
-        m.browseOfflineFollowingList.visible = true
+    if m.followingRowList.itemFocused = m.numRowsInFollowingList
+    'todo: check this translations when i have more than 3 active following channels'
+        m.offlineChannelsLabel.translation = [0,300]
+        'm.offlineFollowingRowList.translation = [100,500]
+        m.offlineFollowingRowList.visible = true
     else
-        m.offlineChannelsLabel.translation = [0,700]
-        m.browseOfflineFollowingList.translation = [0,500]
-        m.browseOfflineFollowingList.visible = false
+        m.offlineChannelsLabel.translation = [0,560]
+        m.offlineFollowingRowList.translation = [0,360]
+        m.offlineFollowingRowList.visible = false
     end if
 end sub
 
 sub onGetOfflineFollowed()
     lastFocusedRow = 0
-    if m.browseOfflineFollowingList.rowItemFocused[0] <> invalid
-        lastFocusedRow = m.browseOfflineFollowingList.rowItemFocused[0]
+    if m.offlineFollowingRowList.rowItemFocused[0] <> invalid
+        lastFocusedRow = m.offlineFollowingRowList.rowItemFocused[0]
     end if
     if m.append = true
-        content = m.browseOfflineFollowingList.content
+        content = m.offlineFollowingRowList.content
     else if m.append = false
         content = createObject("roSGNode", "ContentNode")
     end if 
@@ -413,12 +414,9 @@ sub onGetOfflineFollowed()
             content.appendChild(row)
         end if
     end if
-    m.browseOfflineFollowingList.content = content
-    m.browseOfflineFollowingList.jumpToItem = lastFocusedRow
+    m.offlineFollowingRowList.content = content
+    m.offlineFollowingRowList.jumpToItem = lastFocusedRow
     m.append = false
-end sub
-
-sub screenGraphNavigation(key, success)
 end sub
 
 sub onKeyEvent(key, press) as Boolean
@@ -426,8 +424,8 @@ sub onKeyEvent(key, press) as Boolean
      if m.top.visible = true and press
      
           if key = "up" and not m.topBarButtons.hasFocus()
-               if m.browseOfflineFollowingList.hasFocus()
-                    m.browseFollowingList.setFocus(true)
+               if m.offlineFollowingRowList.hasFocus()
+                    m.followingRowList.setFocus(true)
                else 
                     m.topBarButtons.setFocus(true)
                end if
@@ -435,7 +433,7 @@ sub onKeyEvent(key, press) as Boolean
           
           else if key = "down"
                 if m.topBarButtons.hasFocus()
-                    if m.browseFollowingList.visible AND m.browseFollowingList.content = invalid
+                    if m.followingRowList.visible AND m.followingRowList.content = invalid
                          return false
                     end if
                     if m.channelPage.visible
@@ -448,12 +446,12 @@ sub onKeyEvent(key, press) as Boolean
                else if m.browseList.hasFocus()
                     getMoreChannels()
                     handled = true
-               else if m.browseCategoryList.hasFocus() 
+               else if m.categoryRowList.hasFocus() 
                     getMoreCategories()
                     handled = true
-               else if m.browseFollowingList.hasFocus() 
-                    m.offlineChannelsLabel.translation = [0,465]
-                    m.browseOfflineFollowingList.setFocus(true)
+               else if m.followingRowList.hasFocus() 
+                    m.offlineChannelsLabel.translation = [0,300]
+                    m.offlineFollowingRowList.setFocus(true)
                     handled = true
                end if
                

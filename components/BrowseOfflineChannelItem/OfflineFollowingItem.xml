@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<component name="BrowseOfflineChannelItem" extends="Group">
+<component name="OfflineFollowingItem" extends="Group">
 
     <interface>
          <field id="itemContent" type="node" onChange="showContent" />
         <field id="itemHasFocus" type="bool" alwaysNotify="true" onChange="itemFocusChange" />
     </interface>
 
-    <script type="text/brightscript" uri="BrowseOfflineChannelItem.brs" />
+    <script type="text/brightscript" uri="OfflineFollowingItem.brs" />
 
     <children>
          <MaskGroup

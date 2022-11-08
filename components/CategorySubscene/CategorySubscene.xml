@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<component name="BrowseCategoryList" extends="Group">
+<component name="CategorySubscene" extends="Group">
 
     <interface>
     </interface>
 
-    <script type="text/brightscript" uri="BrowseCategoryList.brs" />
+    <script type="text/brightscript" uri="CategorySubscene.brs" />
 
     <children>
          
          <RowList 
-             id="browseCategoryList"
-             itemComponentName="BrowseCategoryItem"
-             translation = "[120,138]"
+             id="categoryRowList"
+             itemComponentName="CategoryItem"
              numRows = "2"
              rowItemSize = "[[136,190]]"
              rowItemSpacing = "[[20,0]]"

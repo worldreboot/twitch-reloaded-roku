@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<component name="BrowseCategoryItem" extends="Group">
+<component name="CategoryItem" extends="Group">
 
     <interface>
         <field id="itemContent" type="node" onChange="showContent" />
     </interface>
 
-    <script type="text/brightscript" uri="BrowseCategoryItem.brs" />
+    <script type="text/brightscript" uri="CategoryItem.brs" />
 
     <children>
 

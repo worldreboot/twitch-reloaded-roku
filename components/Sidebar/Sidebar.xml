@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<component name="FollowedStreamsBar" extends="Group">
+<component name="Sidebar" extends="Group">
 
     <interface>
         <field id="streamerSelected" type="string" alwaysNotify="true" />
         <field id="followedStreams" type="array" onChange="onFollowedStreamsChange" />
     </interface>
 
-    <script type="text/brightscript" uri="FollowedStreamsBar.brs" />
+    <script type="text/brightscript" uri="Sidebar.brs" />
 
     <children>
-
         <Rectangle
             visible="true"
             color="0x26262CFF"
             width="78"
             height="1000"
             translation="[0,0]" />
-        
         <Poster
             uri="pkg:/images/live_rectangle.9.png"
             width="50"

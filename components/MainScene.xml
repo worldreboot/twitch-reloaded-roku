@@ -3,8 +3,6 @@
 <component name="MainScene" extends="Scene">
 
     <script type="text/brightscript" uri="MainScene.brs" />
-    <script type="text/brightscript" uri="UILogic/ScreenStackLogic.brs" />
-    <script type="text/brightscript" uri="UILogic/GridScreenLogic.brs" />
     <children>
 
         <HomeScene 

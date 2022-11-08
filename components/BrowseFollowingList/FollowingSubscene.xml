@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<component name="BrowseFollowingList" extends="Group">
+<component name="FollowingSubscene" extends="Group">
 
     <interface>
     </interface>
 
-    <script type="text/brightscript" uri="BrowseFollowingList.brs" />
+    <script type="text/brightscript" uri="FollowingSubscene.brs" />
 
     <children>
-         <Group id="browseFollowingListGroup" 
-              translation="[120,0]">
           <RowList 
-               id="browseFollowingList"
+               id="followingRowList"
                itemComponentName="BrowseChannelItem"
-               translation = "[0,138]"
                numRows = "2"
                rowItemSize = "[[320,180]]"
                rowItemSpacing = "[[30,0]]"
@@ -23,16 +20,15 @@
                visible="false"/>
           <SimpleLabel
                 id="offlineChannelsLabel"
-                translation="[0,700]"
                 text="Offline Channels"
                 color="0xEFEFF1FF"
                 fontSize="18"
                 visible="false"
                 fontUri="pkg:/fonts/Roobert-SemiBold.ttf" />
           <RowList 
-                id="browseOfflineFollowingList"
-                itemComponentName="BrowseOfflineChannelItem"
-                translation = "[0,500]"
+                id="offlineFollowingRowList"
+                itemComponentName="offlineFollowingItem"
+                translation = "[0,360]"
                 numRows = "2"
                 rowItemSize = "[[150,150]]"
                 rowItemSpacing = "[[10,0]]"
@@ -42,6 +38,5 @@
                 focusBitmapUri="pkg:/images/purple_circle.png"
                 drawFocusFeedback="false"
                 visible="false" />
-          </Group>
     </children>
 </component>
