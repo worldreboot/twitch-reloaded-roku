@@ -3,9 +3,11 @@
 <component name="CategorySubscene" extends="Group">
 
     <interface>
+         <field id="categories" type="array" onChange="populateCategoryList" />
     </interface>
 
     <script type="text/brightscript" uri="CategorySubscene.brs" />
+    <script type="text/brightscript" uri="pkg:/components/util/StringUtils.brs" />
 
     <children>
          

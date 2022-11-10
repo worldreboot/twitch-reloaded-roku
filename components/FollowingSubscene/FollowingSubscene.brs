@@ -13,7 +13,8 @@ sub onItemFocused()
      m.offlineChannelsLabel.visible = subsceneVisibility
      m.offlineFollowingRowList.visible = subsceneVisibility
      
-     if m.offlineFollowingRowList.hasFocus() OR m.followingRowList.itemFocused = m.followingRowList.numRows - 1
+     'tofix: this needs testing and it would be nice if it showed in the upper state with less than 3 followers'
+     if m.offlineFollowingRowList.hasFocus() OR m.followingRowList.itemFocused = m.followingRowList.numRows - 1 
           m.offlineChannelsLabel.translation = [0,300]
           m.offlineFollowingRowList.translation = [0,350]
      else
@@ -28,10 +29,10 @@ sub populateFollowedList()
         row = invalid
         cnt = 0
         for each stream in m.top.followedStreams
-        if cnt MOD 3 = 0
-               row = createObject("RoSGNode", "ContentNode")
-               content.appendChild(row)
-        end if
+             if cnt MOD 3 = 0
+                    row = createObject("RoSGNode", "ContentNode")
+                    content.appendChild(row)
+             end if
             rowItem = createObject("RoSGNode", "ContentNode")
             rowItem.Title = stream.title
             rowItem.Description = stream.user_name

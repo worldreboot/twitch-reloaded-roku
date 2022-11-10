@@ -79,10 +79,11 @@ sub onTopBarItemSelected()
      refreshHomeSubscenes()
      if i = 0 
           m.currentSubscene = m.categoryRowList
+          m.currentSubscene.content = createObject("roSGNode", "ContentNode")
           onCategorySelect()
      else if i = 1
-          m.getCategories.pagination = ""
           m.currentSubscene = m.liveRowList
+          m.currentSubscene.content = createObject("roSGNode", "ContentNode")
           onHomeLoad()
      else if i = 2
           m.currentSubscene = m.followingRowList
@@ -107,7 +108,6 @@ sub onStreamerSelected()
      refreshHomeSubscenes()
     m.channelPage.streamerSelectedName = m.top.streamerSelectedName
     m.channelPage.streamerSelectedThumbnail = m.top.streamerSelectedThumbnail
-    'm.wasLastScene = true
     m.channelPage.visible = true
 end sub
 
@@ -130,7 +130,7 @@ sub onNewUser()
      
      uLogin = {"w":w.toStr(), "title":m.top.loggedInUserName, "HDPosterUrl":m.top.loggedInUserProfileImage}
      m.topBarButtons.content.getChild(5).update(uLogin)
-     
+     'this resets the visible layout'
      m.topBarButtons.fixedLayout = false
      m.topBarButtons.fixedLayout = true
      
@@ -201,91 +201,21 @@ sub onHomeLoad()
 end sub
 
 sub onSearchResultChange()
-    lastFocusedRow = 0
-    if m.liveRowList.rowItemFocused[0] <> invalid
-        lastFocusedRow = m.liveRowList.rowItemFocused[0]
-    end if
-    if m.append = true
-        content = m.liveRowList.content
-    else if m.append = false
-        content = createObject("roSGNode", "ContentNode")
-    end if 
-    if m.getStreams.searchResults <> invalid
-        row = createObject("RoSGNode", "ContentNode")
-        rowItem = invalid
-        alreadyAppended = false
-        cnt = 0
-        for each stream in m.getStreams.searchResults
-            alreadyAppended = false
-            rowItem = createObject("RoSGNode", "ContentNode")
-            rowItem.Title = stream.title
-            rowItem.Description = stream.display_name
-            rowItem.Categories = stream.game
-            rowItem.HDPosterUrl = stream.thumbnail
-            rowItem.ShortDescriptionLine1 = stream.name
-            rowItem.ShortDescriptionLine2 = numberToText(stream.viewers)  + " viewers"
-            row.appendChild(rowItem)
-            cnt += 1
-            if cnt <> 0 and cnt MOD 3 = 0
-                content.appendChild(row)
-                row = createObject("RoSGNode", "ContentNode")
-                alreadyAppended = true
-            end if
-        end for
-        if rowItem <> invalid and cnt <> 0 and alreadyAppended = false
-            row.appendChild(rowItem)
-        end if
-    end if
-    if m.liveRowList.visible = true
-        m.liveRowList.content = content
-    end if
-    m.liveRowList.jumpToItem = lastFocusedRow
-    m.append = false
-    if m.appLaunchComplete <> true
-        m.top.signalBeacon("AppLaunchComplete")
-        m.appLaunchComplete = true
-    end if
+     m.liveSubscene = m.top.findNode("liveSubscene")
+     m.liveSubscene.liveStreams = m.getStreams.searchResults
+     if m.appLaunchComplete <> true
+         m.top.signalBeacon("AppLaunchComplete")
+         m.appLaunchComplete = true
+     end if
 end sub
 
 sub onCategoryResultChange()
-    lastFocusedRow = 0
-    if m.categoryRowList.rowItemFocused[0] <> invalid
-        lastFocusedRow = m.categoryRowList.rowItemFocused[0]
-    end if
-    if m.appendCategory = true
-        content = m.categoryRowList.content
-    else if m.appendCategory = false
-        content = createObject("roSGNode", "ContentNode")
-    end if 
-    if m.getStreams.searchResults <> invalid
-        row = createObject("RoSGNode", "ContentNode")
-        rowItem = invalid
-        alreadyAppended = false
-        cnt = 0
-        for each stream in m.getCategories.searchResults
-            rowItem = createObject("RoSGNode", "ContentNode")
-            rowItem.Title = stream.name
-            rowItem.Description = numberToText(stream.viewers) + " viewers"
-            rowItem.ShortDescriptionLine1 = stream.id
-            rowItem.HDPosterUrl = stream.logo
-            row.appendChild(rowItem)
-            cnt += 1
-            if cnt <> 0 and cnt MOD 6 = 0 and content <> invalid
-                content.appendChild(row)
-                row = createObject("RoSGNode", "ContentNode")
-                alreadyAppended = true
-            end if
-        end for
-        'if rowItem <> invalid and cnt <> 0 and alreadyAppended = false
-            'row.appendChild(rowItem)
-        'end if
-    end if
-    m.categoryRowList.content = content
-    m.categoryRowList.jumpToItem = lastFocusedRow
-    m.appendCategory = false
+     m.categorySubscene = m.top.findNode("categorySubscene")
+     m.categorySubscene.categories = m.getCategories.searchResults
 end sub
 
 sub onCategorySelect()
+     m.getCategories.pagination = ""
     m.getCategories.searchText = ""
     m.getCategories.offset = "0"
     m.offsetCategory = 0
@@ -341,6 +271,7 @@ sub onKeyEvent(key, press) as Boolean
                 ' tofix: this doesnt allow me to access offline channels'
                 'tofix: it seems that content can be uninitialized. then it should be content <> invalid'
                      if m.followingRowList.visible  AND  m.followingRowList.content.getChildCount() = 0
+                      'if m.offlineFollowingRowList.getChildCount() > 0
                          return false
                     end if
                      if m.channelPage.visible

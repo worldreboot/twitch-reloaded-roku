@@ -3,9 +3,11 @@
 <component name="LiveSubscene" extends="Group">
 
     <interface>
+         <field id="liveStreams" type="array" onChange="populateLiveList" />
     </interface>
 
     <script type="text/brightscript" uri="LiveSubscene.brs" />
+    <script type="text/brightscript" uri="pkg:/components/util/StringUtils.brs" />
 
     <children>
          

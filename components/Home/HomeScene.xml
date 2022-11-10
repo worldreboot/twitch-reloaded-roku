@@ -48,8 +48,8 @@
             </Group>
             <Group id="SubsceneDisplay"
                  translation = "[120,138]">
-                 <LiveSubscene/>
-                 <CategorySubscene/>
+                 <LiveSubscene id = "liveSubscene"/>
+                 <CategorySubscene id="categorySubscene"/>
                  <FollowingSubscene id="followingSubscene"/>
               </Group>
         </Group>
