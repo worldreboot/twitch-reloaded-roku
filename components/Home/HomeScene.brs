@@ -1,25 +1,20 @@
 sub init()
-    m.browseList = m.top.findNode("browseList")
+    m.liveRowList = m.top.findNode("liveRowList")
     m.categoryRowList = m.top.findNode("categoryRowList")
+    
+    m.followingSubscene = m.top.findNode("followingSubscene")
     m.followingRowList = m.top.findNode("followingRowList")
     m.offlineFollowingRowList = m.top.findNode("offlineFollowingRowList")
     m.offlineChannelsLabel = m.top.findNode("offlineChannelsLabel")
 
     m.channelPage = m.top.findNode("channelPage")
     m.sidebar = m.top.findNode("sidebar")
-    m.browseButtons = m.top.findNode("browseButtons")
-    m.browseMain = m.top.findNode("browseMain")
-
-    m.loggedUserGroup = m.top.findNode("loggedUserGroup")
-    m.profileImage = m.top.findNode("profileImage")
-    m.loggedUserName = m.top.findNode("loggedUserName")
 
     m.headerRect = m.top.findNode("headerRect")
 
-    m.browseList.observeField("itemSelected", "openItemChannelPage")
+    m.liveRowList.observeField("itemSelected", "openItemChannelPage")
     m.categoryRowList.observeField("itemSelected", "onCategoryItemSelect")
     m.followingRowList.observeField("itemSelected", "openItemChannelPage")
-    m.followingRowList.observeField("itemFocused", "onBrowseFollowing")
 
     'm.offlineFollowingRowList.observeField("itemSelected", "onBrowseItemSelect")
     m.offlineFollowingRowList.observeField("itemSelected", "openItemChannelPage")
@@ -49,6 +44,7 @@ sub init()
     m.sideBarButtons = m.top.findNode("sideBarButtons")
     m.topBarButtons = m.top.findNode("topBarButtons")
     m.topBarButtons.observeField("itemSelected", "onTopBarItemSelected")
+    m.lastSelectedScene = 1
     m.topBarButtons.jumpToItem = m.lastSelectedScene
 
     m.offset = 0
@@ -57,20 +53,17 @@ sub init()
     m.appendCategory = false
     m.appLaunchComplete = false
 
-    m.numRowsInFollowingList = 0
-
     if m.top.visible = true
         onHomeLoad()
     end if
 
-    m.browseList.setFocus(true)
-    m.currentSubscene = m.browseList
-    m.lastSelectedScene = 1
+    m.liveRowList.setFocus(true)
+    m.currentSubscene = m.liveRowList
 end sub
 
 sub refreshHomeSubscenes()
      m.categoryRowList.visible = false
-     m.browseList.visible = false
+     m.liveRowList.visible = false
      m.followingRowList.visible = false
      m.offlineFollowingRowList.visible = false
      m.offlineChannelsLabel.visible = false
@@ -89,7 +82,7 @@ sub onTopBarItemSelected()
           onCategorySelect()
      else if i = 1
           m.getCategories.pagination = ""
-          m.currentSubscene = m.browseList
+          m.currentSubscene = m.liveRowList
           onHomeLoad()
      else if i = 2
           m.currentSubscene = m.followingRowList
@@ -174,8 +167,8 @@ sub openItemChannelPage()
      list = invalid
      itemName = invalid
      
-     if m.browseList.hasFocus()
-          list = m.browseList
+     if m.liveRowList.hasFocus()
+          list = m.liveRowList
      else if m.followingRowList.hasFocus()
           list = m.followingRowList
      else  if m.sideBarButtons.hasFocus()
@@ -209,11 +202,11 @@ end sub
 
 sub onSearchResultChange()
     lastFocusedRow = 0
-    if m.browseList.rowItemFocused[0] <> invalid
-        lastFocusedRow = m.browseList.rowItemFocused[0]
+    if m.liveRowList.rowItemFocused[0] <> invalid
+        lastFocusedRow = m.liveRowList.rowItemFocused[0]
     end if
     if m.append = true
-        content = m.browseList.content
+        content = m.liveRowList.content
     else if m.append = false
         content = createObject("roSGNode", "ContentNode")
     end if 
@@ -243,10 +236,10 @@ sub onSearchResultChange()
             row.appendChild(rowItem)
         end if
     end if
-    if m.browseList.visible = true
-        m.browseList.content = content
+    if m.liveRowList.visible = true
+        m.liveRowList.content = content
     end if
-    m.browseList.jumpToItem = lastFocusedRow
+    m.liveRowList.jumpToItem = lastFocusedRow
     m.append = false
     if m.appLaunchComplete <> true
         m.top.signalBeacon("AppLaunchComplete")
@@ -323,100 +316,11 @@ sub onGetFollowedStreams()
     m.getOfflineFollowed.currentlyLiveStreamerIds = m.top.currentlyLiveStreamerIds
     '? "currentlyLiveStreamerIds homescene " m.getOfflineFollowed.currentlyLiveStreamerIds
     m.getOfflineFollowed.control = "RUN"
-
-    m.numRowsInFollowingList = 0
-    lastFocusedRow = 0
-    if m.followingRowList.rowItemFocused[0] <> invalid
-        lastFocusedRow = m.followingRowList.rowItemFocused[0]
-    end if
-    if m.append = true
-        content = m.followingRowList.content
-    else if m.append = false
-        content = createObject("roSGNode", "ContentNode")
-    end if 
-    if m.top.followedStreams <> invalid
-        row = createObject("RoSGNode", "ContentNode")
-        rowItem = invalid
-        alreadyAppended = false
-        cnt = 0
-        for each stream in m.top.followedStreams
-            alreadyAppended = false
-            rowItem = createObject("RoSGNode", "ContentNode")
-            rowItem.Title = stream.title
-            rowItem.Description = stream.user_name
-            rowItem.Categories = stream.game_id
-            rowItem.HDPosterUrl = stream.thumbnail
-            rowItem.ShortDescriptionLine1 = stream.login
-            rowItem.ShortDescriptionLine2 = numberToText(stream.viewer_count)  + " viewers"
-            row.appendChild(rowItem)
-            cnt += 1
-            if cnt <> 0 and cnt MOD 3 = 0
-                content.appendChild(row)
-                row = createObject("RoSGNode", "ContentNode")
-                m.numRowsInFollowingList += 1
-                alreadyAppended = true
-            end if
-        end for
-        if row <> invalid and alreadyAppended = false
-            content.appendChild(row)
-            m.numRowsInFollowingList += 1
-        end if
-    end if
-    m.followingRowList.content = content
-    m.followingRowList.jumpToItem = lastFocusedRow
-    m.append = false
-    m.numRowsInFollowingList -= 1
-end sub
-
-sub onBrowseFollowing()
-    if m.followingRowList.itemFocused = m.numRowsInFollowingList
-    'todo: check this translations when i have more than 3 active following channels'
-        m.offlineChannelsLabel.translation = [0,300]
-        'm.offlineFollowingRowList.translation = [100,500]
-        m.offlineFollowingRowList.visible = true
-    else
-        m.offlineChannelsLabel.translation = [0,560]
-        m.offlineFollowingRowList.translation = [0,360]
-        m.offlineFollowingRowList.visible = false
-    end if
+    m.followingSubscene.followedStreams = m.top.followedStreams
 end sub
 
 sub onGetOfflineFollowed()
-    lastFocusedRow = 0
-    if m.offlineFollowingRowList.rowItemFocused[0] <> invalid
-        lastFocusedRow = m.offlineFollowingRowList.rowItemFocused[0]
-    end if
-    if m.append = true
-        content = m.offlineFollowingRowList.content
-    else if m.append = false
-        content = createObject("roSGNode", "ContentNode")
-    end if 
-    if m.getOfflineFollowed.offlineFollowedUsers <> invalid
-        row = createObject("RoSGNode", "ContentNode")
-        rowItem = invalid
-        alreadyAppended = false
-        cnt = 0
-        for each stream in m.getOfflineFollowed.offlineFollowedUsers
-            alreadyAppended = false
-            rowItem = createObject("RoSGNode", "ContentNode")
-            rowItem.Title = stream.display_name
-            rowItem.ShortDescriptionLine1 = stream.login
-            rowItem.HDPosterUrl = stream.profile_image_url
-            row.appendChild(rowItem)
-            cnt += 1
-            if cnt <> 0 and cnt MOD 7 = 0
-                content.appendChild(row)
-                row = createObject("RoSGNode", "ContentNode")
-                alreadyAppended = true
-            end if
-        end for
-        if row <> invalid and alreadyAppended = false
-            content.appendChild(row)
-        end if
-    end if
-    m.offlineFollowingRowList.content = content
-    m.offlineFollowingRowList.jumpToItem = lastFocusedRow
-    m.append = false
+    m.followingSubscene.offlineFollowedStreams = m.getOfflineFollowed.offlineFollowedUsers
 end sub
 
 sub onKeyEvent(key, press) as Boolean
@@ -424,37 +328,41 @@ sub onKeyEvent(key, press) as Boolean
      if m.top.visible = true and press
      
           if key = "up" and not m.topBarButtons.hasFocus()
-               if m.offlineFollowingRowList.hasFocus()
+                if m.offlineFollowingRowList.hasFocus() 
                     m.followingRowList.setFocus(true)
-               else 
+                    handled = true
+               else
                     m.topBarButtons.setFocus(true)
+                    handled = true
                end if
-               handled = true
-          
           else if key = "down"
                 if m.topBarButtons.hasFocus()
-                    if m.followingRowList.visible AND m.followingRowList.content = invalid
+                'print m.followingRowList.content.getChildCount()
+                ' tofix: this doesnt allow me to access offline channels'
+                'tofix: it seems that content can be uninitialized. then it should be content <> invalid'
+                     if m.followingRowList.visible  AND  m.followingRowList.content.getChildCount() = 0
                          return false
                     end if
-                    if m.channelPage.visible
+                     if m.channelPage.visible
                          m.channelPage.visible = false
                          m.channelPage.visible = true
+                         handled = true
                     else
                          m.currentSubscene.setFocus(true)
+                         handled = true
                     end if
-                    handled = true
-               else if m.browseList.hasFocus()
-                    getMoreChannels()
-                    handled = true
-               else if m.categoryRowList.hasFocus() 
-                    getMoreCategories()
-                    handled = true
-               else if m.followingRowList.hasFocus() 
-                    m.offlineChannelsLabel.translation = [0,300]
-                    m.offlineFollowingRowList.setFocus(true)
-                    handled = true
-               end if
-               
+                         handled = true
+                    else if m.liveRowList.hasFocus()
+                         getMoreChannels()
+                         handled = true
+                    else if m.categoryRowList.hasFocus() 
+                         getMoreCategories()
+                         handled = true
+                    else if m.followingRowList.hasFocus() 
+                         m.offlineFollowingRowList.setFocus(true)
+                         handled = true
+                    end if
+
           else if key = "left" and not m.sideBarButtons.hasFocus()
                if m.sideBarButtons.content.getChildCount() = 0
                     return false

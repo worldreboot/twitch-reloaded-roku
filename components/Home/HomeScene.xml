@@ -48,9 +48,9 @@
             </Group>
             <Group id="SubsceneDisplay"
                  translation = "[120,138]">
-                 <BrowseLiveList />
+                 <LiveSubscene/>
                  <CategorySubscene/>
-                 <FollowingSubscene/>
+                 <FollowingSubscene id="followingSubscene"/>
               </Group>
         </Group>
 

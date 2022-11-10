@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<component name="BrowseLiveList" extends="Group">
+<component name="LiveSubscene" extends="Group">
 
     <interface>
     </interface>
 
-    <script type="text/brightscript" uri="BrowseLiveList.brs" />
+    <script type="text/brightscript" uri="LiveSubscene.brs" />
 
     <children>
          
          <RowList 
-             id="browseList"
+             id="liveRowList"
              itemComponentName="BrowseChannelItem"
-             translation = "[120,138]"
              numRows = "2"
              rowItemSize = "[[320,180]]"
              rowItemSpacing = "[[30,0]]"

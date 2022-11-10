@@ -3,9 +3,12 @@
 <component name="FollowingSubscene" extends="Group">
 
     <interface>
+         <field id="followedStreams" type="array" onChange="populateFollowedList" />
+         <field id="offlineFollowedStreams" type="array" onChange="populateOfflineFollowedList" />
     </interface>
 
     <script type="text/brightscript" uri="FollowingSubscene.brs" />
+    <script type="text/brightscript" uri="pkg:/components/util/StringUtils.brs" />
 
     <children>
           <RowList 
@@ -28,7 +31,6 @@
           <RowList 
                 id="offlineFollowingRowList"
                 itemComponentName="offlineFollowingItem"
-                translation = "[0,360]"
                 numRows = "2"
                 rowItemSize = "[[150,150]]"
                 rowItemSpacing = "[[10,0]]"
