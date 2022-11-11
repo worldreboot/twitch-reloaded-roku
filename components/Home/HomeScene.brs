@@ -42,6 +42,7 @@ sub init()
     m.top.observeField("streamerSelectedName", "onStreamerSelected")
 
     m.sideBarButtons = m.top.findNode("sideBarButtons")
+    m.sideBarButtons.observeField("itemSelected", "openItemChannelPage")
     m.topBarButtons = m.top.findNode("topBarButtons")
     m.topBarButtons.observeField("itemSelected", "onTopBarItemSelected")
     m.lastSelectedScene = 1
@@ -57,8 +58,9 @@ sub init()
         onHomeLoad()
     end if
 
-    m.liveRowList.setFocus(true)
     m.currentSubscene = m.liveRowList
+    m.currentSubscene.setFocus(true)
+    
 end sub
 
 sub refreshHomeSubscenes()
@@ -165,31 +167,25 @@ end sub
 'tofix: this should be handled by the row lists, but the attributes seem to be being wached'
 sub openItemChannelPage()
      list = invalid
-     itemName = invalid
-     
      if m.liveRowList.hasFocus()
           list = m.liveRowList
      else if m.followingRowList.hasFocus()
           list = m.followingRowList
-     else  if m.sideBarButtons.hasFocus()
-          itemName = m.sidebar.streamerSelected
+     else if m.sideBarButtons.hasFocus()
+          list = m.sideBarButtons
      else if m.offlineFollowingRowList.hasFocus()
           list = m.offlineFollowingRowList
      end if
-
-     refreshHomeSubscenes()
      
-     if itemName = invalid
+     refreshHomeSubscenes()
+     if list.subtype() = "MarkupGrid"
+          item = list.content.getChild(list.itemSelected)
+     else if  list.subtype() = "RowList"
           item = list.content.getChild(list.rowItemSelected[0]).getChild(list.rowItemSelected[1])
-          m.channelPage.streamerSelectedName = item.ShortDescriptionLine1
-          m.top.streamerSelectedName = item.ShortDescriptionLine1
-          m.channelPage.streamerSelectedThumbnail = item.HDPosterUrl
-     else
-          m.top.streamerSelectedName = itemName
-          m.channelPage.streamerSelectedName = itemName
-          'm.channelPage.streamerSelectedThumbnail = ""
      end if
-     m.channelPage.visible = true
+     m.channelPage.streamerSelectedName = item.ShortDescriptionLine1
+     m.top.streamerSelectedName = item.ShortDescriptionLine1
+     m.channelPage.streamerSelectedThumbnail = item.HDPosterUrl
 end sub
 
 sub onHomeLoad()
@@ -259,6 +255,7 @@ sub onKeyEvent(key, press) as Boolean
      
           if key = "up" and not m.topBarButtons.hasFocus()
                 if m.offlineFollowingRowList.hasFocus() 
+                'should this use currentSubscene?'
                     m.followingRowList.setFocus(true)
                     handled = true
                else
@@ -270,10 +267,9 @@ sub onKeyEvent(key, press) as Boolean
                 'print m.followingRowList.content.getChildCount()
                 ' tofix: this doesnt allow me to access offline channels'
                 'tofix: it seems that content can be uninitialized. then it should be content <> invalid'
-                     if m.followingRowList.visible  AND  m.followingRowList.content.getChildCount() = 0
-                      'if m.offlineFollowingRowList.getChildCount() > 0
-                         return false
-                    end if
+          ''           if m.followingRowList.visible  AND  m.followingRowList.content.getChildCount() = 0
+          ''               return false
+          ''          end if
                      if m.channelPage.visible
                          m.channelPage.visible = false
                          m.channelPage.visible = true
@@ -290,6 +286,7 @@ sub onKeyEvent(key, press) as Boolean
                          getMoreCategories()
                          handled = true
                     else if m.followingRowList.hasFocus() 
+                    'should this use currentSubscene?'
                          m.offlineFollowingRowList.setFocus(true)
                          handled = true
                     end if

@@ -230,6 +230,7 @@ sub getMoreChannels()
 end sub
 
 sub onKeyEvent(key, press) as Boolean
+print "category Scene onKeyEvent"
     handled = false
 
     if m.top.visible = true and press

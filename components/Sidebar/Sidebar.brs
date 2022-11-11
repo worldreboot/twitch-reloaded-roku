@@ -28,5 +28,5 @@ sub onFollowedStreamsChange()
 end sub
 
 sub sideBarButtonSelected()
-     m.top.streamerSelected = m.sideBarButtons.content.getChild(m.sideBarButtons.itemSelected).ShortDescriptionLine1
+     'm.top.streamerSelected = m.sideBarButtons.content.getChild(m.sideBarButtons.itemSelected).ShortDescriptionLine1
 end sub

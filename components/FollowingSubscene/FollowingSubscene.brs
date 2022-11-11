@@ -13,8 +13,8 @@ sub onItemFocused()
      m.offlineChannelsLabel.visible = subsceneVisibility
      m.offlineFollowingRowList.visible = subsceneVisibility
      
-     'tofix: this needs testing and it would be nice if it showed in the upper state with less than 3 followers'
-     if m.offlineFollowingRowList.hasFocus() OR m.followingRowList.itemFocused = m.followingRowList.numRows - 1 
+     ' totest: check with one row'
+     if m.offlineFollowingRowList.hasFocus() OR m.followingRowList.itemFocused = m.followingRowList.numRows
           m.offlineChannelsLabel.translation = [0,300]
           m.offlineFollowingRowList.translation = [0,350]
      else
