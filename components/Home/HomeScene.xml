@@ -25,7 +25,6 @@
         <field id="videoTitle" type="string" alias="channelPage.videoTitle" />
         <field id="streamDurationSeconds" type="Integer" alias="channelPage.streamDurationSeconds" />
         
-        <field id="currentSubscene" type="node" onChange="onSelectedSubsceneChange" />
     </interface>
 
     <script type="text/brightscript" uri="HomeScene.brs" />
@@ -38,10 +37,9 @@
                 <Rectangle
                     id="headerRect"
                     color="0x222222FF"
-                    width="1352"
+                    width="1200"
                     height="78"
-                    
-                    translation="[-150,0]" />
+                    translation="[0,0]" />
                 <Poster translation="[21,26]" uri="pkg:/images/twoku_logo.png" />
                 <Topbar/>
                 

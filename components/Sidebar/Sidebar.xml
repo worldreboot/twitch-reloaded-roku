@@ -3,7 +3,6 @@
 <component name="Sidebar" extends="Group">
 
     <interface>
-        <field id="streamerSelected" type="string" alwaysNotify="true" />
         <field id="followedStreams" type="array" onChange="onFollowedStreamsChange" />
     </interface>
 

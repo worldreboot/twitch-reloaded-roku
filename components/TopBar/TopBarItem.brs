@@ -44,5 +44,8 @@ sub showUserLogin()
      m.topButtonText.translation = "[60,20]"
      m.profileImageMask.masksize = m.maskSize
      m.profileImageMask.maskuri ="pkg:/images/profile-mask.png"
+     newTranslation = m.itemGroup.translation[0] - 20
+     m.itemGroup.translation = [newTranslation,0]
+     
 end sub
 

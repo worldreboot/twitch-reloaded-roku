@@ -14,12 +14,14 @@ sub onItemFocused()
      m.offlineFollowingRowList.visible = subsceneVisibility
      
      ' totest: check with one row'
-     if m.offlineFollowingRowList.hasFocus() OR m.followingRowList.itemFocused = m.followingRowList.numRows
-          m.offlineChannelsLabel.translation = [0,300]
-          m.offlineFollowingRowList.translation = [0,350]
-     else
-          m.offlineChannelsLabel.translation = [0,530]
-          m.offlineFollowingRowList.translation = [0,560]
+     if m.followingRowList.content <> invalid
+          if m.offlineFollowingRowList.hasFocus() OR m.followingRowList.itemFocused >= m.followingRowList.content.getChildCount() - 1
+               m.offlineChannelsLabel.translation = [0,300]
+               m.offlineFollowingRowList.translation = [0,350]
+          else
+               m.offlineChannelsLabel.translation = [0,530]
+               m.offlineFollowingRowList.translation = [0,560]
+          end if
      end if
 end sub
 

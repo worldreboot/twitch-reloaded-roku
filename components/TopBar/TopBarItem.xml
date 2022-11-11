@@ -17,7 +17,6 @@
                               id="topButtonImage"
                               height="32"
                               width="32"
-                              translation="[0,0]"
                               uri=""
                               blendColor="0xEFEFF1FF"
                               visible="true" />

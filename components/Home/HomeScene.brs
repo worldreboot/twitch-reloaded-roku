@@ -20,7 +20,6 @@ sub init()
     m.offlineFollowingRowList.observeField("itemSelected", "openItemChannelPage")
     m.sidebar.observeField("streamerSelected", "openItemChannelPage")
 
-    'm.channelPage.observeField("videoUrl", "onVideoSelectedFromChannel")
     m.channelPage.observeField("streamUrl", "onLiveStreamSelectedFromChannel")
 
     m.getStreams = createObject("roSGNode", "GetStreams")
@@ -137,7 +136,7 @@ sub onNewUser()
      m.topBarButtons.fixedLayout = true
      
      width = w*64
-     m.headerRect.width = 1352 + 64 - width
+     m.headerRect.width = 1213 + 64 - width
 end sub
 
 sub onGetFocus()
@@ -264,7 +263,6 @@ sub onKeyEvent(key, press) as Boolean
                end if
           else if key = "down"
                 if m.topBarButtons.hasFocus()
-                'print m.followingRowList.content.getChildCount()
                 ' tofix: this doesnt allow me to access offline channels'
                 'tofix: it seems that content can be uninitialized. then it should be content <> invalid'
           ''           if m.followingRowList.visible  AND  m.followingRowList.content.getChildCount() = 0
@@ -279,17 +277,17 @@ sub onKeyEvent(key, press) as Boolean
                          handled = true
                     end if
                          handled = true
-                    else if m.liveRowList.hasFocus()
-                         getMoreChannels()
-                         handled = true
-                    else if m.categoryRowList.hasFocus() 
-                         getMoreCategories()
-                         handled = true
-                    else if m.followingRowList.hasFocus() 
-                    'should this use currentSubscene?'
-                         m.offlineFollowingRowList.setFocus(true)
-                         handled = true
-                    end if
+               else if m.liveRowList.hasFocus()
+                    getMoreChannels()
+                    handled = true
+               else if m.categoryRowList.hasFocus() 
+                    getMoreCategories()
+                    handled = true
+               else if m.followingRowList.hasFocus() 
+               'should this use currentSubscene?'
+                    m.offlineFollowingRowList.setFocus(true)
+                    handled = true
+               end if
 
           else if key = "left" and not m.sideBarButtons.hasFocus()
                if m.sideBarButtons.content.getChildCount() = 0
@@ -297,7 +295,7 @@ sub onKeyEvent(key, press) as Boolean
                end if
                m.sideBarButtons.setFocus(true)
                handled = true
-          else if m.sideBarButtons.hasFocus() = true and key = "right"
+          else if  key = "right" and m.sideBarButtons.hasFocus()
                if m.currentSubscene.visible
                     m.currentSubscene.setFocus(true) 
                else if m.channelPage.visible

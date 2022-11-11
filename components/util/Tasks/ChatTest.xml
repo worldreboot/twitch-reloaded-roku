@@ -12,6 +12,6 @@
     </interface>
     
     <script type="text/brightscript" uri="ChatTest.brs" />
-        <script type="text/brightscript" uri="pkg:/components/util/UrlFunctions.brs" />
+        <script type="text/brightscript" uri="UrlFunctions.brs" />
 
 </component>

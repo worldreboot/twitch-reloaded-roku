@@ -1,7 +1,6 @@
 sub init()
      m.sideBarButtons = m.top.findNode("sideBarButtons")
-     m.sideBarButtons.observeField("itemSelected", "sideBarButtonSelected")
-          m.max = 11
+     m.max = 10
 end sub
 
 sub onFollowedStreamsChange()
@@ -13,7 +12,7 @@ sub onFollowedStreamsChange()
     counter = 0
     content = createObject("roSGNode", "ContentNode")
      for each stream in m.top.followedStreams
-          if counter > m.max
+          if counter >= m.max
                exit for
           end if
           s = createObject("roSGNode", "ContentNode")
@@ -25,8 +24,4 @@ sub onFollowedStreamsChange()
           counter++
     end for
     m.sideBarButtons.content = content
-end sub
-
-sub sideBarButtonSelected()
-     'm.top.streamerSelected = m.sideBarButtons.content.getChild(m.sideBarButtons.itemSelected).ShortDescriptionLine1
 end sub

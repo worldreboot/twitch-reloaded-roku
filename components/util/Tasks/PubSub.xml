@@ -9,6 +9,6 @@
     </interface>
     
     <script type="text/brightscript" uri="PubSub.brs" />
-    <script type="text/brightscript" uri="pkg:/components/util/UrlFunctions.brs" />
+    <script type="text/brightscript" uri="UrlFunctions.brs" />
 
 </component>
