@@ -30,7 +30,7 @@ Sample:
 
 <interface>
 <!--     URI of the loading indicator image/spinner graphic, if used. -->
-    <field id="imageUri" type="string" alias="image.uri" value="LoadingIndicator/loader.png"/>
+    <field id="imageUri" type="string" alias="image.uri" value="pkg:/images/spinner.png"/>
 <!--     If specified, width of a spinning image, otherwise bitmap width is used. You can specify only imageWidth
          and imageHeight will be calculated accordingly to image's aspect ratio. Make sure image fits into component or
          it will be downscaled. -->

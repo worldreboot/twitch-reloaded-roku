@@ -4,7 +4,6 @@ sub init()
      m.offlineFollowingRowList = m.top.findNode("offlineFollowingRowList")
      m.followingRowList.observeField("itemFocused", "onItemFocused")
      m.offlineFollowingRowList.observeField("itemFocused", "onItemFocused")
-     m.top.observeField("hasFocus", "onGetFocus")
 end sub
 
 sub onItemFocused()
@@ -77,7 +76,7 @@ sub populateOfflineFollowedList()
     
 end sub
 
-'this leads to doulbe button press interpretations with homescene for some reason.'
+'this leads to double button press interpretations with homescene for some reason.'
 'function onKeyEvent(key, press) as Boolean
 ''     handled = false
 ''     if key = "up" AND m.offlineFollowingRowList.hasFocus()

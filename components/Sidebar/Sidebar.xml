@@ -32,7 +32,7 @@
                 translation="[5,5]" />
         </Poster>
         <MarkupGrid
-             id="sideBarButtons"
+             id="sidebarMarkupGrid"
              itemComponentName="SidebarItem"
              translation="[10, 40]"
              itemSize="[50, 50]"
@@ -43,7 +43,7 @@
              skipFocusAnimations="true"
              vertFocusAnimationStyle="floatingFocus"
              focusBitmapUri="pkg:/images/purple_circle.png">
-             <ContentNode id="sideBarButtonsContent" role = "content" >
+             <ContentNode id="sidebarMarkupGridContent" role = "content" >
            </ContentNode>
         </MarkupGrid>
 

@@ -1,5 +1,5 @@
 sub init()
-     m.sideBarButtons = m.top.findNode("sideBarButtons")
+     m.sidebarMarkupGrid = m.top.findNode("sidebarMarkupGrid")
      m.max = 10
 end sub
 
@@ -23,5 +23,5 @@ sub onFollowedStreamsChange()
           content.appendChild(s)
           counter++
     end for
-    m.sideBarButtons.content = content
+    m.sidebarMarkupGrid.content = content
 end sub

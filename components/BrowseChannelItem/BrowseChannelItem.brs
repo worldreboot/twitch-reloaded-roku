@@ -22,7 +22,7 @@ sub showContent()
     m.itemThumbnail.uri = itemContent.HDPosterUrl
     m.itemTitle.text = itemContent.Title
     m.itemStreamer.text = itemContent.Description
-    m.itemCategory.text = itemContent.Categories
+    m.itemCategory.text = itemContent.Categories[0]
     m.itemViewers.text = itemContent.ShortDescriptionLine2
     m.viewsRect.width = m.itemViewers.localBoundingRect().width + 16
     m.viewsRect.height = m.itemViewers.localBoundingRect().height

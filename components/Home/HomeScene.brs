@@ -40,8 +40,8 @@ sub init()
    'tofix: currently required in the process to load a channel'
     m.top.observeField("streamerSelectedName", "onStreamerSelected")
 
-    m.sideBarButtons = m.top.findNode("sideBarButtons")
-    m.sideBarButtons.observeField("itemSelected", "openItemChannelPage")
+    m.sidebarMarkupGrid = m.top.findNode("sidebarMarkupGrid")
+    m.sidebarMarkupGrid.observeField("itemSelected", "openItemChannelPage")
     m.topBarButtons = m.top.findNode("topBarButtons")
     m.topBarButtons.observeField("itemSelected", "onTopBarItemSelected")
     m.lastSelectedScene = 1
@@ -170,8 +170,8 @@ sub openItemChannelPage()
           list = m.liveRowList
      else if m.followingRowList.hasFocus()
           list = m.followingRowList
-     else if m.sideBarButtons.hasFocus()
-          list = m.sideBarButtons
+     else if m.sidebarMarkupGrid.hasFocus()
+          list = m.sidebarMarkupGrid
      else if m.offlineFollowingRowList.hasFocus()
           list = m.offlineFollowingRowList
      end if
@@ -289,13 +289,13 @@ sub onKeyEvent(key, press) as Boolean
                     handled = true
                end if
 
-          else if key = "left" and not m.sideBarButtons.hasFocus()
-               if m.sideBarButtons.content.getChildCount() = 0
+          else if key = "left" and not m.sidebarMarkupGrid.hasFocus()
+               if m.sidebarMarkupGrid.content.getChildCount() = 0
                     return false
                end if
-               m.sideBarButtons.setFocus(true)
+               m.sidebarMarkupGrid.setFocus(true)
                handled = true
-          else if  key = "right" and m.sideBarButtons.hasFocus()
+          else if  key = "right" and m.sidebarMarkupGrid.hasFocus()
                if m.currentSubscene.visible
                     m.currentSubscene.setFocus(true) 
                else if m.channelPage.visible
