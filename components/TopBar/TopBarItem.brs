@@ -44,8 +44,27 @@ sub showUserLogin()
      m.topButtonText.translation = "[60,20]"
      m.profileImageMask.masksize = m.maskSize
      m.profileImageMask.maskuri ="pkg:/images/profile-mask.png"
-     newTranslation = m.itemGroup.translation[0] - 20
-     m.itemGroup.translation = [newTranslation,0]
      
+     'if the username is still too big, we'll make the font smaller
+     maxSize% = 64*ic.w - 8
+     actualSize% = m.top.localBoundingRect().width
+     while true
+          'this needs at least 200 characters to get to size 1 and more than 300 to go try to get lower, so its safe'
+          if actualSize% < maxSize% then exit while
+          m.topButtonText.fontSize = m.topButtonText.fontSize - 1
+          actualSize% = m.top.localBoundingRect().width
+     end while
+     print m.topButtonText.fontSize
+     horizontalAlignTranslation = ((ic.w*64 - m.top.localBoundingRect().width)/2).ToStr() 
+     m.itemGroup.translation = "["+horizontalAlignTranslation+",10]"
 end sub
 
+
+'
+' 102 
+'' 616 
+'after, size = 10 
+ '386 
+'test, no string
+'' 60 
+'

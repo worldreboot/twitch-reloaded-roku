@@ -117,26 +117,28 @@ sub onLiveStreamSelectedFromChannel()
 end sub
 
 sub onNewUser()
-     x = 13
-     w = 3
-     if len(m.top.loggedInUserName) > 15
-          x = 12
-          w = 4
+
+     username = m.top.loggedInUserName
+     'If the name is too long, we give it more space!
+     div9% = (len(username)/9)
+     if div9% > 4
+          div9% = 4
      end if
+     x = 13 - div9%
+     w = 3 + div9%
      for i = 3 to 5
           updateX = {"x":x.toStr()}
           m.topBarButtons.content.getChild(i).update(updateX)
           x++
      end for
      
-     uLogin = {"w":w.toStr(), "title":m.top.loggedInUserName, "HDPosterUrl":m.top.loggedInUserProfileImage}
+     uLogin = {"w":w.toStr(), "title":username, "HDPosterUrl":m.top.loggedInUserProfileImage}
      m.topBarButtons.content.getChild(5).update(uLogin)
-     'this resets the visible layout'
+     'this resets the visible layout of the top bar
      m.topBarButtons.fixedLayout = false
      m.topBarButtons.fixedLayout = true
      
-     width = w*64
-     m.headerRect.width = 1213 + 64 - width
+     m.headerRect.width = 1213 - 64*(w-1)
 end sub
 
 sub onGetFocus()
