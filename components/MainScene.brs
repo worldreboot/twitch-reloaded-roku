@@ -467,6 +467,7 @@ sub onToggleChat()
     end if
 end sub
 
+' tofix: This needs rework
 function onKeyEvent(key, press) as Boolean
     handled = false
     if press

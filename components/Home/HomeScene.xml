@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="HomeScene" extends="Group">
+
+    <interface>
+        <field id="streamUrl" type="uri" />
+        <field id="videoUrl" type="string" alwaysNotify="true" alias="channelPage.videoUrl" />
+        <field id="thumbnailInfo" type="assocarray" alias="channelPage.thumbnailInfo" />
+
+        <field id="streamerRequested" type="string" />
+        <field id="categorySelected" type="string" alwaysNotify="true" />
+        <field id="followedStreams" type="array" alias="sidebar.followedStreams" />
+        <field id="loggedInUserName" type="string" />
+        <field id="loggedInUserProfileImage" type="uri" onChange="onNewUser" />
+        <field id="buttonPressed" type="string" alwaysNotify="true" value="" />
+        <field id="currentlyLiveStreamerIds" type="assocarray" />
+
+        <field id="lastScene" type="string" value="" />
+
+        <field id="streamerSelectedName" type="string" value="" alwaysNotify="true" />
+        <field id="streamerSelectedThumbnail" type="string" value="" />
+
+        <field id="channelAvatar" type="string" alias="channelPage.channelAvatar" />
+        <field id="channelUsername" type="string" alias="channelPage.channelUsername" />
+        <field id="videoTitle" type="string" alias="channelPage.videoTitle" />
+        <field id="streamDurationSeconds" type="Integer" alias="channelPage.streamDurationSeconds" />
+        
+    </interface>
+
+    <script type="text/brightscript" uri="HomeScene.brs" />
+    <script type="text/brightscript" uri="pkg:/components/util/StringUtils.brs" />
+
+    <children>
+        <Group id="browseMain" translation="[0,0]">
+             
+            <Group id="browseButtons">
+                <Rectangle
+                    id="headerRect"
+                    color="0x222222FF"
+                    width="1200"
+                    height="78"
+                    translation="[0,0]" />
+                <Poster translation="[21,26]" uri="pkg:/images/twoku_logo.png" />
+                <Topbar/>
+                
+            </Group>
+            <Group id="SubsceneDisplay"
+                 translation = "[120,138]">
+                 <LiveSubscene id = "liveSubscene"/>
+                 <CategorySubscene id="categorySubscene"/>
+                 <FollowingSubscene id="followingSubscene"/>
+              </Group>
+        </Group>
+
+        <ChannelPage
+            id="channelPage"
+            translation="[78,78]"
+            visible="false" />
+
+        <Sidebar
+             id="sidebar"
+            translation="[0,78]" />
+
+    </children>
+
+</component>

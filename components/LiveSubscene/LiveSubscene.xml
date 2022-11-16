@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="LiveSubscene" extends="Group">
+
+    <interface>
+         <field id="liveStreams" type="array" onChange="populateLiveList" />
+    </interface>
+
+    <script type="text/brightscript" uri="LiveSubscene.brs" />
+    <script type="text/brightscript" uri="pkg:/components/util/StringUtils.brs" />
+
+    <children>
+         
+         <RowList 
+             id="liveRowList"
+             itemComponentName="BrowseChannelItem"
+             numRows = "2"
+             rowItemSize = "[[320,180]]"
+             rowItemSpacing = "[[30,0]]"
+             itemSize = "[1030,275]"
+             focusBitmapUri="pkg:/images/focusIndicator.9.png"
+             rowFocusAnimationStyle = "floatingFocus" />
+    </children>
+</component>

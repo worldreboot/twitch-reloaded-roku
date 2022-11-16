@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="FollowingSubscene" extends="Group">
+
+    <interface>
+         <field id="followedStreams" type="array" onChange="populateFollowedList" />
+         <field id="offlineFollowedStreams" type="array" onChange="populateOfflineFollowedList" />
+    </interface>
+
+    <script type="text/brightscript" uri="FollowingSubscene.brs" />
+    <script type="text/brightscript" uri="pkg:/components/util/StringUtils.brs" />
+
+    <children>
+          <RowList 
+               id="followingRowList"
+               itemComponentName="BrowseChannelItem"
+               numRows = "2"
+               rowItemSize = "[[320,180]]"
+               rowItemSpacing = "[[30,0]]"
+               itemSize = "[1030,275]"
+               focusBitmapUri="pkg:/images/focusIndicator.9.png"
+               rowFocusAnimationStyle = "floatingFocus"
+               visible="false"/>
+          <SimpleLabel
+                id="offlineChannelsLabel"
+                text="Offline Channels"
+                color="0xEFEFF1FF"
+                fontSize="18"
+                visible="false"
+                fontUri="pkg:/fonts/Roobert-SemiBold.ttf" />
+          <RowList 
+                id="offlineFollowingRowList"
+                itemComponentName="offlineFollowingItem"
+                numRows = "2"
+                rowItemSize = "[[150,150]]"
+                rowItemSpacing = "[[10,0]]"
+                itemSpacing = "[0,-70]"
+                itemSize = "[1200,250]"
+                scrollSpeed="1000"
+                focusBitmapUri="pkg:/images/purple_circle.png"
+                drawFocusFeedback="false"
+                visible="false" />
+    </children>
+</component>

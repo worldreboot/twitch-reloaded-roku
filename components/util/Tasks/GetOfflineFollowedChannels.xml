@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="GetOfflineFollowedChannels" extends="Task">
+
+    <interface>
+        <field id="loginRequested" type="string" />
+        <field id="currentlyLiveStreamerIds" type="assocarray" />
+        <field id="offlineFollowedUsers" type="array" />
+    </interface>
+    
+    <script type="text/brightscript" uri="GetOfflineFollowedChannels.brs" />
+    <script type="text/brightscript" uri="UrlFunctions.brs" />
+
+</component>

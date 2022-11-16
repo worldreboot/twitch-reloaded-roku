@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="GetCategories2" extends="Task">
+
+    <interface>
+        <field id="searchText" type="string" />
+        <field id="offset" type="string" value="0"/>
+        <field id="searchResults" type="array" />
+        <field id="cursor" type="string" value="" />
+    </interface>
+    
+    <script type="text/brightscript" uri="GetCategories2.brs" />
+    <script type="text/brightscript" uri="UrlFunctions.brs" />
+
+</component>
