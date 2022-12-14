@@ -8,5 +8,5 @@
     </interface>
     
     <script type="text/brightscript" uri="pkg:/components/GetSearch.brs" />
-
+    <script type="text/brightscript" uri="pkg:/components/UrlFunctions.brs" />
 </component>
