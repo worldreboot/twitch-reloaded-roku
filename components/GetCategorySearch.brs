@@ -11,26 +11,27 @@ function onSearchTextChange()
 end function
 
 function getSearchResults() as Object
-    search_results_url = "https://api.twitch.tv/kraken/search/games?query=" + m.top.searchText + "&type=suggest&client_id=jzkbprff40iqj646a697cyrvl0zt2m6"
+    search_results_url = "https://api.twitch.tv/helix/search/categories?query=" + m.top.searchText 
 
-    url = CreateObject("roUrlTransfer")
-    url.EnableEncodings(true)
-    url.RetainBodyOnError(true)
-    url.SetCertificatesFile("common:/certs/ca-bundle.crt")
-    url.AddHeader("Accept", "application/vnd.twitchtv.v5+json")
-    url.InitClientCertificates()
+    url = createUrl()
     url.SetUrl(search_results_url.EncodeUri())
 
     response_string = url.GetToString()
     search = ParseJson(response_string)
 
+    if search.status <> invalid and search.status = 401
+        ? "401"
+        refreshToken()
+        return getSearchResults()
+    end if
+
     result = []
-    if search <> invalid and search.games <> invalid
-        for each game in search.games
+    if search <> invalid and search.data <> invalid
+        for each game in search.data
             item = {}
-            item.id = game._id
+            item.id = game.id
             item.name = game.name
-            item.logo = game.box.small
+            item.logo = game.box_art_url
             result.push(item)
         end for
     end if
