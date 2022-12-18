@@ -47,14 +47,17 @@ sub init()
     end if
 
     m.streamItem.setFocus(true)
+    m.top.streamItemFocused = true
 end sub
 
 sub onGetFocus()
     if m.top.visible
-        if m.streamItem.visible
+        if m.top.streamItemFocused
             m.streamItem.setFocus(true)
+            ' m.top.streamItemFocused = false
         else
             m.pastBroadcastsList.setFocus(true)
+            m.top.streamItemFocused = false
         end if
     end if
 end sub
@@ -183,6 +186,7 @@ sub onSelectedStreamerChange()
     m.streamItem.content = content
 
     m.streamItem.setFocus(true)
+    m.top.streamItemFocused = true
 
     m.pastBroadcastsList.content = invalid
 
@@ -206,11 +210,13 @@ sub onKeyEvent(key, press) as Boolean
             'm.pastBroadcastsList.visible = false
             'm.streamItem.visible = true
             m.streamItem.setFocus(true)
+            m.top.streamItemFocused = true
             m.liveStreamLabel.color = "0xA172F7FF"
             m.recentVideosLabel.color = "0xB9B9B9FF"
             handled = true
         else if key = "down" and m.streamItem.hasFocus()
             m.pastBroadcastsList.setFocus(true)
+            m.top.streamItemFocused = false
             m.liveStreamLabel.color = "0xB9B9B9FF"
             m.recentVideosLabel.color = "0xA172F7FF"
             handled = true
@@ -220,6 +226,7 @@ sub onKeyEvent(key, press) as Boolean
         else if key = "back"
             ? "ChannelPage back"
             'm.pastBroadcastsList.visible = false
+            m.top.streamItemFocused = false
             m.pastBroadcastsList.content = invalid
             'm.streamItem.visible = true
 

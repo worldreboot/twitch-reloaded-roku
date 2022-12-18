@@ -2,15 +2,21 @@
 'usher.ttvnw.net/api/channel/hls/${user}.m3u8?allow_source=true&allow_spectre=true&type=any&token=${token}&sig=${sig}
 
 function init()
-    environment_variables = ReadAsciiFile("pkg:/env").Split(Chr(10))
-    for each var in environment_variables
-        var_info = var.Split("=")
-        if var_info[0] = "CLIENT-ID"
-            m.global.addFields({CLIENT_ID: Left(var_info[1], Len(var_info[1]) - 1)})
-        else if var_info[0] = "AUTHORIZATION"
-            m.global.addFields({AUTHORIZATION: var_info[1]})
-        end if
-    end for
+    ' environment_variables = ReadAsciiFile("pkg:/env").Split(Chr(10))
+    ' for each var in environment_variables
+    '     var_info = var.Split("=")
+    '     if var_info[0] = "CLIENT-ID"
+    '         m.global.addFields({CLIENT_ID: Left(var_info[1], Len(var_info[1]) - 1)})
+    '     else if var_info[0] = "AUTHORIZATION"
+    '         m.global.addFields({AUTHORIZATION: var_info[1]})
+    '     end if
+    ' end for
+
+    m.instructions = m.top.findNode("instructions")
+
+    m.getStatus = createObject("roSGNode", "GetStatus")
+    m.getStatus.observeField("appStatus", "onAppStatusReceived")
+    m.getStatus.control = "RUN"
 
     m.videoPlayer = m.top.findNode("videoPlayer")
     m.keyboardGroup = m.top.findNode("keyboardGroup")
@@ -41,6 +47,7 @@ function init()
 
     m.videoPlayer.observeField("back", "onVideoPlayerBack")
     m.videoPlayer.observeField("toggleChat", "onToggleChat")
+    m.videoPlayer.observeField("streamLayoutMode", "onToggleStreamLayout")
 
     m.top.backgroundColor = "0x18181BFF"
     m.top.backgroundUri = ""
@@ -51,15 +58,6 @@ function init()
 
     getInfo = createObject("RoSGNode", "GetInfo")
     getInfo.control = "RUN"
-
-    'pubSub = createObject("RoSGNode", "PubSub")
-    'pubSub.control = "RUN"
-
-    ' m.ws = createObject("roSGNode", "WebSocketClient")
-    ' m.ws.observeField("on_open", "on_open")
-    ' m.ws.observeField("on_message", "on_message")
-    ' m.ws.open = "wss://pubsub-edge.twitch.tv/"
-    'm.ws.open = "ws://echo.websocket.org/"
 
     m.stream = createObject("RoSGNode", "ContentNode")
     m.stream["streamFormat"] = "hls"
@@ -76,57 +74,64 @@ function init()
     m.testtimer.control = "start"
     m.testtimer.ObserveField("fire", "refreshFollows")
 
-    if checkReset() = "false"
+    if checkRegistrySection("LoggedInUserData", "Reset") = invalid
         sec = createObject("roRegistrySection", "LoggedInUserData")
         sec.Write("UserToken", "")
         sec.Write("RefreshToken", "")
         sec.Write("LoggedInUser", "")
         ? "RESETTED"
-        setReset("true")
+        ' setReset("true")
+        setRegistrySection("LoggedInUserData", "Reset", "true")
     end if
     
     ' registry = CreateObject("roRegistry")
     ' registry.Delete("LoggedInUserData")
     ' registry.Delete("VideoSettings")
 
-    loggedInUser = checkIfLoggedIn()
+    ' loggedInUser = checkIfLoggedIn()
+    loggedInUser = checkRegistrySection("LoggedInUserData", "LoggedInUser")
     if loggedInUser <> invalid
         m.getUser.loginRequested = loggedInUser
         m.getUser.control = "RUN"
         m.login = loggedInUser
     end if
 
-    videoQuality = checkSavedVideoQuality()
+    ' videoQuality = checkSavedVideoQuality()
+    videoQuality = checkRegistrySection("VideoSettings", "VideoQuality")
     if videoQuality <> invalid
         m.global.addFields({videoQuality: Int(Val(videoQuality))})
     else
         m.global.addFields({videoQuality: 2})
     end if
 
-    videoFramerate = checkSavedVideoFramerate()
+    ' videoFramerate = checkSavedVideoFramerate()
+    videoFramerate = checkRegistrySection("VideoSettings", "VideoFramerate")
     if videoQuality <> invalid
         m.global.addFields({videoFramerate: Int(Val(videoFramerate))})
     else
         m.global.addFields({videoFramerate: 60})
     end if
 
-    chatOption = checkSavedChatOption()
+    ' chatOption = checkSavedChatOption()
+    chatOption = checkRegistrySection("VideoSettings", "ChatOption")
     if chatOption <> invalid and chatOption = "true"
         m.global.addFields({chatOption: true})
     else
         m.global.addFields({chatOption: false})
     end if
 
-    userToken = checkUserToken()
+    ' userToken = checkUserToken()
+    userToken = checkRegistrySection("LoggedInUserData", "UserToken")
     if userToken <> invalid and userToken <> ""
         m.global.addFields({userToken: userToken})
     else
         m.global.addFields({userToken: ""})
     end if
 
-    videoBookmarks = checkVideoBookmarks()
+    ' videoBookmarks = checkVideoBookmarks()
+    videoBookmarks = checkRegistrySection("VideoSettings", "VideoBookmarks")
     ? "MainScene >> videoBookmarks > " videoBookmarks
-    if videoBookmarks <> ""
+    if videoBookmarks <> invalid
         'm.videoPlayer.videoBookmarks = {}
         m.videoPlayer.videoBookmarks = ParseJSON(videoBookmarks)
         ? "MainScene >> ParseJSON > " m.videoPlayer.videoBookmarks
@@ -134,7 +139,18 @@ function init()
         m.videoPlayer.videoBookmarks = {}
     end if
 
+    recentStreamers = checkRegistrySection("LoggedInUserData", "RecentStreamers")
+    if recentStreamers <> invalid and recentStreamers <> ""
+        parsedRecents = ParseJSON(recentStreamers)
+        m.homeScene.recentStreamers = parsedRecents.recents
+    else
+        m.homeScene.recentStreamers = []
+    end if
+
     ? "MainScene >> registry space > " createObject("roRegistry").GetSpaceAvailable()
+
+    deviceInfo = CreateObject("roDeviceInfo")
+    m.uiResolutionWidth = deviceInfo.GetUIResolution().width
 
     m.chat = m.top.findNode("chat")
     m.chat.observeField("doneFocus", "onChatDoneFocus")
@@ -154,17 +170,10 @@ sub onChatDoneFocus()
     end if
 end sub
 
-' function on_open(event as object) as void
-'     m.ws.send = ["Hello World"]
-' end function
-
-' function on_message(event as object) as void
-'     print event.getData().message
-' end function
-
 sub onLoginFinish()
     if m.loginPage.finished = true
-        loggedInUser = checkIfLoggedIn()
+        ' loggedInUser = checkIfLoggedIn()
+        loggedInUser = checkRegistrySection("LoggedInUserData", "LoggedInUser")
         if loggedInUser <> invalid
             m.getUser.loginRequested = loggedInUser
             m.getUser.control = "RUN"
@@ -179,8 +188,14 @@ sub onLoginFinish()
 end sub
 
 sub onBearerTokenReceived()
-
     m.global.addFields({appBearerToken: m.getToken.appBearerToken})
+end sub
+
+sub onAppStatusReceived()
+    ? "onAppStatusReceived >> " m.getStatus.appStatus
+    if m.getStatus.appStatus = "true"
+        m.instructions.visible = true
+    end if
 end sub
 
 sub onStreamChangeFromChannelPage()
@@ -193,6 +208,7 @@ sub onStreamChangeFromChannelPage()
     m.videoPlayer.channelUsername =  m.homeScene.channelUsername
     'm.videoPlayer.channelAvatar =  ""
     m.videoPlayer.channelAvatar =  m.homeScene.channelAvatar
+    updateRecents()
 
     m.videoPlayer.width = 0
     m.videoPlayer.height = 0
@@ -212,6 +228,25 @@ sub onStreamChangeFromChannelPage()
             m.videoPlayer.seek = Val(m.videoPlayer.videoBookmarks[m.videoPlayer.thumbnailInfo.video_id.ToStr()])
         end if
     end if
+end sub
+
+sub updateRecents()
+    recents = m.homeScene.recentStreamers
+    for streamer = 0 to recents.count() - 1
+        if recents[streamer].user_name = m.homeScene.channelUsername
+            recents.delete(streamer)
+            exit for
+        end if
+    end for
+    streamer = {
+        user_name: m.homeScene.channelUsername,
+        profile_image_url: m.homeScene.channelAvatar,
+        login: m.homeScene.streamerSelectedName
+    }
+    recents.push(streamer)
+    m.homeScene.recentStreamers = recents
+    sec = createObject("roRegistrySection", "LoggedInUserData")
+    sec.Write("RecentStreamers", FormatJSON({recents: recents}))
 end sub
 
 sub onStreamerSelected()
@@ -243,73 +278,31 @@ sub onStreamerSelected()
     m.currentScene = "channel"
 end sub
 
-function checkReset()
-    sec = createObject("roRegistrySection", "LoggedInUserData")
-    if sec.Exists("Reset")
-        return sec.Read("Reset")
-    end if
-    return "false"
-end function
-
-function checkUserToken()
-    sec = createObject("roRegistrySection", "LoggedInUserData")
-    if sec.Exists("UserToken")
-        return sec.Read("UserToken")
-    end if
-    return ""
-end function
-
-function checkVideoBookmarks()
-    sec = createObject("roRegistrySection", "VideoSettings")
-    if sec.Exists("VideoBookmarks")
-        return sec.Read("VideoBookmarks")
-    end if
-    return ""
-end function
-
-function checkSavedChatOption()
-    sec = createObject("roRegistrySection", "VideoSettings")
-    if sec.Exists("ChatOption")
-        return sec.Read("ChatOption")
+function checkRegistrySection(section as object, key as object)
+    sec = createObject("roRegistrySection", section)
+    if sec.Exists(key)
+        return sec.Read(key)
     end if
     return invalid
 end function
 
-function checkSavedVideoFramerate()
-    sec = createObject("roRegistrySection", "VideoSettings")
-    if sec.Exists("VideoFramerate")
-        return sec.Read("VideoFramerate")
-    end if
-    return invalid
-end function
-
-function checkSavedVideoQuality()
-    sec = createObject("roRegistrySection", "VideoSettings")
-    if sec.Exists("VideoQuality")
-        return sec.Read("VideoQuality")
-    end if
-    return invalid
-end function
-
-function checkIfLoggedIn() as Dynamic
-    sec = createObject("roRegistrySection", "LoggedInUserData")
-    if sec.Exists("LoggedInUser")
-        return sec.Read("LoggedInUser")
-    end if
-    return invalid
-end function
-
-function setReset(word as String) as Void
-    sec = createObject("roRegistrySection", "LoggedInUserData")
-    sec.Write("Reset", word)
+function setRegistrySection(section as object, key as object, value as object)
+    sec = createObject("roRegistrySection", section)
+    sec.Write(key, value)
     sec.Flush()
 end function
 
-function saveLogin() as Void
-    sec = createObject("roRegistrySection", "LoggedInUserData")
-    sec.Write("LoggedInUser", m.homeScene.loggedInUserName)
-    sec.Flush()
-end function
+' function setReset(word as String) as Void
+'     sec = createObject("roRegistrySection", "LoggedInUserData")
+'     sec.Write("Reset", word)
+'     sec.Flush()
+' end function
+
+' function saveLogin() as Void
+'     sec = createObject("roRegistrySection", "LoggedInUserData")
+'     sec.Write("LoggedInUser", m.homeScene.loggedInUserName)
+'     sec.Flush()
+' end function
 
 function onHeaderButtonPress()
     if m.homeScene.buttonPressed = "search"
@@ -336,7 +329,8 @@ function onUserLogin()
     m.homeScene.followedStreams = m.getUser.searchResults.followed_users
     m.homeScene.currentlyLiveStreamerIds = m.getUser.currentlyLiveStreamerIds
     '? "currentlyLiveStreamerIds mainscene " m.getUser.currentlyLiveStreamerIds
-    saveLogin()
+    ' saveLogin()
+    setRegistrySection("LoggedInUserData", "LoggedInUser", m.homeScene.loggedInUserName)
 end function
 
 function onCategoryItemSelectFromSearch()
@@ -371,7 +365,6 @@ function onClipChange()
     m.videoPlayer.visible = true
     m.videoPlayer.content = m.stream
     m.videoPlayer.control = "play"
-
 end function
 
 function onStreamChange()
@@ -386,6 +379,7 @@ function onStreamChange()
         m.videoPlayer.videoTitle =  m.homeScene.videoTitle
         m.videoPlayer.channelUsername =  m.homeScene.channelUsername
         m.videoPlayer.channelAvatar =  m.homeScene.channelAvatar
+        updateRecents()
         m.videoPlayer.streamDurationSeconds =  m.homeScene.streamDurationSeconds
         m.stream["url"] = m.homeScene.streamUrl
     else if m.categoryScene.visible
@@ -398,17 +392,9 @@ function onStreamChange()
     '     m.chat.channel = m.channelPage.streamerSelectedName
     '     m.stream["url"] = m.channelPage.streamUrl
     end if
-    m.chat.visible = m.global.chatOption
-    m.videoPlayer.chatIsVisible = m.chat.visible
-    if not m.global.chatOption
-        m.videoPlayer.width = 0
-        m.videoPlayer.height = 0
-    else
-        m.videoPlayer.width = 896
-        m.videoPlayer.height = 504
-    end if
-    m.videoPlayer.width = 0
-    m.videoPlayer.height = 0
+    ' m.chat.visible = m.global.chatOption
+    ' m.videoPlayer.chatIsVisible = m.chat.visible
+    onToggleStreamLayout()
     m.videoPlayer.setFocus(true)
     m.keyboardGroup.visible = false
     m.videoPlayer.visible = true
@@ -464,6 +450,25 @@ sub onToggleChat()
         m.chat.visible = not m.chat.visible
         m.videoPlayer.chatIsVisible = m.chat.visible
         m.videoPlayer.toggleChat = false
+    end if
+end sub
+
+sub onToggleStreamLayout()
+    if m.videoPlayer.streamLayoutMode = 0 'stream is shrinked
+        m.videoPlayer.width = 1030
+        m.videoPlayer.height = 720
+        m.chat.visible = true
+        m.videoPlayer.chatIsVisible = m.chat.visible
+    else if m.videoPlayer.streamLayoutMode = 1 'layout with chat on top of stream
+        m.videoPlayer.width = 0
+        m.videoPlayer.height = 0
+        m.chat.visible = true
+        m.videoPlayer.chatIsVisible = m.chat.visible
+    else if m.videoPlayer.streamLayoutMode = 2 'no chat layout fullscreen
+        m.videoPlayer.width = 0
+        m.videoPlayer.height = 0
+        m.chat.visible = false
+        m.videoPlayer.chatIsVisible = m.chat.visible
     end if
 end sub
 

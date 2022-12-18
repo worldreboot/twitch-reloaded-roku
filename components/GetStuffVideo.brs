@@ -59,7 +59,7 @@ sub extractThumbnailUrl(streamUrl)
 end sub
 
 function getStreamLink() as Object
-    access_token_url = "https://api.twitch.tv/api/vods/" + m.top.videoId + "/access_token?need_https=true&client_id=jzkbprff40iqj646a697cyrvl0zt2m6&platform=_&player_backend=mediaplayer&player_type=channel_home_live"
+    ' access_token_url = "https://api.twitch.tv/api/vods/" + m.top.videoId + "/access_token?need_https=true&client_id=jzkbprff40iqj646a697cyrvl0zt2m6&platform=_&player_backend=mediaplayer&player_type=channel_home_live"
 
     url = CreateObject("roUrlTransfer")
     url.EnableEncodings(true)
@@ -67,15 +67,15 @@ function getStreamLink() as Object
     url.SetCertificatesFile("common:/certs/ca-bundle.crt")
     url.InitClientCertificates()
 
-    url.SetUrl(access_token_url)
-    response_string = url.GetToString()
-    access_token = ParseJson(response_string)
+    ' url.SetUrl(access_token_url)
+    ' response_string = url.GetToString()
+    access_token = ParseJson(getPlaybackAccessToken("", m.top.videoId, true))
     
     if access_token = invalid
         return ""
     end if
 
-    stream_link = "https://usher.ttvnw.net/vod/" + m.top.videoId + ".m3u8?allow_source=true&allow_spectre=true&type=any&playlist_include_framerate=true&token=" + access_token.token + "&sig=" + access_token.sig
+    stream_link = "https://usher.ttvnw.net/vod/" + m.top.videoId + ".m3u8?allow_source=true&allow_spectre=true&type=any&playlist_include_framerate=true&token=" + access_token.data.videoPlaybackAccessToken.value + "&sig=" + access_token.data.videoPlaybackAccessToken.signature
 
     url.SetUrl(stream_link.EncodeUri())
 

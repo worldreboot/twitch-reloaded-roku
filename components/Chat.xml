@@ -22,6 +22,18 @@
             color="0x18181BFF"
             width="250"
             height="720"
+            translation="[1030,0]" />
+        <Rectangle
+            visible="true"
+            color="0x18181BFF"
+            width="250"
+            height="720"
+            translation="[1030,0]" />
+        <Rectangle
+            visible="true"
+            color="0x18181BFF"
+            width="250"
+            height="720"
             opacity="0.85"
             translation="[1030,0]" />
         <Rectangle

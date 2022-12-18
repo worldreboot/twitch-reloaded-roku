@@ -6,6 +6,11 @@
 
     <children>
 
+        <Poster 
+            id="instructions" 
+            uri="pkg:/images/twoku_update_instructions.png"
+            visible="false" />
+
         <HomeScene 
             id="homeScene"
             visible="true" />
@@ -24,8 +29,8 @@
             enableTrickPlay="false"
             visible="false"
             translation="[0,0]"
-            width="0"
-            height="0" />
+            width="1030"
+            height="720" />
         
         <!--<ChannelPage
             id="channelPage"

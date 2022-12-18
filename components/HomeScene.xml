@@ -15,6 +15,7 @@
         <field id="loggedInUserProfileImage" type="uri" onChange="onNewUser" />
         <field id="buttonPressed" type="string" alwaysNotify="true" value="" />
         <field id="currentlyLiveStreamerIds" type="assocarray" />
+        <field id="recentStreamers" type="array" alias="recentsBar.followedStreams" />
 
         <field id="lastScene" type="string" value="" />
 
@@ -133,7 +134,7 @@
                 id="browseList"
                 itemComponentName="BrowseChannelItem"
                 translation = "[120,138]"
-                numRows = "2"
+                numRows = "3"
                 rowItemSize = "[[320,180]]"
                 rowItemSpacing = "[[30,0]]"
                 itemSize = "[1030,275]"
@@ -143,7 +144,7 @@
                 id="browseCategoryList"
                 itemComponentName="BrowseCategoryItem"
                 translation = "[120,138]"
-                numRows = "2"
+                numRows = "3"
                 rowItemSize = "[[136,190]]"
                 rowItemSpacing = "[[20,0]]"
                 itemSize = "[1080,265]"
@@ -154,7 +155,7 @@
                 id="browseFollowingList"
                 itemComponentName="BrowseChannelItem"
                 translation = "[120,138]"
-                numRows = "2"
+                numRows = "3"
                 rowItemSize = "[[320,180]]"
                 rowItemSpacing = "[[30,0]]"
                 itemSize = "[1030,275]"
@@ -172,7 +173,7 @@
                 id="browseOfflineFollowingList"
                 itemComponentName="BrowseOfflineChannelItem"
                 translation = "[120,750]"
-                numRows = "2"
+                numRows = "3"
                 rowItemSize = "[[150,150]]"
                 rowItemSpacing = "[[30,0]]"
                 itemSpacing = "[0,-70]"
@@ -201,6 +202,11 @@
         <FollowedStreamsBar 
             id="followBar"
             translation="[0,78]" />
+
+        <RecentsBar 
+            id="recentsBar"
+            translation="[1208,78]" />
+
 
     </children>
 

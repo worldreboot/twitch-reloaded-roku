@@ -9,5 +9,6 @@
     </interface>
     
     <script type="text/brightscript" uri="pkg:/components/GetStuffVideo.brs" />
+    <script type="text/brightscript" uri="pkg:/components/UrlFunctions.brs" />
 
 </component>

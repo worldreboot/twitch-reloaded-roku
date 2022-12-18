@@ -40,8 +40,8 @@ sub onFollowedStreamsChange()
     m.currentIndex = 0
     m.min = 0
     m.max = 9
-    for each stream in m.top.followedStreams
-        ' ? "stream: " stream
+    for stream_index = m.top.followedStreams.count() - 1 to 0 step -1
+        stream = m.top.followedStreams[stream_index]
         group = createObject("roSGNode", "Group")
         group.translation = "[5," + translation.ToStr() + "]"
 
@@ -60,7 +60,7 @@ sub onFollowedStreamsChange()
 
         stream_user = createObject("roSGNode", "SimpleLabel")
         stream_user.text = stream.user_name
-        stream_user.translation = "[90,0]"
+        stream_user.translation = "[-90,20]"
         stream_user.visible = false
         stream_user.fontSize = "18"
         stream_user.fontUri = "pkg:/fonts/Inter-SemiBold.ttf"
@@ -68,7 +68,7 @@ sub onFollowedStreamsChange()
         stream_game = createObject("roSGNode", "Label")
         stream_game.text = stream.game_id
         'stream_game.width = "175"
-        stream_game.translation = "[90,20]"
+        stream_game.translation = "[-90,20]"
         stream_game.color = "0xC26BE1FF"
         stream_game.visible = false
         'stream_game.fontSize = "12"
@@ -77,7 +77,7 @@ sub onFollowedStreamsChange()
         game_font.uri = "pkg:/fonts/Inter-Regular.ttf" 
         game_font.size = "14"
         stream_game.font = game_font
-        'stream_game.fontUri="pkg:/fonts/Roobert-Regular.ttf"
+        stream_game.fontUri="pkg:/fonts/Roobert-Regular.ttf"
 
         stream_viewers = createObject("roSGNode", "SimpleLabel")
         stream_viewers.text = stream.live_duration 'numberToText(stream.viewer_count)
@@ -119,15 +119,16 @@ sub onFollowedStreamsChange()
         ' selected.visible = false
 
         selected = createObject("roSGNode", "Poster")
-        selected.translation = "[64,-5]"
+        selected.translation = [-10,50]
         selected.uri = "pkg:/images/barFocusIndicator.9.png"
         selected.height = 50
-        '? "WIDTHS: " stream_user.localBoundingRect().width " " stream_game.localBoundingRect().width
-        if stream_user.localBoundingRect().width >= stream_game.localBoundingRect().width
-            selected.width = stream_user.localBoundingRect().width + 36
-        else
-            selected.width = stream_game.localBoundingRect().width + 36
-        end if
+        selected.rotation = 3.142
+        selected.width = stream_user.localBoundingRect().width + 36
+        middle_x = selected.sceneBoundingRect().x + (selected.sceneBoundingRect().width / 2) - (stream_user.sceneBoundingRect().width / 2)
+        starting_x_diff = middle_x- stream_user.sceneBoundingRect().x
+        middle_y = selected.sceneBoundingRect().y + (selected.sceneBoundingRect().height / 2) - (stream_user.sceneBoundingRect().height / 2)
+        starting_y_diff = middle_y - stream_user.sceneBoundingRect().y
+        stream_user.translation = [stream_user.translation[0] + starting_x_diff, stream_user.translation[1] + starting_y_diff]
         'selected.width = 300
         selected.visible = false
 
@@ -149,7 +150,7 @@ sub onFollowedStreamsChange()
     end for
     'm.children = m.top.getChildren(-1, 1)
     m.children = []
-    for child = 2 to m.top.getChildCount() - 1
+    for child = 1 to m.top.getChildCount() - 1
         m.children.push(m.top.getChild(child))
     end for
 end sub
@@ -255,7 +256,7 @@ sub onKeyEvent(key, press) as Boolean
             end if
         else if key = "OK"
             if m.children[m.currentIndex] <> invalid
-                '? "selected > ";m.children[m.currentIndex].getChild(5)
+                ' ? "RECENT SELECTED: " m.children[m.currentIndex]
                 m.top.streamerSelected = m.children[m.currentIndex].getChild(7).text
             end if
         end if

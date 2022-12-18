@@ -46,7 +46,7 @@ function onSearchItemSelect()
     if m.liveLine.visible = true
         'm.getStuff.streamerRequested = m.searchResultList.content.getChild(m.searchResultList.itemSelected).title
         'm.getStuff.control = "RUN"
-        m.top.streamerSelectedName = m.searchResultList.content.getChild(m.searchResultList.itemSelected).title
+        m.top.streamerSelectedName = m.searchResultList.content.getChild(m.searchResultList.itemSelected).description
         m.wasLastScene = true
     else if m.categoryLine.visible = true
         m.top.categorySelected = m.resultCategoryList.content.getChild(m.resultCategoryList.itemSelected).categories
@@ -82,6 +82,7 @@ function onSearchResultChange()
                 'fifty = Left(channel.logo, 98) + "50x50.png"
                 child.url = channel.logo
                 child.title = channel.name
+                child.description = channel.login
             end for
         end if
         m.searchResultList.content = content

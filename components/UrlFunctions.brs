@@ -11,7 +11,8 @@ function createUrl()
     '? "(userToken) " userToken
     if userToken <> invalid and userToken <> ""
         ? "we usin " userToken
-        url.AddHeader("Authorization", "Bearer " + m.global.userToken)
+        ? "header btw: Authorization Bearer " + userToken
+        url.AddHeader("Authorization", "Bearer " + userToken)
     else
         ? "we using global"
         url.AddHeader("Authorization", m.global.appBearerToken)
@@ -22,6 +23,15 @@ end function
 function GETJSON(link as String) as Object
     url = createUrl()
     url.SetUrl(link.EncodeUri())
+
+    response_string = url.GetToString()
+
+    return ParseJson(response_string)
+end function
+
+function VALIDATE() as Object
+    url = createUrl()
+    url.SetUrl("https://id.twitch.tv/oauth2/validate")
 
     response_string = url.GetToString()
 
@@ -90,4 +100,26 @@ function saveLogin(access_token, refresh_token, login) as Void
     sec.Write("LoggedInUser", login)
     m.global.setField("userToken", access_token)
     sec.Flush()
+end function
+
+function getPlaybackAccessToken(streamLogin as String, id as String, isVod as Boolean) as Object
+    request = {
+        "extensions": {
+            "persistedQuery": {
+                "sha256Hash": "0828119ded1c13477966434e15800ff57ddacf13ba1911c129dc2200705b0712",
+                "version": 1
+            }
+        },
+        "operationName": "PlaybackAccessToken",
+        "variables": {
+            "isLive": not isVod,
+            "isVod": isVod,
+            "login": streamLogin,
+            "playerType": "channel_home_live",
+            "vodID": id
+        }
+    }
+    ? "format json: " FormatJson(request)
+    response = POST("https://gql.twitch.tv/gql", FormatJson(request))
+    return response
 end function

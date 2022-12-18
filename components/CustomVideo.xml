@@ -8,6 +8,7 @@
         <field id="back" type="bool" value="false" />
         <field id="toggleChat" type="bool" value="false" />
         <field id="chatIsVisible" type="bool" />
+        <field id="streamLayoutMode" type="Integer" value="-1" />
 
         <field id="channelAvatar" type="string" alwaysNotify="true" />
         <field id="channelUsername" type="string" />
@@ -45,7 +46,7 @@
                 fontSize="12"
                 fontUri="pkg:/fonts/Inter-Regular.ttf" />
             <SimpleLabel
-                translation="[120,195]"
+                translation="[120,95]"
                 text="press up/down to change the desired time."
                 color="0xC4C4C4FF"
                 fontSize="12"

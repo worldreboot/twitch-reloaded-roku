@@ -70,6 +70,7 @@ function init()
 
     m.buttonHeld = invalid
     m.scrollInterval = 10
+    m.top.streamLayoutMode = 0
 end function
 
 sub onChatVisibilityChange()
@@ -258,6 +259,12 @@ function saveVideoBookmark() as Void
         m.sec.Flush()
     end if
 end function
+
+' function saveVideoBookmark() as Void
+    
+'     m.sec.Write("LoggedInUserData", videoBookmarks)
+'     m.sec.Flush()
+' end function
 
 function getTimeTravelTime()
     hour0 = Int(Val(m.timeTravelTimeSlot[0].getChild(0).text)) * 36000
@@ -479,7 +486,13 @@ function onKeyEvent(key, press) as Boolean
                 m.timeTravelRect.visible = true
                 return true
             else if m.currentProgressBarState = 4
-                m.top.toggleChat = true
+                ' m.top.toggleChat = true
+                m.top.streamLayoutMode = (m.top.streamLayoutMode + 1) MOD 3
+                ' if m.top.streamLayoutMode = 0 'default layout with chat on top of stream
+                '     m.top.width = 0
+                '     m.top.height = 0
+
+                ' end if
                 return true
             else if m.currentProgressBarState = 5
                 m.currentPositionSeconds = 0

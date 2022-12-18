@@ -24,6 +24,7 @@ sub init()
     m.followBar = m.top.findNode("followBar")
     m.browseButtons = m.top.findNode("browseButtons")
     m.browseMain = m.top.findNode("browseMain")
+    m.recentsBar = m.top.findNode("recentsBar")
 
     m.loggedUserGroup = m.top.findNode("loggedUserGroup")
     m.profileImage = m.top.findNode("profileImage")
@@ -45,6 +46,7 @@ sub init()
     m.channelPage.observeField("streamUrl", "onLiveStreamSelectedFromChannel")
 
     m.followBar.observeField("streamerSelected", "onBrowseItemSelect")
+    m.recentsBar.observeField("streamerSelected", "onBrowseItemSelect")
 
     m.getStreams = createObject("roSGNode", "GetStreams")
     m.getStreams.observeField("searchResults", "onSearchResultChange")
@@ -96,6 +98,7 @@ end sub
 sub onStreamerSelected()
     m.channelPage.streamerSelectedName = m.top.streamerSelectedName
     m.channelPage.streamerSelectedThumbnail = m.top.streamerSelectedThumbnail
+    m.channelPage.streamItemFocused = false
 
     if m.currentlySelectedButton = 0
         m.browseCategoryList.visible = false
@@ -133,6 +136,8 @@ sub onGetFocus()
     if m.top.visible = true
         if m.followBar.focused
             m.followBar.setFocus(true)
+        else if m.recentsBar.focused
+            m.recentsBar.setFocus(true)
         else if m.browseCategoryList.visible = true
             m.browseCategoryList.setFocus(true)
         else if m.browseList.visible = true
@@ -161,6 +166,9 @@ sub onBrowseItemSelect()
         m.top.streamerSelectedThumbnail = ""
         m.top.streamerSelectedName = m.followBar.streamerSelected
         ? "selected: "; m.top.streamerSelectedName
+    else if m.recentsBar.hasFocus()
+        m.top.streamerSelectedThumbnail = ""
+        m.top.streamerSelectedName = m.recentsBar.streamerSelected
     else if m.browseList.visible = true
         'm.getStuff.streamerRequested = m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).ShortDescriptionLine1
         'm.getStuff.control = "RUN"
@@ -168,18 +176,21 @@ sub onBrowseItemSelect()
         m.top.streamerSelectedThumbnail =  m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).HDPosterUrl
         'm.top.streamerSelectedThumbnail =  m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).HDPosterUrl
         m.wasLastScene = true
+        m.channelPage.streamItemFocused = true
     else if m.browseCategoryList.visible = true
         m.top.categorySelected = m.browseCategoryList.content.getChild(m.browseCategoryList.rowItemSelected[0]).getChild(m.browseCategoryList.rowItemSelected[1]).ShortDescriptionLine1
     else if m.browseFollowingList.hasFocus()
         m.top.streamerSelectedName =  m.browseFollowingList.content.getChild(m.browseFollowingList.rowItemSelected[0]).getChild(m.browseFollowingList.rowItemSelected[1]).ShortDescriptionLine1
         m.top.streamerSelectedThumbnail =  m.browseFollowingList.content.getChild(m.browseFollowingList.rowItemSelected[0]).getChild(m.browseFollowingList.rowItemSelected[1]).HDPosterUrl
+        m.channelPage.streamItemFocused = true
     else if m.browseOfflineFollowingList.hasFocus()
         m.top.streamerSelectedName =  m.browseOfflineFollowingList.content.getChild(m.browseOfflineFollowingList.rowItemSelected[0]).getChild(m.browseOfflineFollowingList.rowItemSelected[1]).ShortDescriptionLine1
         m.top.streamerSelectedThumbnail =  m.browseOfflineFollowingList.content.getChild(m.browseOfflineFollowingList.rowItemSelected[0]).getChild(m.browseOfflineFollowingList.rowItemSelected[1]).HDPosterUrl
+        m.channelPage.streamItemFocused = true
     else if m.offlineChannelList.hasFocus()
-
         m.top.streamerSelectedName = m.offlineChannelList.channelSelected
         m.top.streamerSelectedThumbnail = ""
+        m.channelPage.streamItemFocused = true
     end if
 end sub
 
@@ -282,7 +293,7 @@ sub onCategoryResultChange()
             rowItem.HDPosterUrl = stream.logo
             row.appendChild(rowItem)
             cnt += 1
-            if cnt <> 0 and cnt MOD 6 = 0 and content <> invalid
+            if cnt <> 0 and cnt MOD 7 = 0 and content <> invalid
                 content.appendChild(row)
                 row = createObject("RoSGNode", "ContentNode")
                 alreadyAppended = true
@@ -579,18 +590,58 @@ sub onKeyEvent(key, press) as Boolean
                     handled = true
                 end if
             end if 
-        else if (m.browseList.hasFocus() or m.browseCategoryList.hasFocus() or m.browseFollowingList.hasFocus() or m.browseOfflineFollowingList.hasFocus() or m.offlineChannelList.hasFocus() or m.channelPage.visible) and key = "left"
+        else if (m.browseList.hasFocus() or m.browseCategoryList.hasFocus() or m.browseFollowingList.hasFocus() or m.browseOfflineFollowingList.hasFocus() or m.offlineChannelList.hasFocus() or m.channelPage.streamItemFocused) and key = "left"
             'm.browseButtons.translation = "[200, 0]"
             'm.browseList.translation = "[300,165]"
             'm.browseCategoryList.translation = "[300,165]"
             'm.browseMain.translation = "[250, 0]"
+            ' if key = "left"
+            ? "STREAMITEM"
             m.followBar.setFocus(true)
             m.followBar.focused = true
+            m.channelPage.streamItemFocused = false
             handled = true
+            ' end if
+        else if (m.browseList.hasFocus() or m.browseCategoryList.hasFocus() or m.browseFollowingList.hasFocus() or m.browseOfflineFollowingList.hasFocus() or m.offlineChannelList.hasFocus() or m.channelPage.streamItemFocused) and key = "right"
+            'm.browseButtons.translation = "[200, 0]"
+            'm.browseList.translation = "[300,165]"
+            'm.browseCategoryList.translation = "[300,165]"
+            'm.browseMain.translation = "[250, 0]"
+            ' if key = "right"
+            ? "STREAMITEM 2"
+            m.recentsBar.setFocus(true)
+            m.recentsBar.focused = true
+            m.channelPage.streamItemFocused = false
+            handled = true
+            ' end if
         else if m.followBar.hasFocus() = true and key = "right"
             'm.browseButtons.translation = "[0, 0]"
             'm.browseList.translation = "[100,165]"
             'm.browseCategoryList.translation = "[100,165]"
+            ? "FOLLOW ???????????????????????????????????????????????????"
+            m.browseMain.translation = "[0, 0]"
+            if m.browseList.visible = true
+                ? "BROWSELIST"
+                m.browseList.setFocus(true)
+            else if m.browseCategoryList.visible = true
+                ? "BROWSECATEGORYLIST"
+                m.browseCategoryList.setFocus(true)
+            else if m.browseFollowingList.visible = true
+                ? "BROWSEFOLLOWINGLIST"
+                m.browseFollowingList.setFocus(true)
+                m.followingListIsFocused = true
+            else if m.channelPage.visible
+                m.channelPage.streamItemFocused = true
+                m.channelPage.visible = false
+                m.channelPage.visible = true
+            end if
+            m.followBar.focused = false
+            handled = true
+        else if m.recentsBar.hasFocus() = true and key = "left"
+            'm.browseButtons.translation = "[0, 0]"
+            'm.browseList.translation = "[100,165]"
+            'm.browseCategoryList.translation = "[100,165]"
+            ? "RECENTS ???????????????????????????????????????????????????"
             m.browseMain.translation = "[0, 0]"
             if m.browseList.visible = true
                 m.browseList.setFocus(true)
@@ -600,10 +651,11 @@ sub onKeyEvent(key, press) as Boolean
                 m.browseFollowingList.setFocus(true)
                 m.followingListIsFocused = true
             else if m.channelPage.visible
+                m.channelPage.streamItemFocused = true
                 m.channelPage.visible = false
                 m.channelPage.visible = true
             end if
-            m.followBar.focused = false
+            m.recentsBar.focused = false
             handled = true
         else if m.browseList.hasFocus() = true and key = "down"
             getMoreChannels()
@@ -673,5 +725,12 @@ sub onKeyEvent(key, press) as Boolean
     end if
 
     ? "HOMESCENE > key " key " " handled
+    if m.followBar.hasFocus()
+        ? "focus: followbar"
+    else if m.recentsBar.hasFocus()
+        ? "focus: recentsbar"
+    else
+        ? "focus: something else"
+    end if
     return handled
 end sub
