@@ -1,3 +1,4 @@
+Library "Roku_Ads.brs"
 sub RunUserInterface()
 
     screen = CreateObject("roSGScreen")
