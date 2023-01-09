@@ -10,7 +10,7 @@ sub init()
 
     deviceInfo = CreateObject("roDeviceInfo")
     uiResolutionWidth = deviceInfo.GetUIResolution().width
-    
+
     if uiResolutionWidth = 1920
         m.maskSize = [75, 75]
     else
@@ -18,14 +18,14 @@ sub init()
     end if
 end sub
 
-sub numberToText(number) as Object
+sub numberToText(number) as object
     s = StrI(number)
     result = ""
-    if number >=100000 and number < 1000000
+    if number >= 100000 and number < 1000000
         result = Left(s, 4) + "K"
-    else if number >=10000 and number < 100000
+    else if number >= 10000 and number < 100000
         result = Left(s, 3) + "." + Mid(s, 4, 1) + "K"
-    else if number >=1000 and number < 10000
+    else if number >= 1000 and number < 10000
         result = Left(s, 2) + "." + Mid(s, 3, 1) + "K"
     else if number < 1000
         result = s
@@ -73,8 +73,8 @@ sub onFollowedStreamsChange()
         stream_game.visible = false
         'stream_game.fontSize = "12"
         game_font = createObject("roSGNode", "Font")
-        'game_font.role = "font" 
-        game_font.uri = "pkg:/fonts/Inter-Regular.ttf" 
+        'game_font.role = "font"
+        game_font.uri = "pkg:/fonts/Inter-Regular.ttf"
         game_font.size = "14"
         stream_game.font = game_font
         'stream_game.fontUri="pkg:/fonts/Roobert-Regular.ttf"
@@ -84,7 +84,7 @@ sub onFollowedStreamsChange()
         stream_viewers.translation = "[303,10]"
         stream_viewers.visible = false
         stream_viewers.fontSize = "12"
-        stream_viewers.fontUri="pkg:/fonts/Inter-Regular.ttf"
+        stream_viewers.fontUri = "pkg:/fonts/Inter-Regular.ttf"
 
         red_rectangle = createObject("roSGNode", "Poster")
         red_rectangle.uri = "pkg:/images/red_rectangle.9.png"
@@ -132,7 +132,7 @@ sub onFollowedStreamsChange()
         selected.visible = false
 
         mask_group.appendChild(profile_image)
-        
+
         group.appendChild(selected)
         group.appendChild(mask_group)
         group.appendChild(stream_user)
@@ -192,10 +192,14 @@ sub onGetFocus()
     end if
 end sub
 
-sub onKeyEvent(key, press) as Boolean
+sub onKeyEvent(key, press) as boolean
     handled = false
     if press
         if key = "up"
+            if m.currentIndex = m.min
+                return false
+                'tofix: add behaviour to move to top bar'
+            end if
             if m.currentIndex - 1 >= 0
                 m.children[m.currentIndex].getChild(0).visible = false
                 m.children[m.currentIndex].getChild(2).visible = false
@@ -223,6 +227,7 @@ sub onKeyEvent(key, press) as Boolean
                 'm.children[m.currentIndex].getChild(6).visible = true
                 m.children[m.currentIndex].getChild(8).visible = true
             end if
+            handled = true
         else if key = "down"
             if m.currentIndex + 1 < m.top.getChildCount() - 1
                 m.children[m.currentIndex].getChild(0).visible = false
@@ -253,10 +258,12 @@ sub onKeyEvent(key, press) as Boolean
                 'm.children[m.currentIndex].getChild(6).visible = true
                 m.children[m.currentIndex].getChild(8).visible = true
             end if
+            handled = true
         else if key = "OK"
             if m.children[m.currentIndex] <> invalid
                 '? "selected > ";m.children[m.currentIndex].getChild(5)
                 m.top.streamerSelected = m.children[m.currentIndex].getChild(7).text
+                handled = true
             end if
         end if
     end if

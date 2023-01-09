@@ -29,7 +29,7 @@
     </interface>
 
     <script type="text/brightscript" uri="pkg:/components/HomeScene.brs" />
-
+    <script type="text/brightscript" uri="pkg:/components/UrlFunctions.brs" />
     <children>
         <Group id="browseMain" translation="[0,0]">
             <Group id="browseButtons">
@@ -61,7 +61,7 @@
                     <Rectangle
                         id="categoryLine"
                         visible="false"
-                        color="0x00FFD1FF"
+                        color="0x9146FFFF"
                         width="130"
                         height="3"
                         translation="[0,51]" />
@@ -70,13 +70,13 @@
                     id="liveButton"
                     translation="[313,24]"
                     text="Live Channels"
-                    color="0x00FFD1FF"
+                    color="0xEFEFF1FF"
                     fontSize="24"
                     fontUri="pkg:/fonts/Inter-SemiBold.ttf">
                     <Rectangle
                         id="liveLine"
                         visible="true"
-                        color="0x00FFD1FF"
+                        color="0x9146FFFF"
                         width="165"
                         height="3"
                         translation="[0,51]" />
@@ -91,7 +91,7 @@
                     <Rectangle
                         id="followingLine"
                         visible="false"
-                        color="0x00FFD1FF"
+                        color="0x9146FFFF"
                         width="113"
                         height="3"
                         translation="[0,51]" />
