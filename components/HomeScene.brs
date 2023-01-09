@@ -30,7 +30,7 @@ sub init()
     m.profileImage = m.top.findNode("profileImage")
     m.loggedUserName = m.top.findNode("loggedUserName")
 
-    m.actualBrowseButtons = [ m.categoryButton, m.liveButton, m.followingButton, m.searchLabel, m.optionsButton, m.loggedUserName ]
+    m.actualBrowseButtons = [m.categoryButton, m.liveButton, m.followingButton, m.searchLabel, m.optionsButton, m.loggedUserName]
 
     m.headerRect = m.top.findNode("headerRect")
 
@@ -172,20 +172,20 @@ sub onBrowseItemSelect()
     else if m.browseList.visible = true
         'm.getStuff.streamerRequested = m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).ShortDescriptionLine1
         'm.getStuff.control = "RUN"
-        m.top.streamerSelectedName =  m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).ShortDescriptionLine1
-        m.top.streamerSelectedThumbnail =  m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).HDPosterUrl
+        m.top.streamerSelectedName = m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).ShortDescriptionLine1
+        m.top.streamerSelectedThumbnail = m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).HDPosterUrl
         'm.top.streamerSelectedThumbnail =  m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).HDPosterUrl
         m.wasLastScene = true
         m.channelPage.streamItemFocused = true
     else if m.browseCategoryList.visible = true
         m.top.categorySelected = m.browseCategoryList.content.getChild(m.browseCategoryList.rowItemSelected[0]).getChild(m.browseCategoryList.rowItemSelected[1]).ShortDescriptionLine1
     else if m.browseFollowingList.hasFocus()
-        m.top.streamerSelectedName =  m.browseFollowingList.content.getChild(m.browseFollowingList.rowItemSelected[0]).getChild(m.browseFollowingList.rowItemSelected[1]).ShortDescriptionLine1
-        m.top.streamerSelectedThumbnail =  m.browseFollowingList.content.getChild(m.browseFollowingList.rowItemSelected[0]).getChild(m.browseFollowingList.rowItemSelected[1]).HDPosterUrl
+        m.top.streamerSelectedName = m.browseFollowingList.content.getChild(m.browseFollowingList.rowItemSelected[0]).getChild(m.browseFollowingList.rowItemSelected[1]).ShortDescriptionLine1
+        m.top.streamerSelectedThumbnail = m.browseFollowingList.content.getChild(m.browseFollowingList.rowItemSelected[0]).getChild(m.browseFollowingList.rowItemSelected[1]).HDPosterUrl
         m.channelPage.streamItemFocused = true
     else if m.browseOfflineFollowingList.hasFocus()
-        m.top.streamerSelectedName =  m.browseOfflineFollowingList.content.getChild(m.browseOfflineFollowingList.rowItemSelected[0]).getChild(m.browseOfflineFollowingList.rowItemSelected[1]).ShortDescriptionLine1
-        m.top.streamerSelectedThumbnail =  m.browseOfflineFollowingList.content.getChild(m.browseOfflineFollowingList.rowItemSelected[0]).getChild(m.browseOfflineFollowingList.rowItemSelected[1]).HDPosterUrl
+        m.top.streamerSelectedName = m.browseOfflineFollowingList.content.getChild(m.browseOfflineFollowingList.rowItemSelected[0]).getChild(m.browseOfflineFollowingList.rowItemSelected[1]).ShortDescriptionLine1
+        m.top.streamerSelectedThumbnail = m.browseOfflineFollowingList.content.getChild(m.browseOfflineFollowingList.rowItemSelected[0]).getChild(m.browseOfflineFollowingList.rowItemSelected[1]).HDPosterUrl
         m.channelPage.streamItemFocused = true
     else if m.offlineChannelList.hasFocus()
         m.top.streamerSelectedName = m.offlineChannelList.channelSelected
@@ -217,7 +217,7 @@ sub onSearchResultChange()
         content = m.browseList.content
     else if m.append = false
         content = createObject("roSGNode", "ContentNode")
-    end if 
+    end if
     if m.getStreams.searchResults <> invalid
         row = createObject("RoSGNode", "ContentNode")
         rowItem = invalid
@@ -234,7 +234,7 @@ sub onSearchResultChange()
             rowItem.ShortDescriptionLine2 = numberToText(stream.viewers)
             row.appendChild(rowItem)
             cnt += 1
-            if cnt <> 0 and cnt MOD 3 = 0
+            if cnt <> 0 and cnt mod 3 = 0
                 content.appendChild(row)
                 row = createObject("RoSGNode", "ContentNode")
                 alreadyAppended = true
@@ -255,14 +255,14 @@ sub onSearchResultChange()
     end if
 end sub
 
-sub numberToText(number) as Object
+sub numberToText(number) as object
     s = StrI(number)
     result = ""
-    if number >=100000 and number < 1000000
+    if number >= 100000 and number < 1000000
         result = Left(s, 4) + "K"
-    else if number >=10000 and number < 100000
+    else if number >= 10000 and number < 100000
         result = Left(s, 3) + "." + Mid(s, 4, 1) + "K"
-    else if number >=1000 and number < 10000
+    else if number >= 1000 and number < 10000
         result = Left(s, 2) + "." + Mid(s, 3, 1) + "K"
     else if number < 1000
         result = s
@@ -279,7 +279,7 @@ sub onCategoryResultChange()
         content = m.browseCategoryList.content
     else if m.appendCategory = false
         content = createObject("roSGNode", "ContentNode")
-    end if 
+    end if
     if m.getStreams.searchResults <> invalid
         row = createObject("RoSGNode", "ContentNode")
         rowItem = invalid
@@ -293,14 +293,14 @@ sub onCategoryResultChange()
             rowItem.HDPosterUrl = stream.logo
             row.appendChild(rowItem)
             cnt += 1
-            if cnt <> 0 and cnt MOD 7 = 0 and content <> invalid
+            if cnt <> 0 and cnt mod 7 = 0 and content <> invalid
                 content.appendChild(row)
                 row = createObject("RoSGNode", "ContentNode")
                 alreadyAppended = true
             end if
         end for
         'if rowItem <> invalid and cnt <> 0 and alreadyAppended = false
-            'row.appendChild(rowItem)
+        'row.appendChild(rowItem)
         'end if
     end if
     m.browseCategoryList.content = content
@@ -363,7 +363,7 @@ sub onGetFollowedStreams()
         content = m.browseFollowingList.content
     else if m.append = false
         content = createObject("roSGNode", "ContentNode")
-    end if 
+    end if
     if m.top.followedStreams <> invalid
         row = createObject("RoSGNode", "ContentNode")
         rowItem = invalid
@@ -380,7 +380,7 @@ sub onGetFollowedStreams()
             rowItem.ShortDescriptionLine2 = numberToText(stream.viewer_count)
             row.appendChild(rowItem)
             cnt += 1
-            if cnt <> 0 and cnt MOD 3 = 0
+            if cnt <> 0 and cnt mod 3 = 0
                 content.appendChild(row)
                 row = createObject("RoSGNode", "ContentNode")
                 m.numRowsInFollowingList += 1
@@ -400,12 +400,12 @@ end sub
 
 sub onBrowseFollowing()
     if m.browseFollowingList.itemFocused = m.numRowsInFollowingList
-        m.offlineChannelsLabel.translation = [100,465]
+        m.offlineChannelsLabel.translation = [100, 465]
         'm.browseOfflineFollowingList.translation = [100,500]
         m.offlineChannelList.visible = true
     else
-        m.offlineChannelsLabel.translation = [100,700]
-        m.browseOfflineFollowingList.translation = [100,750]
+        m.offlineChannelsLabel.translation = [100, 700]
+        m.browseOfflineFollowingList.translation = [100, 750]
         m.offlineChannelList.visible = false
     end if
 end sub
@@ -420,7 +420,7 @@ sub onGetOfflineFollowed()
         content = m.browseOfflineFollowingList.content
     else if m.append = false
         content = createObject("roSGNode", "ContentNode")
-    end if 
+    end if
     if m.getOfflineFollowed.offlineFollowedUsers <> invalid
         row = createObject("RoSGNode", "ContentNode")
         rowItem = invalid
@@ -434,7 +434,7 @@ sub onGetOfflineFollowed()
             rowItem.HDPosterUrl = stream.profile_image_url
             row.appendChild(rowItem)
             cnt += 1
-            if cnt <> 0 and cnt MOD 6 = 0
+            if cnt <> 0 and cnt mod 6 = 0
                 content.appendChild(row)
                 row = createObject("RoSGNode", "ContentNode")
                 alreadyAppended = true
@@ -449,7 +449,7 @@ sub onGetOfflineFollowed()
     m.append = false
 end sub
 
-sub onKeyEvent(key, press) as Boolean
+sub onKeyEvent(key, press) as boolean
     handled = false
     if m.top.visible = true and press
         if (m.browseList.hasFocus() = true or m.browseCategoryList.hasFocus() = true or m.browseFollowingList.hasFocus() = true) and key = "up"
@@ -589,7 +589,7 @@ sub onKeyEvent(key, press) as Boolean
                     onFollowingSelect()
                     handled = true
                 end if
-            end if 
+            end if
         else if (m.browseList.hasFocus() or m.browseCategoryList.hasFocus() or m.browseFollowingList.hasFocus() or m.browseOfflineFollowingList.hasFocus() or m.offlineChannelList.hasFocus() or m.channelPage.streamItemFocused) and key = "left"
             'm.browseButtons.translation = "[200, 0]"
             'm.browseList.translation = "[300,165]"
@@ -664,20 +664,20 @@ sub onKeyEvent(key, press) as Boolean
             getMoreCategories()
             handled = true
         else if m.browseFollowingList.hasFocus() = true and key = "down"
-            m.offlineChannelsLabel.translation = [100,465]
+            m.offlineChannelsLabel.translation = [100, 465]
             'm.browseOfflineFollowingList.translation = [100,500]
             'm.browseOfflineFollowingList.setFocus(true)
             m.offlineChannelList.visible = true
             m.offlineChannelList.setFocus(true)
             m.followingListIsFocused = false
             handled = true
-        'else if m.browseOfflineFollowingList.hasFocus() = true and key = "up"
+            'else if m.browseOfflineFollowingList.hasFocus() = true and key = "up"
         else if m.offlineChannelList.hasFocus() and key = "up"
             m.browseFollowingList.setFocus(true)
             m.followingListIsFocused = true
             handled = true
-        'end if
-    'else if press = false
+            'end if
+            'else if press = false
         else if key = "back" 'and m.wasLastScene = true
             if m.channelPage.visible
                 m.channelPage.visible = false
@@ -693,7 +693,7 @@ sub onKeyEvent(key, press) as Boolean
                 else if m.currentlySelectedButton = 2
                     m.browseFollowingList.visible = true
                     m.offlineChannelsLabel.visible = true
-                    
+
                     if m.followingListIsFocused = true
                         m.browseFollowingList.setFocus(true)
                     else

@@ -10,31 +10,15 @@ function onSearchTextChange()
 
 end function
 
-function numberToText(number) as Object
-    s = StrI(number)
-    result = ""
-    if number >= 1000000
-        result = Left(s, 2) + "." + Mid(s, 3, 1) + "M"
-    else if number >=100000 and number < 1000000
-        result = Left(s, 4) + "K"
-    else if number >=10000 and number < 100000
-        result = Left(s, 3) + "." + Mid(s, 4, 1) + "K"
-    else if number >=1000 and number < 10000
-        result = Left(s, 2) + "." + Mid(s, 3, 1) + "K"
-    else if number < 1000
-        result = s
-    end if
-    return result + " followers"
-end function
 
-function numberToViewerText(number) as Object
+function numberToViewerText(number) as object
     s = StrI(number)
     result = ""
-    if number >=100000 and number < 1000000
+    if number >= 100000 and number < 1000000
         result = Left(s, 4) + "K"
-    else if number >=10000 and number < 100000
+    else if number >= 10000 and number < 100000
         result = Left(s, 3) + "." + Mid(s, 4, 1) + "K"
-    else if number >=1000 and number < 10000
+    else if number >= 1000 and number < 10000
         result = Left(s, 2) + "." + Mid(s, 3, 1) + "K"
     else if number < 1000
         result = s
@@ -42,7 +26,7 @@ function numberToViewerText(number) as Object
     return result + " viewers"
 end function
 
-function getGameNameFromId(id as String)
+function getGameNameFromId(id as string)
     game_info = GETJSON("https://api.twitch.tv/helix/games?id=" + id)
     if game_info <> invalid and game_info.data <> invalid and game_info.data[0] <> invalid
         return game_info.data[0].name
@@ -50,15 +34,15 @@ function getGameNameFromId(id as String)
     return id
 end function
 
-function convertToTimeFormat(timestamp as String) as String
+function convertToTimeFormat(timestamp as string) as string
     secondsSincePublished = createObject("roDateTime")
     secondsSincePublished.FromISO8601String(timestamp)
     currentTime = createObject("roDateTime").AsSeconds()
     elapsedTime = currentTime - secondsSincePublished.AsSeconds()
     m.top.streamDurationSeconds = elapsedTime
     hours = Int(elapsedTime / 60 / 60)
-    mins = elapsedTime / 60 MOD 60
-    secs = elapsedTime MOD 60
+    mins = elapsedTime / 60 mod 60
+    secs = elapsedTime mod 60
     if mins < 10
         mins = mins.ToStr()
         mins = "0" + mins
@@ -74,7 +58,7 @@ function convertToTimeFormat(timestamp as String) as String
     return hours.ToStr() + ":" + mins + ":" + secs
 end function
 
-function getSearchResults() as Object
+function getSearchResults() as object
     search_results_url = "https://api.twitch.tv/helix/users?login=" + m.top.loginRequested
 
     url = createUrl()
@@ -149,8 +133,8 @@ function getSearchResults() as Object
     search = ParseJson(response_string)
 
     if search <> invalid and search.total <> invalid
-        result.followers = numberToText(search.total)
-    else    
+        result.followers = numberToText(search.total) + "followers"
+    else
         result.followers = "0 followers"
     end if
 

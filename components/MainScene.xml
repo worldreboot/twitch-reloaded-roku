@@ -1,20 +1,20 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <component name="MainScene" extends="Scene">
 
     <script type="text/brightscript" uri="pkg:/components/MainScene.brs" />
-
+    <script type="text/brightscript" uri="pkg:/components/UrlFunctions.brs" />
     <children>
 
-        <Poster 
-            id="instructions" 
+        <Poster
+            id="instructions"
             uri="pkg:/images/twoku_update_instructions.png"
             visible="false" />
 
-        <HomeScene 
+        <HomeScene
             id="homeScene"
             visible="true" />
-        
+
         <CategoryScene
             id="categoryScene"
             visible="false" />
@@ -23,7 +23,7 @@
             id="keyboardGroup"
             visible="false" />
 
-        <CustomVideo 
+        <CustomVideo
             id="videoPlayer"
             enableUI="false"
             enableTrickPlay="false"
@@ -31,18 +31,18 @@
             translation="[0,0]"
             width="1030"
             height="720" />
-        
+
         <!--<ChannelPage
             id="channelPage"
             visible="false" /> -->
-        
-        <LoginPage 
+
+        <LoginPage
             id="loginPage"
             visible="false" />
 
-        <Chat 
-           id="chat"
-           visible="false" />
+        <Chat
+            id="chat"
+            visible="false" />
 
         <Timer
             id="testTimer"

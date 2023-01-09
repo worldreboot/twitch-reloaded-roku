@@ -2,7 +2,7 @@ title=Twoku
 
 major_version=0
 minor_version=9
-build_version=00000
+build_version=00001
 
 mm_icon_focus_hd=pkg:/images/channel-icon_HD.png
 mm_icon_focus_sd=pkg:/images/channel-poster_sd.png
@@ -14,4 +14,3 @@ supports_input_launch=1
 
 ui_resolutions=hd
 
-bs_libs_required=roku_ads_lib

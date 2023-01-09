@@ -18,21 +18,6 @@ sub init()
     end if
 end sub
 
-sub numberToText(number) as object
-    s = StrI(number)
-    result = ""
-    if number >= 100000 and number < 1000000
-        result = Left(s, 4) + "K"
-    else if number >= 10000 and number < 100000
-        result = Left(s, 3) + "." + Mid(s, 4, 1) + "K"
-    else if number >= 1000 and number < 10000
-        result = Left(s, 2) + "." + Mid(s, 3, 1) + "K"
-    else if number < 1000
-        result = s
-    end if
-    return result
-end sub
-
 sub onFollowedStreamsChange()
     translation = 40
     '? "we got there"
@@ -73,7 +58,6 @@ sub onFollowedStreamsChange()
         stream_game.translation = "[-90,20]"
         stream_game.color = "0xC26BE1FF"
         stream_game.visible = false
-        'stream_game.fontSize = "12"
 
         game_font = createObject("roSGNode", "Font")
         game_font.size = "14"
@@ -84,11 +68,9 @@ sub onFollowedStreamsChange()
         viewer_font.size = "12"
         viewer_font.uri = "pkg:/fonts/Inter-Regular.ttf"
         stream_viewers = createObject("roSGNode", "Label")
-        stream_viewers.text = stream.live_duration 'numberToText(stream.viewer_count)
+        stream_viewers.text = stream.live_duration
         stream_viewers.translation = "[303,10]"
         stream_viewers.visible = false
-        stream_viewers.fontSize = "12"
-        stream_viewers.fontUri = "pkg:/fonts/Inter-Regular.ttf"
         stream_viewers.font = viewer_font
 
         red_rectangle = createObject("roSGNode", "Poster")

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <component name="HomeScene" extends="Group">
 
@@ -9,8 +9,8 @@
 
         <field id="streamerRequested" type="string" />
         <field id="categorySelected" type="string" alwaysNotify="true" />
-        <field id="followedStreams" type="array" alias="followBar.followedStreams"/>
-        <field id="followBarFocused" type="bool" alias="followBar.focused"/>
+        <field id="followedStreams" type="array" alias="followBar.followedStreams" />
+        <field id="followBarFocused" type="bool" alias="followBar.focused" />
         <field id="loggedInUserName" type="string" />
         <field id="loggedInUserProfileImage" type="uri" onChange="onNewUser" />
         <field id="buttonPressed" type="string" alwaysNotify="true" value="" />
@@ -40,20 +40,24 @@
                     width="1358"
                     height="78"
                     translation="[-150,0]" />
-                <Poster translation="[21,26]" uri="pkg:/images/twoku_logo.png" />
+                <Poster
+                    translation="[0,16]"
+                    uri="pkg:/images/twoku_logo.png"
+                    width="150px"
+                    height="45" />
                 <!--<SimpleLabel
                     id="searchHeader"
                     translation="[100,50]"
-                    text="Browse"
+                text="Browse"
                     fontSize="48"
-                    fontUri="pkg:/fonts/Roobert-Bold.ttf" /> -->
+                fontUri="pkg:/fonts/Roobert-Bold.ttf" /> -->
                 <SimpleLabel
                     id="categoryButton"
                     translation="[163,24]"
                     text="Categories"
                     color="0xEFEFF1FF"
                     fontSize="24"
-                    fontUri="pkg:/fonts/Inter-SemiBold.ttf" >
+                    fontUri="pkg:/fonts/Inter-SemiBold.ttf">
                     <Rectangle
                         id="categoryLine"
                         visible="false"
@@ -61,14 +65,14 @@
                         width="130"
                         height="3"
                         translation="[0,51]" />
-                </SimpleLabel> 
+                </SimpleLabel>
                 <SimpleLabel
                     id="liveButton"
                     translation="[313,24]"
                     text="Live Channels"
                     color="0x00FFD1FF"
                     fontSize="24"
-                    fontUri="pkg:/fonts/Inter-SemiBold.ttf" >
+                    fontUri="pkg:/fonts/Inter-SemiBold.ttf">
                     <Rectangle
                         id="liveLine"
                         visible="true"
@@ -83,7 +87,7 @@
                     text="Following"
                     color="0xEFEFF1FF"
                     fontSize="24"
-                    fontUri="pkg:/fonts/Inter-SemiBold.ttf" >
+                    fontUri="pkg:/fonts/Inter-SemiBold.ttf">
                     <Rectangle
                         id="followingLine"
                         visible="false"
@@ -95,72 +99,72 @@
                 <!--<SimpleLabel
                     id="searchLabel"
                     translation="[735,29]"
-                    text="Search *"
+                text="Search *"
                     color="0xEFEFF1FF"
                     fontSize="18"
-                    fontUri="pkg:/fonts/Roobert-SemiBold.ttf" /> -->
-                <Poster 
+                fontUri="pkg:/fonts/Roobert-SemiBold.ttf" /> -->
+                <Poster
                     id="searchLabel"
-                    height="32" 
-                    width="32" 
-                    translation="[1080,24]" 
-                    uri="pkg:/images/search.png" 
+                    height="32"
+                    width="32"
+                    translation="[1080,24]"
+                    uri="pkg:/images/search.png"
                     blendColor="0xEFEFF1FF" />
                 <!--<SimpleLabel
                     id="loginButton"
                     translation="[845,29]"
-                    text="Login"
+                text="Login"
                     color="0xEFEFF1FF"
                     fontSize="18"
-                    fontUri="pkg:/fonts/Roobert-SemiBold.ttf" >
+                fontUri="pkg:/fonts/Roobert-SemiBold.ttf" >
                 </SimpleLabel> -->
                 <!--<SimpleLabel
                     id="optionsButton"
                     translation="[940,29]"
-                    text="Options"
+                text="Options"
                     color="0xEFEFF1FF"
                     fontSize="18"
-                    fontUri="pkg:/fonts/Roobert-SemiBold.ttf" >
+                fontUri="pkg:/fonts/Roobert-SemiBold.ttf" >
                 </SimpleLabel> -->
-                <Poster 
+                <Poster
                     id="optionsButton"
-                    height="32" 
-                    width="32" 
-                    translation="[1145,24]" 
-                    uri="pkg:/images/options.png" 
+                    height="32"
+                    width="32"
+                    translation="[1145,24]"
+                    uri="pkg:/images/options.png"
                     blendColor="0xEFEFF1FF" />
             </Group>
-            <RowList 
+            <RowList
                 id="browseList"
                 itemComponentName="BrowseChannelItem"
-                translation = "[120,138]"
-                numRows = "3"
-                rowItemSize = "[[320,180]]"
-                rowItemSpacing = "[[30,0]]"
-                itemSize = "[1030,275]"
+                translation="[120,138]"
+                numRows="3"
+                rowItemSize="[[320,180]]"
+                rowItemSpacing="[[30,0]]"
+                itemSize="[1030,275]"
                 focusBitmapUri="pkg:/images/focusIndicator.9.png"
-                rowFocusAnimationStyle = "floatingFocus" />
-            <RowList 
+                rowFocusAnimationStyle="floatingFocus" />
+            <RowList
                 id="browseCategoryList"
                 itemComponentName="BrowseCategoryItem"
-                translation = "[120,138]"
-                numRows = "3"
-                rowItemSize = "[[136,190]]"
-                rowItemSpacing = "[[20,0]]"
-                itemSize = "[1080,265]"
+                translation="[120,138]"
+                numRows="3"
+                rowItemSize="[[136,190]]"
+                rowItemSpacing="[[20,0]]"
+                itemSize="[1080,265]"
                 focusBitmapUri="pkg:/images/focusIndicator.9.png"
-                rowFocusAnimationStyle = "floatingFocus"
-                wrapDividerBitmapUri = "" />
-            <RowList 
+                rowFocusAnimationStyle="floatingFocus"
+                wrapDividerBitmapUri="" />
+            <RowList
                 id="browseFollowingList"
                 itemComponentName="BrowseChannelItem"
-                translation = "[120,138]"
-                numRows = "3"
-                rowItemSize = "[[320,180]]"
-                rowItemSpacing = "[[30,0]]"
-                itemSize = "[1030,275]"
+                translation="[120,138]"
+                numRows="3"
+                rowItemSize="[[320,180]]"
+                rowItemSpacing="[[30,0]]"
+                itemSize="[1030,275]"
                 focusBitmapUri="pkg:/images/focusIndicator.9.png"
-                rowFocusAnimationStyle = "floatingFocus" />
+                rowFocusAnimationStyle="floatingFocus" />
             <SimpleLabel
                 id="offlineChannelsLabel"
                 translation="[120,700]"
@@ -169,23 +173,25 @@
                 fontSize="18"
                 visible="false"
                 fontUri="pkg:/fonts/Roobert-SemiBold.ttf" />
-            <RowList 
+            <RowList
                 id="browseOfflineFollowingList"
                 itemComponentName="BrowseOfflineChannelItem"
-                translation = "[120,750]"
-                numRows = "3"
-                rowItemSize = "[[150,150]]"
-                rowItemSpacing = "[[30,0]]"
-                itemSpacing = "[0,-70]"
-                itemSize = "[1050,300]"
+                translation="[120,750]"
+                numRows="3"
+                rowItemSize="[[150,150]]"
+                rowItemSpacing="[[30,0]]"
+                itemSpacing="[0,-70]"
+                itemSize="[1050,300]"
                 focusBitmapUri="pkg:/images/focusIndicator.9.png"
-                rowFocusAnimationStyle = "floatingFocus" />
+                rowFocusAnimationStyle="floatingFocus" />
 
             <Group id="loggedUserGroup" translation="[1220,15]" visible="true">
-                <MaskGroup id="profileImageMask" maskuri = "pkg:/images/profile-mask.png" masksize = "[50,50]" >
+                <MaskGroup id="profileImageMask" maskuri="pkg:/images/profile-mask.png"
+                    masksize="[50,50]">
                     <Poster id="profileImage" width="50" height="50" />
                 </MaskGroup>
-                <SimpleLabel id="loggedUserName" translation="[0,20]" fontSize = "16" fontUri = "pkg:/fonts/Roobert-SemiBold.ttf" text="Login" />
+                <SimpleLabel id="loggedUserName" translation="[0,20]" fontSize="16"
+                    fontUri="pkg:/fonts/Roobert-SemiBold.ttf" text="Login" />
             </Group>
         </Group>
 
@@ -199,11 +205,11 @@
             visible="false"
             translation="[100,500]" />
 
-        <FollowedStreamsBar 
+        <FollowedStreamsBar
             id="followBar"
             translation="[0,78]" />
 
-        <RecentsBar 
+        <RecentsBar
             id="recentsBar"
             translation="[1208,78]" />
 

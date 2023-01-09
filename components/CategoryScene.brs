@@ -64,7 +64,7 @@ sub insertClips()
         cnt = 0
         for each stream in m.getClips.searchResults
             alreadyAppended = false
-            if cnt <> 0 and cnt MOD 3 = 0
+            if cnt <> 0 and cnt mod 3 = 0
                 content.appendChild(row)
                 row = createObject("RoSGNode", "ContentNode")
                 alreadyAppended = true
@@ -132,21 +132,6 @@ sub onGetFocus()
     end if
 end sub
 
-sub numberToText(number) as Object
-    s = StrI(number)
-    result = ""
-    if number >=100000 and number < 1000000
-        result = Left(s, 4) + "K"
-    else if number >=10000 and number < 100000
-        result = Left(s, 3) + "." + Mid(s, 4, 1) + "K"
-    else if number >=1000 and number < 10000
-        result = Left(s, 2) + "." + Mid(s, 3, 1) + "K"
-    else if number < 1000
-        result = s
-    end if
-    return result + " viewers"
-end sub
-
 sub onSearchResultChange()
     lastFocusedRow = 0
     if m.browseList.rowItemFocused[0] <> invalid
@@ -164,7 +149,7 @@ sub onSearchResultChange()
         cnt = 0
         for each stream in m.getStreams.searchResults
             alreadyAppended = false
-            if cnt <> 0 and cnt MOD 3 = 0
+            if cnt <> 0 and cnt mod 3 = 0
                 content.appendChild(row)
                 row = createObject("RoSGNode", "ContentNode")
                 alreadyAppended = true
@@ -175,7 +160,7 @@ sub onSearchResultChange()
             rowItem.Categories = stream.game
             rowItem.HDPosterUrl = stream.thumbnail
             rowItem.ShortDescriptionLine1 = stream.name
-            rowItem.ShortDescriptionLine2 = numberToText(stream.viewers)
+            rowItem.ShortDescriptionLine2 = numberToText(stream.viewers) + "viewers "
             row.appendChild(rowItem)
             cnt += 1
         end for
@@ -214,8 +199,8 @@ sub onBrowseItemSelect()
     if m.browseList.visible = true
         'm.getStuff.streamerRequested = m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).ShortDescriptionLine1
         'm.getStuff.control = "RUN"
-        m.top.streamerSelectedName =  m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).ShortDescriptionLine1
-        m.top.streamerSelectedThumbnail =  m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).HDPosterUrl
+        m.top.streamerSelectedName = m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).ShortDescriptionLine1
+        m.top.streamerSelectedThumbnail = m.browseList.content.getChild(m.browseList.rowItemSelected[0]).getChild(m.browseList.rowItemSelected[1]).HDPosterUrl
         m.wasLastScene = true
     end if
 end sub
@@ -244,7 +229,7 @@ sub getMoreChannels()
     m.getStreams.control = "RUN"
 end sub
 
-sub onKeyEvent(key, press) as Boolean
+sub onKeyEvent(key, press) as boolean
     handled = false
 
     if m.top.visible = true and press

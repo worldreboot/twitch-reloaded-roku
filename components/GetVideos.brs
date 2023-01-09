@@ -11,7 +11,7 @@ function onSearchTextChange()
 
 end function
 
-function getRelativeTimePublished(timePublished as String) as String
+function getRelativeTimePublished(timePublished as string) as string
     secondsSincePublished = createObject("roDateTime")
     secondsSincePublished.FromISO8601String(timePublished)
     currentTime = createObject("roDateTime").AsSeconds()
@@ -59,28 +59,15 @@ function getRelativeTimePublished(timePublished as String) as String
     else
         return elapsedTime.ToStr() + " years ago"
     end if
-    
+
 end function
 
-function numberToText(number) as Object
-    s = StrI(number)
-    result = ""
-    if number >=100000 and number < 1000000
-        result = Left(s, 4) + "K"
-    else if number >=10000 and number < 100000
-        result = Left(s, 3) + "." + Mid(s, 4, 1) + "K"
-    else if number >=1000 and number < 10000
-        result = Left(s, 2) + "." + Mid(s, 3, 1) + "K"
-    else if number < 1000
-        result = s
-    end if
-    return result + " views"
-end function
 
-function convertDurationFormat(org_duration as String) as String
+
+function convertDurationFormat(org_duration as string) as string
     new_duration = ""
     DURATION_REGEX = createObject("roRegex", "h|m|s", "")
-    
+
     values = DURATION_REGEX.Split(org_duration)
     values_length = values.Count()
 
@@ -102,11 +89,11 @@ function convertDurationFormat(org_duration as String) as String
     return new_duration
 end function
 
-function getSearchResults() as Object
+function getSearchResults() as object
     search_results_url = "https://api.twitch.tv/helix/videos?user_id=" + m.top.userId
 
     url = createUrl()
-    
+
     'url.SetUrl(search_results_url.EncodeUri() + m.top.gameRequested.EncodeUriComponent())
 
     if m.top.pagination <> ""
@@ -117,7 +104,7 @@ function getSearchResults() as Object
 
     response_string = url.GetToString()
     search = ParseJson(response_string)
-
+    ? search.data[0]
     if search.status <> invalid and search.status = 401
         ? "401"
         refreshToken()
@@ -133,7 +120,7 @@ function getSearchResults() as Object
             item.duration = convertDurationFormat(video.duration)
             item.title = video.title
             item.published_at = getRelativeTimePublished(video.published_at)
-            item.viewer_count = numberToText(video.view_count)
+            item.viewer_count = numberToText(video.view_count) + "followers "
             if video.thumbnail_url <> ""
                 last = Right(video.thumbnail_url, 2)
                 if last = "eg"

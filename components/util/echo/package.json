@@ -1,8 +1,0 @@
-{
-  "scripts": {
-    "start": "node ./websocket_echo_server.js"
-  },
-  "dependencies": {
-    "ws": "3.0.0"
-  }
-}

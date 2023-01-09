@@ -56,14 +56,14 @@ function getProfilePicture(link)
     end for
 end function
 
-function convertToTimeFormat(timestamp as String) as String
+function convertToTimeFormat(timestamp as string) as string
     secondsSincePublished = createObject("roDateTime")
     secondsSincePublished.FromISO8601String(timestamp)
     currentTime = createObject("roDateTime").AsSeconds()
     elapsedTime = currentTime - secondsSincePublished.AsSeconds()
     hours = Int(elapsedTime / 60 / 60)
-    mins = elapsedTime / 60 MOD 60
-    secs = elapsedTime MOD 60
+    mins = elapsedTime / 60 mod 60
+    secs = elapsedTime mod 60
     if mins < 10
         mins = mins.ToStr()
         mins = "0" + mins
@@ -79,7 +79,7 @@ function convertToTimeFormat(timestamp as String) as String
     return hours.ToStr() + ":" + mins + ":" + secs
 end function
 
-function getSearchResults() as Object
+function getSearchResults() as object
     'search_results_url = "https://api.twitch.tv/kraken/streams?client_id=jzkbprff40iqj646a697cyrvl0zt2m6&limit=24&offset=" + m.top.offset + "&game="
     search_results_url = "https://api.twitch.tv/helix/users?login=" + m.top.loginRequested
 
@@ -91,8 +91,8 @@ function getSearchResults() as Object
     search = ParseJson(response_string)
 
     if search.status <> invalid and search.status = 401
-        ? "401"
-        refreshToken()
+        ' ? "401"
+        ' refreshToken()
         return getSearchResults()
     end if
 
@@ -204,7 +204,7 @@ function getSearchResults() as Object
                     user_ids_url = "https://api.twitch.tv/helix/users?id=" + streamer.user_id.ToStr()
                     addedUserIds = 1
                 end if
-                result.followed_users.push(item) 
+                result.followed_users.push(item)
             end for
         end while
         if addedGameIds > 0

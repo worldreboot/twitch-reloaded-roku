@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <component name="ChannelPage" extends="Group">
 
@@ -23,125 +23,135 @@
 
     <children>
         <Group id="header">
-            <Group id="profile" translation="[0,0]" >
+            <Group id="profile" translation="[0,0]">
                 <Rectangle
                     visible="true"
                     color="0x0C0C0DFF"
                     width="1358"
                     height="80"
                     translation="[0,0]" />
-                <MaskGroup id="profileImageMask" maskuri = "pkg:/images/profile-mask.png" masksize = "[50,50]" translation="[15,15]" >
+                <MaskGroup id="profileImageMask" maskuri="pkg:/images/profile-mask.png"
+                    masksize="[50,50]" translation="[15,15]">
                     <Poster id="avatar" width="50" height="50" />
                 </MaskGroup>
-                <SimpleLabel 
+                <SimpleLabel
                     id="username"
                     fontSize="24"
                     fontUri="pkg:/fonts/Inter-SemiBold.ttf"
                     translation="[80,15]" />
-                <SimpleLabel 
+                <SimpleLabel
                     id="followers"
                     fontSize="16"
                     fontUri="pkg:/fonts/Inter-Regular.ttf"
                     translation="[80,45]" />
                 <ScrollingLabel
-                    id = "description"
-                    height = "30"
-                    maxWidth = "600"
-                    horizAlign = "left"
-                    repeatCount = "-1"
-                    color = "0xC4C4C4FF"
-                    translation = "[600, 45]" >
-                    <Font role = "font" uri = "pkg:/fonts/Inter-Regular.ttf" size = "11" />
-		        </ScrollingLabel>
+                    id="description"
+                    height="30"
+                    maxWidth="600"
+                    horizAlign="left"
+                    repeatCount="-1"
+                    color="0xC4C4C4FF"
+                    translation="[600, 45]">
+                    <Font role="font" uri="pkg:/fonts/Inter-Regular.ttf" size="11" />
+                </ScrollingLabel>
             </Group>
 
             <!--
             <Group id="browseButtons">
                 <SimpleLabel
-                    id="liveButton"
+            id="liveButton"
                     translation="[400,60]"
-                    text="Live Stream"
+                    text="Live
+            Stream"
                     color="0xA970FFFF"
                     fontSize="32"
-                    fontUri="pkg:/fonts/Roobert-SemiBold.ttf" >
+            fontUri="pkg:/fonts/Roobert-SemiBold.ttf" >
                     <Rectangle
-                        id="liveLine"
+            id="liveLine"
                         visible="true"
                         color="0xA970FFFF"
-                        width="210"
+            width="210"
                         height="5"
-                        translation="[0,40]" />
+                        translation="[0,40]"
+            />
                 </SimpleLabel>
 
                 <SimpleLabel
                     id="videoButton"
-                    translation="[700,60]"
+            translation="[700,60]"
                     text="Videos"
                     color="0xEFEFF1FF"
-                    fontSize="32"
+            fontSize="32"
                     fontUri="pkg:/fonts/Roobert-SemiBold.ttf" >
-                    <Rectangle
+            <Rectangle
                         id="videoLine"
                         visible="false"
-                        color="0xA970FFFF"
+            color="0xA970FFFF"
                         width="80"
                         height="5"
-                        translation="[0,40]" />
-                </SimpleLabel> 
+            translation="[0,40]" />
+                </SimpleLabel>
             </Group> -->
         </Group>
 
 
-        <!--<RowList 
+        <!--<RowList
             id="streamItem"
             itemComponentName="ChannelStreamItem"
-            translation = "[100,135]"
+        translation = "[100,135]"
 			numRows = "1"
 			rowItemSize = "[[896,504]]"
-			rowItemSpacing = "[[30,0]]"
+			rowItemSpacing
+        = "[[30,0]]"
 			itemSize = "[896,550]"
             visible="true" /> -->
-        <SimpleLabel 
+        <SimpleLabel
             id="liveStreamLabel"
             text="Live Stream"
             color="0xB9B9B9FF"
             fontSize="24"
             fontUri="pkg:/fonts/Inter-SemiBold.ttf"
             translation="[37,87]" />
-        <SimpleLabel 
+        <SimpleLabel
             id="liveDuration"
             fontSize="12"
             fontUri="pkg:/fonts/Inter-Regular.ttf"
             translation="[37,119]" />
-        <RowList 
+        <RowList
             id="streamItem"
             itemComponentName="ChannelStreamItem"
-            translation = "[30,141]"
-			numRows = "1"
-			rowItemSize = "[[320,180]]"
-			rowItemSpacing = "[[30,0]]"
-			itemSize = "[320,250]"
+            translation="[30,141]"
+            numRows="1"
+            rowItemSize="[[320,180]]"
+            rowItemSpacing="[[30,0]]"
+            itemSize="[320,250]"
             focusBitmapUri="pkg:/images/focusIndicator.9.png"
             visible="true" />
-        <SimpleLabel 
+        <SimpleLabel
             id="recentVideosLabel"
             text="Recent Videos"
             color="0xB9B9B9FF"
             fontSize="24"
             fontUri="pkg:/fonts/Inter-SemiBold.ttf"
             translation="[37,373]" />
-        <RowList 
+        <RowList
             id="pastBroadcastsList"
             itemComponentName="ChannelVideoItem"
-            translation = "[30,412]"
-			numRows = "1"
-			rowItemSize = "[[320,180]]"
-			rowItemSpacing = "[[30,0]]"
-			itemSize = "[1200, 275]"
+            translation="[30,412]"
+            numRows="1"
+            rowItemSize="[[320,180]]"
+            rowItemSpacing="[[30,0]]"
+            itemSize="[1200, 275]"
             focusBitmapUri="pkg:/images/focusIndicator.9.png"
-			rowFocusAnimationStyle = "floatingFocus"
+            rowFocusAnimationStyle="floatingFocus"
             visible="true" />
-
+        <StandardMessageDialog
+            id="error_message"
+            initialFocus="buttonArea"
+            title="Error"
+            visible="false"
+            message="Unable to play video"
+        />
     </children>
 
 </component>

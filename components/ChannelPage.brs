@@ -3,10 +3,10 @@ sub init()
     m.username = m.top.findNode("username")
     m.description = m.top.findNode("description")
     m.liveDuration = m.top.findNode("liveDuration")
-
     m.streamItem = m.top.findNode("streamItem")
     m.pastBroadcastsList = m.top.findNode("pastBroadcastsList")
-
+    m.error_dialog = m.top.findNode("error_message")
+    m.error_dialog.bottomMessage = ["Click back to close dialog"]
     'm.liveButton = m.top.findNode("liveButton")
     'm.liveLine = m.top.findNode("liveLine")
 
@@ -62,11 +62,20 @@ sub onGetFocus()
     end if
 end sub
 
+function showdialog(message)
+    m.error_dialog.message = message
+    m.error_dialog.visible = true
+end function
+
 sub onGetVideoUrl()
     if m.pastBroadcastsList.hasFocus()
-        m.top.thumbnailInfo = m.getStuffVideo.thumbnailInfo
-        m.top.videoUrl = m.getStuffVideo.streamUrl
-        ? "ChannelPage > thumbnailInfo > "; m.top.thumbnailInfo
+        if m.getStuffVideo.streamurl = "vod_manifest_restricted"
+            showdialog([tr("Unable to play video"), tr("The content creator has restricted access.")])
+        else
+            m.top.thumbnailInfo = m.getStuffVideo.thumbnailInfo
+            m.top.videoUrl = m.getStuffVideo.streamUrl
+            ? "ChannelPage > thumbnailInfo > "; m.top.thumbnailInfo
+        end if
     else m.streamItem.hasFocus()
         m.top.streamUrl = m.getStuff.streamUrl
     end if
@@ -194,9 +203,8 @@ sub onSelectedStreamerChange()
     m.getUserChannel.control = "RUN"
 end sub
 
-sub onKeyEvent(key, press) as Boolean
+sub onKeyEvent(key, press) as boolean
     handled = false
-
     if press
         if key = "up" and m.pastBroadcastsList.hasFocus()
             m.currentlySelectedTab = true
@@ -225,9 +233,16 @@ sub onKeyEvent(key, press) as Boolean
             handled = true
         else if key = "back"
             ? "ChannelPage back"
+            if m.error_dialog.visible
+                m.error_dialog.visible = false
+                m.pastBroadcastsList.setFocus(true)
+                handled = true
+            else
+                m.top.streamItemFocused = false
+                m.pastBroadcastsList.content = invalid
+            end if
+
             'm.pastBroadcastsList.visible = false
-            m.top.streamItemFocused = false
-            m.pastBroadcastsList.content = invalid
             'm.streamItem.visible = true
 
             'm.liveButton.color = "0xA970FFFF"

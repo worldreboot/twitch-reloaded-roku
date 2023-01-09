@@ -2,7 +2,7 @@ function init()
     m.top.functionName = "main"
 end function
 
-function getChannelBadges() as Object
+function getChannelBadges() as object
     url = createUrl()
     search_results_url = "https://api.twitch.tv/helix/users?login=" + m.top.channel
     url.SetUrl(search_results_url.EncodeUri())
@@ -19,7 +19,7 @@ end function
 function main()
     'messagePort = CreateObject("roMessagePort")
     if m.global.globalBadges = invalid
-        m.global.addFields({globalBadges: GETJSON("https://badges.twitch.tv/v1/badges/global/display")})
+        m.global.addFields({ globalBadges: GETJSON("https://badges.twitch.tv/v1/badges/global/display") })
     end if
 
     if m.global.globalTTVEmotes = invalid
@@ -28,23 +28,24 @@ function main()
         for each emote in temp
             assocEmotes[emote.code] = emote.id
         end for
-        m.global.addFields({globalTTVEmotes: assocEmotes})
+        m.global.addFields({ globalTTVEmotes: assocEmotes })
     end if
 
     if m.top.channel <> ""
         tcpListen = createObject("roStreamSocket")
-        
+
         addr = createObject("roSocketAddress")
         addr.SetAddress("irc.chat.twitch.tv:6667")
 
         'messagePort = createObject("roMessagePort")
-        
+
         tcpListen.SetSendToAddress(addr)
         'tcpListen.SetMessagePort(messagePort)
         tcpListen.notifyReadable(true)
         ? "connect " tcpListen.Connect()
         tcpListen.SendStr("CAP REQ :twitch.tv/tags twitch.tv/commands" + Chr(13) + Chr(10))
-        user_auth_token = m.global.userToken
+        at = getTokenFromRegistry()
+        user_auth_token = at.access_token
         if m.top.loggedInUsername <> "" and user_auth_token <> invalid and user_auth_token <> ""
             ? "PASS " tcpListen.SendStr("PASS oauth:" + user_auth_token + Chr(13) + Chr(10))
             ? "USER " tcpListen.SendStr("USER " + m.top.loggedInUsername + " 8 * :" + m.top.loggedInUsername + Chr(13) + Chr(10))
@@ -69,7 +70,7 @@ function main()
         channel_id = getChannelBadges()
 
         if m.global.channelBadges = invalid
-            m.global.addFields({channelBadges: GETJSON("https://badges.twitch.tv/v1/badges/channels/" + channel_id + "/display")})
+            m.global.addFields({ channelBadges: GETJSON("https://badges.twitch.tv/v1/badges/channels/" + channel_id + "/display") })
         else
             m.global.setField("channelBadges", GETJSON("https://badges.twitch.tv/v1/badges/channels/" + channel_id + "/display"))
         end if
@@ -80,7 +81,7 @@ function main()
             assocEmotes[emote.code] = emote.id
         end for
         if m.global.channelTTVEmotes = invalid
-            m.global.addFields({channelTTVEmotes: assocEmotes})
+            m.global.addFields({ channelTTVEmotes: assocEmotes })
         else
             m.global.setField("channelTTVEmotes", assocEmotes)
         end if
@@ -91,7 +92,7 @@ function main()
             assocEmotes[emote.code] = emote.images["1x"]
         end for
         if m.global.channelTTVFrankerEmotes = invalid
-            m.global.addFields({channelTTVFrankerEmotes: assocEmotes})
+            m.global.addFields({ channelTTVFrankerEmotes: assocEmotes })
         else
             m.global.setField("channelTTVFrankerEmotes", assocEmotes)
         end if
@@ -138,7 +139,8 @@ function main()
                 'tcpListen.notifyReadable(true)
                 ? "connect " tcpListen.Connect()
                 tcpListen.SendStr("CAP REQ :twitch.tv/tags twitch.tv/commands" + Chr(13) + Chr(10))
-                user_auth_token = m.global.userToken
+                at = getTokenFromRegistry()
+                user_auth_token = at.access_token
                 if m.top.loggedInUsername <> "" and user_auth_token <> invalid and user_auth_token <> ""
                     ? "PASS " tcpListen.SendStr("PASS oauth:" + user_auth_token + Chr(13) + Chr(10))
                     ? "USER " tcpListen.SendStr("USER " + m.top.loggedInUsername + " 8 * :" + m.top.loggedInUsername + Chr(13) + Chr(10))
@@ -182,6 +184,6 @@ function main()
 
         end while
     end if
-    
+
 
 end function

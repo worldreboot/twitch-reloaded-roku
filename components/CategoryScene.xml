@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <component name="CategoryScene" extends="Group">
 
@@ -15,7 +15,7 @@
     </interface>
 
     <script type="text/brightscript" uri="pkg:/components/CategoryScene.brs" />
-
+    <script type="text/brightscript" uri="pkg:/components/UrlFunctions.brs" />
     <children>
 
         <Group id="browseButtons">
@@ -25,7 +25,7 @@
                 text="Live Channels"
                 color="0xA970FFFF"
                 fontSize="32"
-                fontUri="pkg:/fonts/Roobert-SemiBold.ttf" >
+                fontUri="pkg:/fonts/Roobert-SemiBold.ttf">
                 <Rectangle
                     id="liveLine"
                     visible="true"
@@ -40,7 +40,7 @@
                 text="Clips"
                 color="0xEFEFF1FF"
                 fontSize="32"
-                fontUri="pkg:/fonts/Roobert-SemiBold.ttf" >
+                fontUri="pkg:/fonts/Roobert-SemiBold.ttf">
                 <Rectangle
                     id="clipLine"
                     visible="false"
@@ -48,34 +48,34 @@
                     width="80"
                     height="5"
                     translation="[0,40]" />
-            </SimpleLabel> 
+            </SimpleLabel>
         </Group>
         <SimpleLabel
             id="searchHeader"
             translation="[100,50]"
             text="Browse"
             fontSize="48"
-            fontUri="pkg:/fonts/Roobert-Bold.ttf" />  
-        <RowList 
+            fontUri="pkg:/fonts/Roobert-Bold.ttf" />
+        <RowList
             id="browseList"
             itemComponentName="BrowseChannelItem"
-            translation = "[100,165]"
-			numRows = "2"
-			rowItemSize = "[[320,180]]"
-			rowItemSpacing = "[[30,0]]"
-			itemSize = "[1030,275]"
+            translation="[100,165]"
+            numRows="2"
+            rowItemSize="[[320,180]]"
+            rowItemSpacing="[[30,0]]"
+            itemSize="[1030,275]"
             focusBitmapUri="pkg:/images/focusIndicator.9.png"
-			rowFocusAnimationStyle = "floatingFocus" />
-        <RowList 
+            rowFocusAnimationStyle="floatingFocus" />
+        <RowList
             id="browseClipsList"
             itemComponentName="BrowseChannelItem"
-            translation = "[100,165]"
-			numRows = "2"
-			rowItemSize = "[[320,180]]"
-			rowItemSpacing = "[[30,0]]"
-			itemSize = "[1030,275]"
+            translation="[100,165]"
+            numRows="2"
+            rowItemSize="[[320,180]]"
+            rowItemSpacing="[[30,0]]"
+            itemSize="[1030,275]"
             focusBitmapUri="pkg:/images/focusIndicator.9.png"
-			rowFocusAnimationStyle = "floatingFocus" />
+            rowFocusAnimationStyle="floatingFocus" />
 
     </children>
 

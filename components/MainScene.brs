@@ -1,23 +1,13 @@
-'api.twitch.tv/api/channels/${user}/access_token?client_id=jzkbprff40iqj646a697cyrvl0zt2m6
-'usher.ttvnw.net/api/channel/hls/${user}.m3u8?allow_source=true&allow_spectre=true&type=any&token=${token}&sig=${sig}
-
+'************
+'** FIXED
+'************
 function init()
-    ' environment_variables = ReadAsciiFile("pkg:/env").Split(Chr(10))
-    ' for each var in environment_variables
-    '     var_info = var.Split("=")
-    '     if var_info[0] = "CLIENT-ID"
-    '         m.global.addFields({CLIENT_ID: Left(var_info[1], Len(var_info[1]) - 1)})
-    '     else if var_info[0] = "AUTHORIZATION"
-    '         m.global.addFields({AUTHORIZATION: var_info[1]})
-    '     end if
-    ' end for
-
+    m.top.backgroundUri = ""
+    m.top.backgroundColor = "0x020202FF"
     m.instructions = m.top.findNode("instructions")
-
     m.getStatus = createObject("roSGNode", "GetStatus")
     m.getStatus.observeField("appStatus", "onAppStatusReceived")
     m.getStatus.control = "RUN"
-
     m.videoPlayer = m.top.findNode("videoPlayer")
     m.keyboardGroup = m.top.findNode("keyboardGroup")
     m.homeScene = m.top.findNode("homeScene")
@@ -27,7 +17,7 @@ function init()
 
     m.keyboardGroup.observeField("streamUrl", "onStreamChange")
     m.keyboardGroup.observeField("streamerSelectedName", "onStreamerSelected")
-
+    ' m.categoryScene.observeField("streamerSelectedThumbnail", "onStreamerSelected")
     m.homeScene.observeField("streamUrl", "onStreamChange")
     m.homeScene.observeField("streamerSelectedName", "onStreamerSelected")
     m.homeScene.observeField("categorySelected", "onCategoryItemSelect")
@@ -127,6 +117,19 @@ function init()
     else
         m.global.addFields({ userToken: "" })
     end if
+    userData = getTokenFromRegistry()
+
+    if userdata.refresh_token <> invalid and userdata.refresh_token <> ""
+        m.global.addFields({ refreshToken: userdata.refresh_token })
+    else
+        m.global.addFields({ refreshToken: "" })
+    end if
+    ? "Refresh Token is "; m.global.refreshToken
+    if userdata.login <> invalid and userdata.login <> ""
+        m.global.addFields({ loggedInUser: userdata.login })
+    else
+        m.global.addFields({ loggedInUser: "" })
+    end if
 
     ' videoBookmarks = checkVideoBookmarks()
     videoBookmarks = checkRegistrySection("VideoSettings", "VideoBookmarks")
@@ -165,6 +168,15 @@ function init()
     m.plyrTask = invalid
 end function
 
+sub onBackgroundChange()
+    ? "Main Scene > onBackgroundChange"
+    if m.homeScene.visible
+        m.top.backgroundUri = m.homeScene.backgroundImageUri
+    else
+        m.top.backgroundUri = ""
+    end if
+end sub
+
 function playVideo(stream as object)
     m.videoPlayer.width = 0
     m.videoPlayer.height = 0
@@ -175,28 +187,8 @@ function playVideo(stream as object)
     if not m.videoPlayer.visible
         m.videoPlayer.visible = true
     end if
-    if invalid = m.plyrTask
-        m.plyrTask = createObject("roSGNode", "playerTask")
-        m.plyrTask.observeField("state", "onTaskStateUpdated")
-    end if
-    streamConfig = {
-        title: ""
-        streamformat: stream["streamFormat"]
-        useStitched: true
-        live: false
-        url: stream["url"]
-        type: "vod"
-        streamtype: "vod"
-        player: { sgnode: m.videoPlayer }
-    }
-    if stream["streamFormat"] = "hls"
-        streamConfig.live = true
-        streamConfig.type = "live"
-        streamConfig.streamtype = "live"
-    end if
-    m.plyrTask.streamConfig = streamConfig
-    m.plyrTask.video = m.videoPlayer
-    m.plyrTask.control = "run"
+    m.videoPlayer.content = stream
+    m.videoPlayer.control = "play"
 end function
 
 sub onChatDoneFocus()
@@ -207,8 +199,8 @@ sub onChatDoneFocus()
 end sub
 
 sub onLoginFinish()
+    ? "Main Scene > onLoginFinish"
     if m.loginPage.finished = true
-        ' loggedInUser = checkIfLoggedIn()
         loggedInUser = checkRegistrySection("LoggedInUserData", "LoggedInUser")
         if loggedInUser <> invalid
             m.getUser.loginRequested = loggedInUser
@@ -350,9 +342,18 @@ function onHeaderButtonPress()
 end function
 
 function onUserLogin()
-    m.homeScene.loggedInUserName = m.getUser.searchResults.display_name
-    m.homeScene.loggedInUserProfileImage = m.getUser.searchResults.profile_image_url
-    m.chat.loggedInUsername = m.getUser.searchResults.login
+    ? "ONUSERLOGIN"
+    userdata = getTokenFromRegistry()
+    ? userdata
+    m.homeScene.loggedInUserName = userdata.login
+    ? m.getUser.searchResults.profile_image_url
+    if m.getUser.searchResults.profile_image_url <> invalid
+        m.homeScene.loggedInUserProfileImage = m.getUser.searchResults.profile_image_url
+        m.chat.loggedInUsername = userdata.login
+    else
+        m.homeScene.loggedInUserProfileImage = ""
+        m.homeScene.loggedInUserName = "Login"
+    end if
     m.homeScene.followedStreams = m.getUser.searchResults.followed_users
     m.homeScene.currentlyLiveStreamerIds = m.getUser.currentlyLiveStreamerIds
     '? "currentlyLiveStreamerIds mainscene " m.getUser.currentlyLiveStreamerIds
