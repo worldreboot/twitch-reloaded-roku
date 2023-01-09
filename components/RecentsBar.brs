@@ -10,7 +10,7 @@ sub init()
 
     deviceInfo = CreateObject("roDeviceInfo")
     uiResolutionWidth = deviceInfo.GetUIResolution().width
-    
+
     if uiResolutionWidth = 1920
         m.maskSize = [75, 75]
     else
@@ -18,14 +18,14 @@ sub init()
     end if
 end sub
 
-sub numberToText(number) as Object
+sub numberToText(number) as object
     s = StrI(number)
     result = ""
-    if number >=100000 and number < 1000000
+    if number >= 100000 and number < 1000000
         result = Left(s, 4) + "K"
-    else if number >=10000 and number < 100000
+    else if number >= 10000 and number < 100000
         result = Left(s, 3) + "." + Mid(s, 4, 1) + "K"
-    else if number >=1000 and number < 10000
+    else if number >= 1000 and number < 10000
         result = Left(s, 2) + "." + Mid(s, 3, 1) + "K"
     else if number < 1000
         result = s
@@ -58,12 +58,14 @@ sub onFollowedStreamsChange()
         profile_image.height = 50
         profile_image.visible = true
 
-        stream_user = createObject("roSGNode", "SimpleLabel")
+        stream_user = createObject("roSGNode", "Label")
         stream_user.text = stream.user_name
         stream_user.translation = "[-90,20]"
         stream_user.visible = false
-        stream_user.fontSize = "18"
-        stream_user.fontUri = "pkg:/fonts/Inter-SemiBold.ttf"
+        stream_font = CreateObject("roSGNode", "Font")
+        stream_font.size = "18"
+        stream_font.uri = "pkg:/fonts/Inter-SemiBold.ttf"
+        stream_user.font = stream_font
 
         stream_game = createObject("roSGNode", "Label")
         stream_game.text = stream.game_id
@@ -72,19 +74,22 @@ sub onFollowedStreamsChange()
         stream_game.color = "0xC26BE1FF"
         stream_game.visible = false
         'stream_game.fontSize = "12"
-        game_font = createObject("roSGNode", "Font")
-        'game_font.role = "font" 
-        game_font.uri = "pkg:/fonts/Inter-Regular.ttf" 
-        game_font.size = "14"
-        stream_game.font = game_font
-        stream_game.fontUri="pkg:/fonts/Roobert-Regular.ttf"
 
-        stream_viewers = createObject("roSGNode", "SimpleLabel")
+        game_font = createObject("roSGNode", "Font")
+        game_font.size = "14"
+        game_font.uri = "pkg:/fonts/Inter-Regular.ttf"
+        stream_game.font = game_font
+
+        viewer_font = CreateObject("roSGNode", "Font")
+        viewer_font.size = "12"
+        viewer_font.uri = "pkg:/fonts/Inter-Regular.ttf"
+        stream_viewers = createObject("roSGNode", "Label")
         stream_viewers.text = stream.live_duration 'numberToText(stream.viewer_count)
         stream_viewers.translation = "[303,10]"
         stream_viewers.visible = false
         stream_viewers.fontSize = "12"
-        stream_viewers.fontUri="pkg:/fonts/Inter-Regular.ttf"
+        stream_viewers.fontUri = "pkg:/fonts/Inter-Regular.ttf"
+        stream_viewers.font = viewer_font
 
         red_rectangle = createObject("roSGNode", "Poster")
         red_rectangle.uri = "pkg:/images/red_rectangle.9.png"
@@ -93,7 +98,7 @@ sub onFollowedStreamsChange()
         red_rectangle.translation = "[285,5]"
         red_rectangle.visible = false
 
-        login_name = createObject("roSGNode", "SimpleLabel")
+        login_name = createObject("roSGNode", "Label")
         login_name.text = stream.login
         login_name.visible = false
 
@@ -119,13 +124,13 @@ sub onFollowedStreamsChange()
         ' selected.visible = false
 
         selected = createObject("roSGNode", "Poster")
-        selected.translation = [-10,50]
+        selected.translation = [-10, 50]
         selected.uri = "pkg:/images/barFocusIndicator.9.png"
         selected.height = 50
         selected.rotation = 3.142
         selected.width = stream_user.localBoundingRect().width + 36
         middle_x = selected.sceneBoundingRect().x + (selected.sceneBoundingRect().width / 2) - (stream_user.sceneBoundingRect().width / 2)
-        starting_x_diff = middle_x- stream_user.sceneBoundingRect().x
+        starting_x_diff = middle_x - stream_user.sceneBoundingRect().x
         middle_y = selected.sceneBoundingRect().y + (selected.sceneBoundingRect().height / 2) - (stream_user.sceneBoundingRect().height / 2)
         starting_y_diff = middle_y - stream_user.sceneBoundingRect().y
         stream_user.translation = [stream_user.translation[0] + starting_x_diff, stream_user.translation[1] + starting_y_diff]
@@ -133,7 +138,7 @@ sub onFollowedStreamsChange()
         selected.visible = false
 
         mask_group.appendChild(profile_image)
-        
+
         group.appendChild(selected)
         group.appendChild(mask_group)
         group.appendChild(stream_user)
@@ -193,7 +198,7 @@ sub onGetFocus()
     end if
 end sub
 
-sub onKeyEvent(key, press) as Boolean
+sub onKeyEvent(key, press) as boolean
     handled = false
     if press
         if key = "up"
