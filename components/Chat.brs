@@ -133,7 +133,6 @@ sub onNewComment()
     for each badge in badges
         if badge <> ""
             badge_parts = badge.Split("/")
-            ? m.global.channelBadges
             if m.global.channelBadges?.badge_sets <> invalid and m.global.channelBadges.badge_sets[badge_parts[0]] <> invalid
                 if m.global.channelBadges.badge_sets[badge_parts[0]].versions[badge_parts[1]] <> invalid
                     poster = createObject("roSGNode", "Poster")
