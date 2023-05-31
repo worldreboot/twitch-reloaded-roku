@@ -133,7 +133,8 @@ sub onNewComment()
     for each badge in badges
         if badge <> ""
             badge_parts = badge.Split("/")
-            if m.global.channelBadges.badge_sets[badge_parts[0]] <> invalid
+            ? m.global.channelBadges
+            if m.global.channelBadges?.badge_sets <> invalid and m.global.channelBadges.badge_sets[badge_parts[0]] <> invalid
                 if m.global.channelBadges.badge_sets[badge_parts[0]].versions[badge_parts[1]] <> invalid
                     poster = createObject("roSGNode", "Poster")
                     poster.uri = m.global.channelBadges.badge_sets[badge_parts[0]].versions[badge_parts[1]].image_url_1x
@@ -144,7 +145,7 @@ sub onNewComment()
                     group.appendChild(poster)
                     badge_translation += 20
                 end if
-            else if m.global.globalBadges.badge_sets[badge_parts[0]].versions[badge_parts[1]] <> invalid
+            else if m.global.globalBadges?.badge_sets <> invalid and m.global.globalBadges.badge_sets[badge_parts[0]].versions[badge_parts[1]] <> invalid
                 poster = createObject("roSGNode", "Poster")
                 poster.uri = m.global.globalBadges.badge_sets[badge_parts[0]].versions[badge_parts[1]].image_url_1x
                 poster.width = 18
