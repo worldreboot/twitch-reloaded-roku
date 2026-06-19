@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Twoku Kick Login</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #101410;
+      color: #efffea;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #101410;
+    }
+
+    main {
+      width: min(420px, calc(100vw - 32px));
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 34px;
+      line-height: 1.1;
+    }
+
+    p {
+      margin: 0 0 22px;
+      color: #bde8b5;
+      line-height: 1.45;
+    }
+
+    label,
+    input,
+    button {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    label {
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    input {
+      margin-bottom: 16px;
+      padding: 14px;
+      font: 24px ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      text-transform: uppercase;
+      letter-spacing: 0;
+      background: #050805;
+      color: #fff;
+      border: 1px solid #284228;
+      border-radius: 6px;
+    }
+
+    button {
+      padding: 14px;
+      font: inherit;
+      font-weight: 800;
+      background: #53fc18;
+      color: #050805;
+      border: 0;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .message {
+      display: none;
+      margin-bottom: 18px;
+      padding: 12px 14px;
+      border-radius: 6px;
+      background: #1c271b;
+      color: #efffea;
+    }
+
+    .message.error {
+      background: #351817;
+      color: #ffb5b5;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Twoku Kick Login</h1>
+    <p id="intro">Enter the code shown on your Roku to connect your Kick account.</p>
+    <div id="message" class="message"></div>
+    <form id="form" method="post">
+      <label for="code">Roku code</label>
+      <input id="code" name="code" autocomplete="one-time-code" required autofocus>
+      <button type="submit">Continue with Kick</button>
+    </form>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const api = params.get("api") || "https://lxmjpdmqzblpsdhmlfrt.supabase.co/functions/v1/kick-auth";
+    const form = document.getElementById("form");
+    const intro = document.getElementById("intro");
+    const message = document.getElementById("message");
+    const error = params.get("error");
+
+    form.action = api.replace(/\/+$/, "") + "/login";
+
+    if (params.get("complete") === "1") {
+      intro.textContent = "Kick login is complete. You can return to your Roku now.";
+      form.style.display = "none";
+    } else if (error) {
+      message.textContent = error;
+      message.classList.add("error");
+      message.style.display = "block";
+    }
+  </script>
+</body>
+</html>
