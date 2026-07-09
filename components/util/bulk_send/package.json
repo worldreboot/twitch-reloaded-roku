@@ -3,6 +3,6 @@
     "start": "node ./websocket_bulk_send_server.js"
   },
   "dependencies": {
-    "ws": "3.0.0"
+    "ws": "5.2.4"
   }
 }
